@@ -13,7 +13,7 @@ import lombok.Data;
 //Entidad que representa al usuario en la base de datos.
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 @Data
 public class User {
 

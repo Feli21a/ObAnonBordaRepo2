@@ -16,13 +16,13 @@ import jakarta.validation.Valid;
 //Controlador que expone los endpoints de registro y autenticación de usuarios.
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService usuarioService;
 
-    @PostMapping("/registro")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody UserRegistrationDTO user) {
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@Valid UserRegistrationDTO user) {
         User nuevoUsuario = usuarioService.registerUser(user);
         return ResponseEntity.ok(nuevoUsuario);
     }
