@@ -23,4 +23,6 @@ public class UserRegistrationDTO {
 
     @NotNull(message = "Debe confirmar la contraseña")
     private String confirmPassword;
+
+    
 }
