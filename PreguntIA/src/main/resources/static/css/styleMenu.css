@@ -1,0 +1,195 @@
+/* Estilos Generales */
+body {
+    font-family: 'Special Elite', sans-serif;
+    background: #f3e5ab;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    overflow-x: hidden;
+}
+
+/* Contenedor Principal */
+.container {
+    max-width: 500px;
+    /* Mantiene el ancho máximo del contenedor */
+    width: 100%;
+    background: #fdf6e3;
+    border: 2px solid #333;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    /* Asegura que los elementos se apilen verticalmente */
+    justify-content: space-between;
+    /* Espaciado uniforme entre los elementos */
+    height: auto;
+    /* Permite que el contenedor se ajuste al contenido */
+    overflow: hidden;
+    /* Evita que los botones se desborden */
+}
+
+/* Título */
+h2 {
+    font-family: 'Amatic SC', cursive;
+    font-size: 3rem;
+    color: #8b4513;
+    margin-bottom: 1.5rem;
+    /* Ajustado para más espacio */
+    text-shadow: 2px 2px #d2691e;
+}
+
+/* Botones de Menú */
+.btn-primary,
+.btn-secondary,
+.btn-info {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    color: #fff;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    /* Mantiene el ancho completo */
+    max-width: 90%;
+    /* Asegura que no se exceda el 90% del contenedor */
+    margin: 0 auto 1rem;
+    /* Centra los botones y les da espacio inferior */
+}
+
+.btn-primary {
+    background-color: #8b4513;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #a0522d;
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #565e64;
+    transform: scale(1.05);
+}
+
+.btn-info {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-info:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.btn-help {
+    background-color: #ffc107;
+    /* Color amarillo */
+    width: 90%;
+    /* Ancho más estrecho que los otros botones */
+    padding: 0.5rem;
+    /* Ajusta el padding para hacerlo menos largo */
+    transition: transform 0.2s;
+    /* Añade transición para el efecto de translate */
+    margin: 0 auto;
+    /* Centra el botón de ayuda */
+}
+
+.btn-help:hover {
+    background-color: #e0a800;
+    /* Color amarillo más oscuro al pasar el mouse */
+    transform: translateY(-3px);
+    /* Mueve el botón hacia arriba al hacer hover */
+}
+
+/* Modal de Dificultad */
+.modal-content {
+    font-family: 'Special Elite', sans-serif;
+    background: #fdf6e3;
+    border: 2px solid #333;
+    border-radius: 10px;
+}
+
+.modal-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2rem;
+    color: #8b4513;
+}
+
+.btn-outline-success,
+.btn-outline-warning,
+.btn-outline-danger {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.3rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    border-width: 2px;
+}
+
+/* Colores personalizados para botones en el modal */
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+    border-color: #28a745;
+}
+
+.btn-outline-warning:hover {
+    background-color: #ff9800;
+    color: #fff;
+    border-color: #ff9800;
+}
+
+.btn-outline-danger:hover {
+    background-color: #d32f2f;
+    color: #fff;
+    border-color: #d32f2f;
+}
+
+/* Media Query para Responsividad */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+        border-radius: 10px;
+        max-width: 90%;
+        /* Más espacio en pantallas pequeñas */
+    }
+
+    h2 {
+        font-size: 2.5rem;
+        /* Ajusta el tamaño del título en pantallas pequeñas */
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-info,
+    .btn-help {
+        font-size: 1.3rem;
+        /* Tamaño de fuente más pequeño en pantallas pequeñas */
+        padding: 0.6rem 1rem;
+        /* Ajusta el padding para ser más compacto */
+    }
+}
+
+@media (max-width: 576px) {
+    h2 {
+        font-size: 2rem;
+        /* Más pequeño en móviles */
+    }
+
+    .btn-outline-success,
+    .btn-outline-warning,
+    .btn-outline-danger {
+        font-size: 1.2rem;
+        /* Tamaño de fuente más pequeño en móviles */
+    }
+}
