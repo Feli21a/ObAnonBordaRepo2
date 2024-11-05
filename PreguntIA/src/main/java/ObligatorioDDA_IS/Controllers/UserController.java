@@ -32,9 +32,9 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@ModelAttribute UserRegistrationDTO user, HttpSession session) {
         try {
-            User loggedInUser = (User) usuarioService.authenticateUser(user.getEmail(), user.getPassword());
-            session.setAttribute("user", loggedInUser); // Guarda el usuario en la sesión
-            return ResponseEntity.ok("Inicio de sesión exitoso");
+            User loggedInUser = usuarioService.authenticateUser(user.getEmail(), user.getPassword());
+            session.setAttribute("user", loggedInUser); // Agrega el usuario a la sesión
+            return ResponseEntity.ok().body("/menu.html"); // Redirige a la página de menú
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }
