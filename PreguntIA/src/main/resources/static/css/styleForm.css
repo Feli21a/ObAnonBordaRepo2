@@ -1,0 +1,142 @@
+/* Estilos Generales */
+body {
+    font-family: 'Special Elite', sans-serif;
+    background: #f3e5ab;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Cambiado para asegurar que ocupe la altura total */
+    margin: 0;
+    padding: 1rem;
+    overflow-x: hidden;
+    /* Evitar desplazamiento horizontal */
+}
+
+/* Contenedor Principal */
+.login-container {
+    background: #fdf6e3;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    border: 2px solid #333;
+    transition: all 0.3s ease;
+    overflow-wrap: break-word;
+    /* Asegura que el texto se ajuste al ancho */
+}
+
+/* Título */
+.title-text {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2.5rem;
+    color: #8b4513;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: 2px 2px #d2691e;
+    word-break: break-word;
+    /* Permite que el título se divida si es necesario */
+}
+
+/* Inputs y Botones */
+.input-style,
+.submit-btn {
+    width: 100%;
+    /* Asegura que los elementos se adapten */
+}
+
+/* Estilos para los labels */
+.label-text {
+    font-weight: bold;
+    color: #5d4037;
+}
+
+/* Inputs */
+.input-style {
+    border: 2px solid #5d4037;
+    border-radius: 8px;
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.1);
+    background: #fffbe6;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.input-style:focus {
+    outline: none;
+    border-color: #8b4513;
+    box-shadow: 0 0 8px rgba(139, 69, 19, 0.5);
+}
+
+/* Botón de envío */
+.submit-btn {
+    background-color: #8b4513;
+    border: none;
+    font-size: 1.2rem;
+    font-family: 'Amatic SC', cursive;
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s;
+    width: 100%;
+    /* Full width en pantallas pequeñas */
+}
+
+.submit-btn:hover {
+    background-color: #a0522d;
+    transform: scale(1.05);
+}
+
+/* Estilos de la alerta */
+.alert-style {
+    background-color: #f8d7da;
+    color: #721c24;
+    font-weight: bold;
+    border: 2px solid #721c24;
+    border-radius: 5px;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+/* Link de registro */
+.register-link {
+    font-family: 'Amatic SC', cursive;
+    color: #8b4513;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+.register-link:hover {
+    color: #a0522d;
+}
+
+/* Media Query para Responsividad */
+@media (max-width: 576px) {
+    .login-container {
+        padding: 1.5rem;
+        border-radius: 10px;
+        max-width: 90%;
+        /* Ajustar para pantallas pequeñas y zoom alto */
+    }
+
+    .title-text {
+        font-size: 2rem;
+        white-space: normal;
+        /* Permite que el texto pase a la siguiente línea */
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        padding: 2rem;
+        max-width: 95%;
+        /* Asegura que se adapte a zoom alto en pantallas medianas */
+    }
+
+    .title-text {
+        font-size: 2.2rem;
+        white-space: normal;
+    }
+}

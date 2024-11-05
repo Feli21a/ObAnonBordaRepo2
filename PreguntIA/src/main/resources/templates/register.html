@@ -5,39 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Special+Elite&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/styleForm.css">
     <script type="module" src="/js/registerHandler.js"></script>
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center">Registro de Usuario</h2>
+    <div class="container mt-5 login-container">
+        <h2 class="text-center title-text">Registro de Usuario</h2>
 
-        <form id="registerForm" action="/api/users/login" method="POST" class="mt-4">
+        <form id="registerForm" action="/api/users/register" method="POST" class="mt-4 form-style">
             <div class="mb-3">
-                <label for="username" class="form-label">Nombre de Usuario</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+                <label for="username" class="form-label label-text">Nombre de Usuario</label>
+                <input type="text" class="form-control input-style" id="username" name="username" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <label for="email" class="form-label label-text">Correo Electrónico</label>
+                <input type="email" class="form-control input-style" id="email" name="email" required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <label for="password" class="form-label label-text">Contraseña</label>
+                <input type="password" class="form-control input-style" id="password" name="password" required>
             </div>
             <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                <label for="confirmPassword" class="form-label label-text">Confirmar Contraseña</label>
+                <input type="password" class="form-control input-style" id="confirmPassword" name="confirmPassword" required>
             </div>
 
-            <div id="alertMessage" class="alert d-none" role="alert"></div>
+            <div id="alertMessage" class="alert d-none alert-style" role="alert"></div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Registrarse</button>
+                <button type="submit" class="btn btn-primary submit-btn">Registrarse</button>
             </div>
         </form>
-
     </div>
 </body>
 
