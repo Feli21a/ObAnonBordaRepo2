@@ -15,4 +15,5 @@ public class PageController {
     public String showLoginPage() {
         return "login"; // Spring buscará el archivo `register.html` en el directorio `templates`
     }
+    
 }
