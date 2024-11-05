@@ -30,7 +30,6 @@ public class User {
     private String email;
 
     @NotNull(message = "La contraseña no puede estar vacía")
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     private String password;
 
     // Getters y Setters
