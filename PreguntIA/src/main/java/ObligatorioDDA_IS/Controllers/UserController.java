@@ -2,7 +2,6 @@ package ObligatorioDDA_IS.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,16 +37,6 @@ public class UserController {
             return ResponseEntity.ok("Inicio de sesión exitoso");
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/perfil")
-    public ResponseEntity<String> getUserProfile(HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("user"); // Asegúrate de que el atributo "user" exista
-        if (loggedInUser != null) {
-            return ResponseEntity.ok(loggedInUser.getUsername()); // Retorna el nombre de usuario
-        } else {
-            return ResponseEntity.status(401).body("Usuario no autenticado"); // Mensaje de error si no está autenticado
         }
     }
 
