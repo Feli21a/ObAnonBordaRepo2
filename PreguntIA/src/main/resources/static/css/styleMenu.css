@@ -1,7 +1,8 @@
 /* Estilos Generales */
 body {
     font-family: 'Special Elite', sans-serif;
-    background: #f3e5ab;
+    background: url('/img/MenuBG.png') no-repeat center center fixed;
+    background-size: cover;
     color: #333;
     display: flex;
     justify-content: center;
@@ -15,7 +16,6 @@ body {
 /* Contenedor Principal */
 .container {
     max-width: 500px;
-    /* Mantiene el ancho máximo del contenedor */
     width: 100%;
     background: #fdf6e3;
     border: 2px solid #333;
@@ -24,13 +24,9 @@ body {
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    /* Asegura que los elementos se apilen verticalmente */
     justify-content: space-between;
-    /* Espaciado uniforme entre los elementos */
     height: auto;
-    /* Permite que el contenedor se ajuste al contenido */
     overflow: hidden;
-    /* Evita que los botones se desborden */
 }
 
 /* Título */
@@ -39,7 +35,6 @@ h2 {
     font-size: 3rem;
     color: #8b4513;
     margin-bottom: 1.5rem;
-    /* Ajustado para más espacio */
     text-shadow: 2px 2px #d2691e;
 }
 
@@ -54,61 +49,74 @@ h2 {
     border-radius: 8px;
     transition: background-color 0.3s, transform 0.2s;
     width: 100%;
-    /* Mantiene el ancho completo */
     max-width: 90%;
-    /* Asegura que no se exceda el 90% del contenedor */
     margin: 0 auto 1rem;
-    /* Centra los botones y les da espacio inferior */
 }
 
 .btn-primary {
     background-color: #8b4513;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: none;
 }
 
 .btn-primary:hover {
     background-color: #a0522d;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transform: scale(1.05);
 }
 
 .btn-secondary {
     background-color: #6c757d;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: none;
 }
 
 .btn-secondary:hover {
     background-color: #565e64;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transform: scale(1.05);
 }
 
-.btn-info {
-    background-color: #007bff;
-    border: none;
-}
-
-.btn-info:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.btn-help {
+/* Botones de Ayuda, Configuración y Logout */
+.btn-warning {
     background-color: #ffc107;
     /* Color amarillo */
-    width: 90%;
-    /* Ancho más estrecho que los otros botones */
-    padding: 0.5rem;
-    /* Ajusta el padding para hacerlo menos largo */
-    transition: transform 0.2s;
-    /* Añade transición para el efecto de translate */
-    margin: 0 auto;
-    /* Centra el botón de ayuda */
+    border: none;
+    /* Sin borde */
+    width: 60px;
+    /* Ancho */
+    height: 60px;
+    /* Alto */
+    display: flex;
+    /* Alinear el ícono en el centro */
+    justify-content: center;
+    /* Centra el ícono */
+    align-items: center;
+    /* Centra el ícono verticalmente */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    transition: background-color 0.3s, transform 0.2s;
+    /* Transiciones suaves */
 }
 
-.btn-help:hover {
+.btn-warning:hover {
     background-color: #e0a800;
     /* Color amarillo más oscuro al pasar el mouse */
-    transform: translateY(-3px);
-    /* Mueve el botón hacia arriba al hacer hover */
+    transform: translateY(-2px);
+    /* Mueve ligeramente hacia arriba en hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    /* Aumenta la sombra al pasar el mouse */
+}
+
+/* Para asegurar que el ícono dentro sea más grande */
+.btn-warning i {
+    font-size: 1.5rem;
+    /* Ajusta el tamaño del ícono */
+}
+
+/* Modal de Ayuda */
+.modal-body {
+    display: flex;
 }
 
 /* Modal de Dificultad */
@@ -124,6 +132,62 @@ h2 {
     font-size: 2rem;
     color: #8b4513;
 }
+
+/* Estilo para el botón "No" y "Sí" en el modal de logout */
+.modal-footer .btn-danger {
+    flex: 1;
+    /* Hace que ambos botones ocupen el mismo espacio */
+    margin: 0 5px;
+    /* Espacio entre los botones */
+    transition: transform 0.2s, box-shadow 0.2s;
+    /* Transiciones para efecto de escala y sombra */
+}
+
+.modal-footer .btn-danger:hover {
+    transform: scale(1.05);
+    /* Aplica la escala en hover a ambos botones */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Sombra al pasar el mouse */
+}
+
+.image-container {
+    flex: 0 0 30%;
+    /* 30% del ancho del modal para la imagen */
+    margin-right: 1rem;
+    /* Espacio entre la imagen y las instrucciones */
+}
+
+.instructions-container {
+    flex: 1;
+    /* El resto del espacio para las instrucciones */
+}
+
+.instructions-container ul {
+    margin: 0;
+    /* Elimina el margen por defecto de la lista */
+    padding-left: 1.5rem;
+    /* Padding para que se vea mejor */
+}
+
+/* Asegúrate de que la imagen se ajuste correctamente */
+.image-container img {
+    width: 100%;
+    /* Hace que la imagen sea responsiva */
+    height: auto;
+    /* Mantiene la proporción de la imagen */
+}
+
+/* Estilo para ambos botones */
+.btn-danger {
+    border: none;
+    /* Sin borde */
+}
+
+.btn-danger:hover {
+    background-color: #ba2828;
+    /* Color amarillo más oscuro al pasar el mouse */
+}
+
 
 .btn-outline-success,
 .btn-outline-warning,
@@ -161,7 +225,6 @@ h2 {
         padding: 1.5rem;
         border-radius: 10px;
         max-width: 90%;
-        /* Más espacio en pantallas pequeñas */
     }
 
     h2 {
@@ -172,7 +235,7 @@ h2 {
     .btn-primary,
     .btn-secondary,
     .btn-info,
-    .btn-help {
+    .btn-warning {
         font-size: 1.3rem;
         /* Tamaño de fuente más pequeño en pantallas pequeñas */
         padding: 0.6rem 1rem;
