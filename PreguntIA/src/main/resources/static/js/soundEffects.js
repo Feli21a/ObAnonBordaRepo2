@@ -1,6 +1,5 @@
 // Cargar el sonido
 const hoverSound = new Audio('audio/btnSound.mp3'); // Cambia 'btnSound.mp3' por el nombre de tu archivo
-hoverSound.volume = 0.3;
 
 // Función para reproducir sonido al pasar el mouse
 function playHoverSound() {

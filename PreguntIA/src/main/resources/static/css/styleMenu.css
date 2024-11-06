@@ -1,4 +1,4 @@
-/* Estilos Generales */
+/* Estilos Generales del Menú */
 body {
     font-family: 'Special Elite', sans-serif;
     background: url('/img/MenuBG.png') no-repeat center center fixed;
@@ -13,7 +13,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Contenedor Principal */
+/* Contenedor Principal del Menú */
 .container {
     max-width: 500px;
     width: 100%;
@@ -29,7 +29,7 @@ body {
     overflow: hidden;
 }
 
-/* Título */
+/* Título del Menú */
 h2 {
     font-family: 'Amatic SC', cursive;
     font-size: 3rem;
@@ -79,180 +79,24 @@ h2 {
 
 /* Botones de Ayuda, Configuración y Logout */
 .btn-warning {
-    background-color: #ffc107;
-    /* Color amarillo */
-    border: none;
-    /* Sin borde */
-    width: 60px;
-    /* Ancho */
-    height: 60px;
-    /* Alto */
-    display: flex;
-    /* Alinear el ícono en el centro */
-    justify-content: center;
-    /* Centra el ícono */
-    align-items: center;
-    /* Centra el ícono verticalmente */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Sombra suave */
-    transition: background-color 0.3s, transform 0.2s;
-    /* Transiciones suaves */
+    background-color: #ffc107; /* Color amarillo */
+    border: none; /* Sin borde */
+    width: 60px; /* Ancho */
+    height: 60px; /* Alto */
+    display: flex; /* Alinear el ícono en el centro */
+    justify-content: center; /* Centra el ícono */
+    align-items: center; /* Centra el ícono verticalmente */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
 }
 
 .btn-warning:hover {
-    background-color: #e0a800;
-    /* Color amarillo más oscuro al pasar el mouse */
-    transform: translateY(-2px);
-    /* Mueve ligeramente hacia arriba en hover */
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-    /* Aumenta la sombra al pasar el mouse */
+    background-color: #e0a800; /* Color amarillo más oscuro al pasar el mouse */
+    transform: translateY(-2px); /* Mueve ligeramente hacia arriba en hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Aumenta la sombra al pasar el mouse */
 }
 
 /* Para asegurar que el ícono dentro sea más grande */
 .btn-warning i {
-    font-size: 1.5rem;
-    /* Ajusta el tamaño del ícono */
-}
-
-/* Modal de Ayuda */
-.modal-body {
-    display: flex;
-}
-
-/* Modal de Dificultad */
-.modal-content {
-    font-family: 'Special Elite', sans-serif;
-    background: #fdf6e3;
-    border: 2px solid #333;
-    border-radius: 10px;
-}
-
-.modal-title {
-    font-family: 'Amatic SC', cursive;
-    font-size: 2rem;
-    color: #8b4513;
-}
-
-/* Estilo para el botón "No" y "Sí" en el modal de logout */
-.modal-footer .btn-danger {
-    flex: 1;
-    /* Hace que ambos botones ocupen el mismo espacio */
-    margin: 0 5px;
-    /* Espacio entre los botones */
-    transition: transform 0.2s, box-shadow 0.2s;
-    /* Transiciones para efecto de escala y sombra */
-}
-
-.modal-footer .btn-danger:hover {
-    transform: scale(1.05);
-    /* Aplica la escala en hover a ambos botones */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Sombra al pasar el mouse */
-}
-
-.image-container {
-    flex: 0 0 30%;
-    /* 30% del ancho del modal para la imagen */
-    margin-right: 1rem;
-    /* Espacio entre la imagen y las instrucciones */
-}
-
-.instructions-container {
-    flex: 1;
-    /* El resto del espacio para las instrucciones */
-}
-
-.instructions-container ul {
-    margin: 0;
-    /* Elimina el margen por defecto de la lista */
-    padding-left: 1.5rem;
-    /* Padding para que se vea mejor */
-}
-
-/* Asegúrate de que la imagen se ajuste correctamente */
-.image-container img {
-    width: 100%;
-    /* Hace que la imagen sea responsiva */
-    height: auto;
-    /* Mantiene la proporción de la imagen */
-}
-
-/* Estilo para ambos botones */
-.btn-danger {
-    border: none;
-    /* Sin borde */
-}
-
-.btn-danger:hover {
-    background-color: #ba2828;
-    /* Color amarillo más oscuro al pasar el mouse */
-}
-
-
-.btn-outline-success,
-.btn-outline-warning,
-.btn-outline-danger {
-    font-family: 'Amatic SC', cursive;
-    font-size: 1.3rem;
-    padding: 0.5rem 1rem;
-    width: 100%;
-    margin-bottom: 0.5rem;
-    border-width: 2px;
-}
-
-/* Colores personalizados para botones en el modal */
-.btn-outline-success:hover {
-    background-color: #28a745;
-    color: #fff;
-    border-color: #28a745;
-}
-
-.btn-outline-warning:hover {
-    background-color: #ff9800;
-    color: #fff;
-    border-color: #ff9800;
-}
-
-.btn-outline-danger:hover {
-    background-color: #d32f2f;
-    color: #fff;
-    border-color: #d32f2f;
-}
-
-/* Media Query para Responsividad */
-@media (max-width: 768px) {
-    .container {
-        padding: 1.5rem;
-        border-radius: 10px;
-        max-width: 90%;
-    }
-
-    h2 {
-        font-size: 2.5rem;
-        /* Ajusta el tamaño del título en pantallas pequeñas */
-    }
-
-    .btn-primary,
-    .btn-secondary,
-    .btn-info,
-    .btn-warning {
-        font-size: 1.3rem;
-        /* Tamaño de fuente más pequeño en pantallas pequeñas */
-        padding: 0.6rem 1rem;
-        /* Ajusta el padding para ser más compacto */
-    }
-}
-
-@media (max-width: 576px) {
-    h2 {
-        font-size: 2rem;
-        /* Más pequeño en móviles */
-    }
-
-    .btn-outline-success,
-    .btn-outline-warning,
-    .btn-outline-danger {
-        font-size: 1.2rem;
-        /* Tamaño de fuente más pequeño en móviles */
-    }
+    font-size: 1.5rem; /* Ajusta el tamaño del ícono */
 }
