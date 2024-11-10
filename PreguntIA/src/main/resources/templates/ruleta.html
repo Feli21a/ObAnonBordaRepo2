@@ -3,18 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantalla Principal - Juego de Preguntas</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Ruleta de Preguntas</title>
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #f3e5ab;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Contenedor de la Ruleta con borde */
+        #chart {
+            width: 500px;
+            height: 500px;
+            border: 6px solid #333;
+            border-radius: 50%;
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            transition: box-shadow 0.5s ease;
+        }
+
+        /* Efecto Destacado para la Sección Ganadora */
+        .highlight {
+            filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 0, 0.7));
+            transition: filter 0.3s ease;
+        }
+
+        /* Efecto de pulso */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Estilo para el marcador en la parte derecha */
+        #marker {
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%) rotate(90deg);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 55px solid black;
+        }
+
+        /* Contenedor de la Pregunta */
+        #question {
+            width: 400px;
+            height: auto;
+            margin-top: 20px;
+            border: 3px solid #333;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos para el texto de la pregunta */
+        #question h1 {
+            font-size: 30px;
+            font-weight: bold;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin-top: 20px;
+            padding: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Recuadro en la parte superior izquierda */
+        #player-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 250px;
+            padding: 15px;
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #player-info h2 {
+            font-size: 20px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        #player-info p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+    </style>
 </head>
 <body>
-    <div class="game-container">
-        <h1 class="title-text">Juego de Preguntas y Respuestas</h1>
-        <div class="roulette-container">
-            <canvas id="roulette-wheel" width="300" height="300"></canvas>
-        </div>
-        <button id="spin-button" class="spin-btn">Girar</button>
+    <div id="player-info">
+        <h2>Jugador: <span id="playerName">Juan</span></h2>
+        <p>Preguntas Correctas: <span id="correctAnswers">0</span></p>
     </div>
 
-    <script src="script.js"></script>
+    <div class="container">
+        <div id="chart">
+            <!-- Marcador en la parte derecha de la ruleta -->
+            <div id="marker"></div>
+        </div>
+        <div id="question"><h1></h1></div>
+    </div>
+
+    <audio id="spinSound" src="/static/audio/sonidoRuleta.wav" preload="auto"></audio>
+
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script>
+        var padding = {top:0, right:0, bottom:0, left:0},
+            w = 500,
+            h = 500,
+            r = Math.min(w, h) / 2,
+            rotation = 0,
+            oldrotation = 0,
+            picked = 100000,
+            oldpick = [],
+            color = d3.scale.category20();
+
+        var data = [
+            {"label":"Geografía", "value":1, "question":"¿Cuál es el país más grande del mundo?"},
+            {"label":"Matemáticas", "value":2, "question":"¿Cuánto es 8 * 7?"},
+            {"label":"Historia", "value":3, "question":"¿Quién fue el primer presidente de los Estados Unidos?"},
+            {"label":"Ciencia", "value":4, "question":"¿Qué planeta es conocido como el planeta rojo?"},
+            {"label":"Literatura", "value":5, "question":"¿Quién escribió 'Don Quijote de la Mancha'?"}
+        ];
+
+        var spinSound = document.getElementById("spinSound");
+
+        var svg = d3.select('#chart')
+            .append("svg")
+            .data([data])
+            .attr("width", w)
+            .attr("height", h);
+
+        var container = svg.append("g")
+            .attr("class", "chartholder")
+            .attr("transform", "translate(" + (w / 2) + "," + (h / 2) + ")");
+
+        var vis = container.append("g");
+
+        var pie = d3.layout.pie().sort(null).value(function(d) { return 1; });
+
+        var arc = d3.svg.arc().outerRadius(r);
+
+        var arcs = vis.selectAll("g.slice")
+            .data(pie)
+            .enter()
+            .append("g")
+            .attr("class", "slice");
+
+        arcs.append("path")
+            .attr("fill", function(d, i) { return color(i); })
+            .attr("d", function(d) { return arc(d); });
+
+        arcs.append("text").attr("transform", function(d){
+                d.innerRadius = 0;
+                d.outerRadius = r;
+                d.angle = (d.startAngle + d.endAngle) / 2;
+                return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 10) +")";
+            })
+            .attr("text-anchor", "end")
+            .text(function(d, i) {
+                return data[i].label;
+            });
+
+        container.on("click", spin);
+
+        function spin(d) {
+            if(spinSound.paused) spinSound.play();
+
+            document.getElementById("chart").classList.add("active");
+
+            container.on("click", null);
+
+            if(oldpick.length == data.length){
+                container.on("click", null);
+                return;
+            }
+
+            var ps = 360 / data.length,
+                rng = Math.floor((Math.random() * 1440) + 360);
+                
+            rotation = (Math.round(rng / ps) * ps);
+            picked = Math.round(data.length - (rotation % 360) / ps);
+            picked = picked >= data.length ? (picked % data.length) : picked;
+
+            if(oldpick.indexOf(picked) !== -1) {
+                d3.select(this).call(spin);
+                return;
+            } else {
+                oldpick.push(picked);
+            }
+
+            rotation += 90 - Math.round(ps / 2);
+            vis.transition()
+                .duration(3000)
+                .ease("cubic-out")
+                .attrTween("transform", rotTween)
+                .each("end", function() {
+                    spinSound.pause();
+                    spinSound.currentTime = 0;
+
+                    document.getElementById("chart").classList.remove("active");
+
+                    d3.selectAll(".slice path").classed("highlight", false);
+                    d3.select(".slice:nth-child(" + (picked + 1) + ") path")
+                        .classed("highlight", true);
+
+                    d3.select("#question h1").text(data[picked].question);
+                    oldrotation = rotation;
+
+                    container.on("click", spin);
+                });
+        }
+
+        container.append("circle")
+            .attr("cx", 0)
+            .attr("cy", 0)
+            .attr("r", 40) /* Tamaño reducido del botón */
+            .style({"fill": "white", "cursor": "pointer"})
+            .attr("class", "spin-button");
+
+        container.append("text")
+            .attr("x", 0)
+            .attr("y", 10) /* Ajusta la posición del texto para centrar en el botón */
+            .attr("text-anchor", "middle")
+            .text("GIRAR")
+            .style({"font-weight": "bold", "font-size": "20px"}); /* Reduce el tamaño de fuente */
+
+        function rotTween(to) {
+          var i = d3.interpolate(oldrotation % 360, rotation);
+          return function(t) {
+            return "rotate(" + i(t) + ")";
+          };
+        }
+    </script>
 </body>
 </html>

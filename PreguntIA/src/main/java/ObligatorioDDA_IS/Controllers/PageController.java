@@ -15,5 +15,11 @@ public class PageController {
     public String showLoginPage() {
         return "login"; // Spring buscará el archivo `register.html` en el directorio `templates`
     }
+
+    @GetMapping("/ruleta")
+    public String showruletaPage() {
+        return "ruleta"; // Spring buscará el archivo `register.html` en el directorio `templates`
+    }
+    
     
 }
