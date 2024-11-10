@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruleta de Preguntas</title>
+    <title>Ruleta de Preguntas Moderna</title>
     <style>
         /* Estilos Generales */
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: #f3e5ab;
+            background: #f0f4f8;
             color: #333;
             display: flex;
             justify-content: center;
@@ -29,9 +29,9 @@
         #chart {
             width: 500px;
             height: 500px;
-            border: 6px solid #333;
+            border: 6px solid #4a5568;
             border-radius: 50%;
-            box-shadow: 0 0 100px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             position: relative;
             transition: box-shadow 0.5s ease;
@@ -39,14 +39,8 @@
 
         /* Efecto Destacado para la Sección Ganadora */
         .highlight {
-            filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 255, 0, 0.7));
+            filter: brightness(1.2) saturate(1.2);
             transition: filter 0.3s ease;
-        }
-
-        /* Efecto de pulso */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
         }
 
         /* Estilo para el marcador en la parte derecha */
@@ -59,7 +53,8 @@
             height: 0;
             border-left: 20px solid transparent;
             border-right: 20px solid transparent;
-            border-top: 55px solid black;
+            border-top: 55px solid #2d3748;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         /* Contenedor de la Pregunta */
@@ -67,21 +62,25 @@
             width: 400px;
             height: auto;
             margin-top: 20px;
-            border: 3px solid #333;
+            border: 3px solid #4a5568;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #question:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* Estilos para el texto de la pregunta */
         #question h1 {
-            font-size: 30px;
-            font-weight: bold;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            margin-top: 20px;
-            padding: 0;
-            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 0;
+            color: #2d3748;
             text-align: center;
         }
 
@@ -93,23 +92,82 @@
             width: 250px;
             padding: 15px;
             background-color: #fff;
-            border: 2px solid #333;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #4a5568;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        #player-info:hover {
+            transform: translateY(-5px);
         }
 
         #player-info h2 {
             font-size: 20px;
             margin: 0;
-            font-weight: bold;
+            font-weight: 600;
+            color: #2d3748;
         }
 
         #player-info p {
             font-size: 18px;
             margin-top: 10px;
+            color: #4a5568;
         }
 
+        /* Botón de girar con diseño moderno */
+        .spin-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .spin-button:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .spin-button:active {
+            transform: translate(-50%, -50%) scale(0.95);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animación para las secciones de la ruleta */
+        @keyframes sectionPulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .slice path {
+            transition: all 0.3s ease;
+        }
+
+        .slice:hover path {
+            opacity: 0.8;
+            transform: scale(1.02);
+        }
+
+        .slice.active path {
+            animation: sectionPulse 1s infinite;
+        }
     </style>
 </head>
 <body>
@@ -122,6 +180,7 @@
         <div id="chart">
             <!-- Marcador en la parte derecha de la ruleta -->
             <div id="marker"></div>
+            <button class="spin-button" onclick="spin()">Girar</button>
         </div>
         <div id="question"><h1></h1></div>
     </div>
@@ -187,12 +246,8 @@
                 return data[i].label;
             });
 
-        container.on("click", spin);
-
-        function spin(d) {
+        function spin() {
             if(spinSound.paused) spinSound.play();
-
-            document.getElementById("chart").classList.add("active");
 
             container.on("click", null);
 
@@ -209,7 +264,7 @@
             picked = picked >= data.length ? (picked % data.length) : picked;
 
             if(oldpick.indexOf(picked) !== -1) {
-                d3.select(this).call(spin);
+                spin();
                 return;
             } else {
                 oldpick.push(picked);
@@ -224,32 +279,14 @@
                     spinSound.pause();
                     spinSound.currentTime = 0;
 
-                    document.getElementById("chart").classList.remove("active");
-
-                    d3.selectAll(".slice path").classed("highlight", false);
-                    d3.select(".slice:nth-child(" + (picked + 1) + ") path")
-                        .classed("highlight", true);
+                    d3.selectAll(".slice").classed("active", false);
+                    d3.select(".slice:nth-child(" + (picked + 1) + ")")
+                        .classed("active", true);
 
                     d3.select("#question h1").text(data[picked].question);
                     oldrotation = rotation;
-
-                    container.on("click", spin);
                 });
         }
-
-        container.append("circle")
-            .attr("cx", 0)
-            .attr("cy", 0)
-            .attr("r", 40) /* Tamaño reducido del botón */
-            .style({"fill": "white", "cursor": "pointer"})
-            .attr("class", "spin-button");
-
-        container.append("text")
-            .attr("x", 0)
-            .attr("y", 10) /* Ajusta la posición del texto para centrar en el botón */
-            .attr("text-anchor", "middle")
-            .text("GIRAR")
-            .style({"font-weight": "bold", "font-size": "20px"}); /* Reduce el tamaño de fuente */
 
         function rotTween(to) {
           var i = d3.interpolate(oldrotation % 360, rotation);
