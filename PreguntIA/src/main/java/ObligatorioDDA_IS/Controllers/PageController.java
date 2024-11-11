@@ -20,6 +20,11 @@ public class PageController {
         return "login"; // Spring buscará el archivo `register.html` en el directorio `templates`
     }
 
+    @GetMapping("/ruleta")
+    public String showruletaPage() {
+        return "ruleta"; // Spring buscará el archivo `register.html` en el directorio `templates`
+    }
+
     @GetMapping("/menu")
     public String getMenuPage(HttpSession session, Model model) {
         User loggedInUser = (User) session.getAttribute("user");
@@ -28,4 +33,5 @@ public class PageController {
         }
         return "menu"; // nombre de la vista HTML
     }
+
 }
