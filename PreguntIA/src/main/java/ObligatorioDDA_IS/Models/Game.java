@@ -53,5 +53,37 @@ public class Game {
         this.score += points;
     }
 
-    // Getters and setters
+    public int getIdGame() {
+        return idGame;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getWinnerId() {
+        return winnerId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public List<Participant> getParticipants() {
+        return participants;
+    }
+
+    
 }

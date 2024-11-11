@@ -1,4 +1,4 @@
-// /js/menuHandler.js
+// /jsMenu.js
 
 // Cargar el nombre de usuario en el modal de perfil
 document.getElementById("perfilModal").addEventListener("show.bs.modal", function () {
@@ -35,11 +35,29 @@ document.getElementById("confirmLogoutButton").addEventListener("click", functio
         });
 });
 
-// Función para iniciar el juego en una dificultad seleccionada
-function startGame(dificultad) {
-    console.log("Juego iniciado con dificultad:", dificultad);
-    const modal = bootstrap.Modal.getInstance(document.getElementById('dificultadModal'));
-    modal.hide();
+function startGame(difficulty) {
+    // Define el endpoint de tu API para iniciar el juego
+    const url = `/start-game?difficulty=${difficulty}`;
+
+    // Realiza la petición al backend
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Game started with difficulty:", difficulty);
+            // Redirigir a la pantalla del juego (ajusta la URL según sea necesario)
+            window.location.href = `/game/${data.gameId}`;
+        })
+
+        .catch(error => {
+            console.error("Error starting game:", error);
+            alert("Hubo un problema al iniciar el juego. Por favor, inténtalo de nuevo.");
+        });
+
 }
 
 export { startGame };
