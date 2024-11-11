@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@
             margin: 0;
             overflow: hidden;
         }
+
         /* Estilos para el contenedor principal */
         .container {
             display: flex;
@@ -26,11 +28,20 @@
             animation: fadeIn 2s ease;
             position: relative;
         }
+
         /* Efecto de entrada en la página */
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
+
         /* Estilos para la ruleta */
         #chart {
             width: 500px;
@@ -45,6 +56,7 @@
             justify-content: center;
             align-items: center;
         }
+
         /* Diseño del marcador de la ruleta */
         #marker {
             position: absolute;
@@ -58,11 +70,18 @@
             border-top: 55px solid #000000;
             animation: markerBounce 1s infinite alternate;
         }
+
         /* Animación del marcador */
         @keyframes markerBounce {
-            from { transform: translateY(-50%) rotate(90deg) scale(1); }
-            to { transform: translateY(-50%) rotate(90deg) scale(1.2); }
+            from {
+                transform: translateY(-50%) rotate(90deg) scale(1);
+            }
+
+            to {
+                transform: translateY(-50%) rotate(90deg) scale(1.2);
+            }
         }
+
         /* Caja para mostrar preguntas */
         #question {
             width: 400px;
@@ -74,6 +93,7 @@
             background-color: #ffffff33;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
+
         /* Estilos de texto de preguntas */
         #question h1 {
             font-size: 24px;
@@ -82,6 +102,7 @@
             color: #ffffff;
             text-align: center;
         }
+
         /* Información del jugador */
         #player-info {
             position: absolute;
@@ -94,6 +115,7 @@
             border-radius: 15px;
             color: #fff;
         }
+
         /* Estilos para el botón de girar centrado en la ruleta */
         .spin-button {
             background: radial-gradient(circle, #764ba2, #667eea);
@@ -111,19 +133,31 @@
             position: absolute;
             z-index: 10;
             animation: pulse 2s infinite;
-            transition: opacity 0.3s ease; /* Transición para suavizar la opacidad */
+            transition: opacity 0.3s ease;
+            /* Transición para suavizar la opacidad */
         }
+
         /* Efecto de pulso en el botón */
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
+
         /* Efecto hover en el botón */
         .spin-button:hover {
             transform: scale(1.15);
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
         }
+
         /* Pop-ups */
         .winner-popup {
             position: absolute;
@@ -139,14 +173,17 @@
             text-align: center;
             transition: transform 0.5s ease, opacity 0.5s ease;
         }
+
         /* Estado activo del pop-up */
         .winner-popup.active {
             transform: translate(-50%, -50%) scale(1);
             opacity: 1;
         }
+
         /* Casilla de respuestas independiente */
         .answers-popup {
-            position: fixed; /* Independiente de la ruleta */
+            position: fixed;
+            /* Independiente de la ruleta */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -156,19 +193,24 @@
             border-radius: 15px;
             padding: 20px;
             z-index: 100;
-            display: none; /* Oculta por defecto */
+            display: none;
+            /* Oculta por defecto */
             text-align: center;
         }
+
         /* Mostrar pop-up de respuestas */
         .answers-popup.active {
-            display: block; /* Se muestra cuando está activo */
+            display: block;
+            /* Se muestra cuando está activo */
         }
+
         /* Lista de respuestas */
         .answers-list {
             list-style-type: none;
             padding: 0;
             margin: 20px 0;
         }
+
         /* Estilos para las opciones de respuesta */
         .answer-option {
             background-color: #667eea;
@@ -181,11 +223,13 @@
             font-size: 18px;
             transition: background-color 0.3s, transform 0.3s;
         }
+
         /* Efecto hover en las opciones */
         .answer-option:hover {
             background-color: #764ba2;
             transform: translateY(-3px) scale(1.05);
         }
+
         /* Botón de regresar */
         .back-button {
             background-color: #764ba2;
@@ -198,11 +242,13 @@
             margin: 20px auto 0;
             transition: background-color 0.3s, transform 0.3s;
         }
+
         /* Efecto hover en el botón de regreso */
         .back-button:hover {
             background-color: #667eea;
             transform: scale(1.05);
         }
+
         /* Botón de música */
         .music-button {
             position: fixed;
@@ -221,6 +267,7 @@
             justify-content: center;
             transition: transform 0.3s ease;
         }
+
         /* Efecto hover en el botón de música */
         .music-button:hover {
             transform: scale(1.15);
@@ -228,6 +275,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Información del jugador -->
     <div id="player-info">
@@ -239,14 +287,17 @@
     <div class="container">
         <div id="chart">
             <div id="marker"></div>
-            <button class="spin-button" id="spinButton" onclick="spin()">Girar</button> <!-- Botón centrado dentro de la ruleta -->
+            <button class="spin-button" id="spinButton" onclick="spin()">Girar</button>
+            <!-- Botón centrado dentro de la ruleta -->
             <div class="winner-popup">
                 <h2>¡Sección Ganadora!</h2>
                 <p id="winner-category"></p>
             </div>
         </div>
-        
-        <div id="question"><h1></h1></div>
+
+        <div id="question">
+            <h1></h1>
+        </div>
     </div>
 
     <!-- Pop-up de respuestas independiente -->
@@ -265,7 +316,7 @@
 
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script>
-        var padding = {top:0, right:0, bottom:0, left:0},
+        var padding = { top: 0, right: 0, bottom: 0, left: 0 },
             w = 500, h = 500,
             r = Math.min(w, h) / 2,
             rotation = 0, oldrotation = 0,
@@ -273,11 +324,11 @@
             color = d3.scale.category20();
 
         var data = [
-            {"label":"Geografía", "value":1, "question":"¿Cuál es el país más grande del mundo?", "answers": ["Rusia", "Canadá", "China", "Estados Unidos"]},
-            {"label":"Matemáticas", "value":2, "question":"¿Cuánto es 8 * 7?", "answers": ["56", "54", "58", "62"]},
-            {"label":"Historia", "value":3, "question":"¿Quién fue el primer presidente de los Estados Unidos?", "answers": ["George Washington", "Thomas Jefferson", "John Adams", "Benjamin Franklin"]},
-            {"label":"Ciencia", "value":4, "question":"¿Qué planeta es conocido como el planeta rojo?", "answers": ["Marte", "Venus", "Júpiter", "Saturno"]},
-            {"label":"Literatura", "value":5, "question":"¿Quién escribió 'Don Quijote de la Mancha'?", "answers": ["Miguel de Cervantes", "Federico García Lorca", "Gabriel García Márquez", "Jorge Luis Borges"]}
+            { "label": "Geografía", "value": 1, "question": "¿Cuál es el país más grande del mundo?", "answers": ["Rusia", "Canadá", "China", "Estados Unidos"] },
+            { "label": "Matemáticas", "value": 2, "question": "¿Cuánto es 8 * 7?", "answers": ["56", "54", "58", "62"] },
+            { "label": "Historia", "value": 3, "question": "¿Quién fue el primer presidente de los Estados Unidos?", "answers": ["George Washington", "Thomas Jefferson", "John Adams", "Benjamin Franklin"] },
+            { "label": "Ciencia", "value": 4, "question": "¿Qué planeta es conocido como el planeta rojo?", "answers": ["Marte", "Venus", "Júpiter", "Saturno"] },
+            { "label": "Literatura", "value": 5, "question": "¿Quién escribió 'Don Quijote de la Mancha'?", "answers": ["Miguel de Cervantes", "Federico García Lorca", "Gabriel García Márquez", "Jorge Luis Borges"] }
         ];
 
         var spinSound = document.getElementById("spinSound");
@@ -296,19 +347,19 @@
         var container = svg.append("g").attr("class", "chartholder").attr("transform", "translate(" + (w / 2) + "," + (h / 2) + ")");
         var vis = container.append("g");
 
-        var pie = d3.layout.pie().sort(null).value(function(d) { return 1; });
+        var pie = d3.layout.pie().sort(null).value(function (d) { return 1; });
         var arc = d3.svg.arc().outerRadius(r);
         var arcs = vis.selectAll("g.slice").data(pie).enter().append("g").attr("class", "slice");
 
-        arcs.append("path").attr("fill", function(d, i) { return color(i); }).attr("d", function(d) { return arc(d); });
+        arcs.append("path").attr("fill", function (d, i) { return color(i); }).attr("d", function (d) { return arc(d); });
 
-        arcs.append("text").attr("transform", function(d){
-                d.innerRadius = 0; d.outerRadius = r;
-                d.angle = (d.startAngle + d.endAngle) / 2;
-                return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 10) +")";
-            })
+        arcs.append("text").attr("transform", function (d) {
+            d.innerRadius = 0; d.outerRadius = r;
+            d.angle = (d.startAngle + d.endAngle) / 2;
+            return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 10) + ")";
+        })
             .attr("text-anchor", "end")
-            .text(function(d, i) { return data[i].label; });
+            .text(function (d, i) { return data[i].label; });
 
         function spin() {
             winnerPopup.classList.remove('active');
@@ -316,17 +367,17 @@
             spinButton.style.opacity = '0'; // Oculta el botón
 
             if (spinSound.paused) spinSound.play();
-            if(oldpick.length == data.length) return;
+            if (oldpick.length == data.length) return;
 
             var ps = 360 / data.length, rng = Math.floor((Math.random() * 1440) + 360);
             rotation = (Math.round(rng / ps) * ps);
             picked = Math.round(data.length - (rotation % 360) / ps);
             picked = picked >= data.length ? (picked % data.length) : picked;
 
-            if(oldpick.indexOf(picked) !== -1) { spin(); return; } else { oldpick.push(picked); }
+            if (oldpick.indexOf(picked) !== -1) { spin(); return; } else { oldpick.push(picked); }
 
             rotation += 90 - Math.round(ps / 2);
-            vis.transition().duration(3000).ease("cubic-out").attrTween("transform", rotTween).each("end", function() {
+            vis.transition().duration(3000).ease("cubic-out").attrTween("transform", rotTween).each("end", function () {
                 spinSound.pause(); spinSound.currentTime = 0;
                 d3.select("#question h1").text(data[picked].question);
                 oldrotation = rotation;
@@ -348,8 +399,8 @@
             answersPopup.classList.add('active');
         }
 
-        function hideAnswers() { 
-            answersPopup.classList.remove('active'); 
+        function hideAnswers() {
+            answersPopup.classList.remove('active');
             spinButton.style.opacity = '1'; // Muestra el botón de nuevo
         }
 
@@ -359,9 +410,22 @@
             isMusicPlaying = !isMusicPlaying;
         }
 
-        function rotTween(to) { var i = d3.interpolate(oldrotation % 360, rotation); return function(t) { return "rotate(" + i(t) + ")"; }; }
+        function rotTween(to) { var i = d3.interpolate(oldrotation % 360, rotation); return function (t) { return "rotate(" + i(t) + ")"; }; }
 
         musicToggle.addEventListener("click", toggleMusic);
+
+        // Captura el gameId de la URL
+        function getGameIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('gameId');
+        }
+
+        const gameId = getGameIdFromURL();
+        console.log("Game ID:", gameId);
+
+        // Usa el gameId para realizar otras acciones, como cargar información de preguntas o registrar el inicio
+
     </script>
 </body>
+
 </html>

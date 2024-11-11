@@ -28,13 +28,12 @@ public class GameController {
     public ResponseEntity<Map<String, Object>> startSinglePlayerGame(@RequestParam String difficulty) {
         // Iniciar el juego de un solo jugador
         SinglePlayerGame game = gameService.startNewSinglePlayerGame(difficulty);
-
+    
         // Preparar la respuesta
         Map<String, Object> response = new HashMap<>();
-        response.put("gameId", game.getIdGame());
+        response.put("gameId", game.getIdGame());  // Aquí enviamos el gameId
         response.put("status", "Game started");
-
+    
         return ResponseEntity.ok(response);
-
     }
 }

@@ -35,11 +35,12 @@ document.getElementById("confirmLogoutButton").addEventListener("click", functio
         });
 });
 
+
+// JsMenu.js
+
 function startGame(difficulty) {
-    // Define el endpoint de tu API para iniciar el juego
     const url = `/start-game?difficulty=${difficulty}`;
 
-    // Realiza la petición al backend
     fetch(url, {
         method: 'POST',
         headers: {
@@ -49,15 +50,21 @@ function startGame(difficulty) {
         .then(response => response.json())
         .then(data => {
             console.log("Game started with difficulty:", difficulty);
-            // Redirigir a la pantalla del juego (ajusta la URL según sea necesario)
-            window.location.href = `/game/${data.gameId}`;
+
+            // Redirigir a la página de la ruleta pasando el gameId como parámetro
+            if (data.gameId) {
+                window.location.href = `/ruleta.html?gameId=${data.gameId}`;
+            } else {
+                console.error("Error: No se recibió un gameId válido.");
+            }
         })
-
         .catch(error => {
-            console.error("Error starting game:", error);
-            alert("Hubo un problema al iniciar el juego. Por favor, inténtalo de nuevo.");
+            console.error("Error al iniciar el juego:", error);
         });
-
 }
 
 export { startGame };
+
+
+export { startGame };
+

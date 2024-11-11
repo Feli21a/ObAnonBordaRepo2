@@ -101,8 +101,43 @@ body {
     font-size: 1rem;
 }
 
-/* RULETA  */
+/* Link de registro */
+.register-link {
+    font-family: 'Amatic SC', cursive;
+    color: #8b4513;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
 
+.register-link:hover {
+    color: #a0522d;
+}
 
+/* Media Query para Responsividad */
+@media (max-width: 576px) {
+    .login-container {
+        padding: 1.5rem;
+        border-radius: 10px;
+        max-width: 90%;
+        /* Ajustar para pantallas pequeñas y zoom alto */
+    }
 
+    .title-text {
+        font-size: 2rem;
+        white-space: normal;
+        /* Permite que el texto pase a la siguiente línea */
+    }
+}
 
+@media (max-width: 768px) {
+    .login-container {
+        padding: 2rem;
+        max-width: 95%;
+        /* Asegura que se adapte a zoom alto en pantallas medianas */
+    }
+
+    .title-text {
+        font-size: 2.2rem;
+        white-space: normal;
+    }
+}

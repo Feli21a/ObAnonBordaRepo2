@@ -79,24 +79,85 @@ h2 {
 
 /* Botones de Ayuda, Configuración y Logout */
 .btn-warning {
-    background-color: #ffc107; /* Color amarillo */
-    border: none; /* Sin borde */
-    width: 60px; /* Ancho */
-    height: 60px; /* Alto */
-    display: flex; /* Alinear el ícono en el centro */
-    justify-content: center; /* Centra el ícono */
-    align-items: center; /* Centra el ícono verticalmente */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
+    background-color: #ffc107;
+    /* Color amarillo */
+    border: none;
+    /* Sin borde */
+    width: 60px;
+    /* Ancho */
+    height: 60px;
+    /* Alto */
+    display: flex;
+    /* Alinear el ícono en el centro */
+    justify-content: center;
+    /* Centra el ícono */
+    align-items: center;
+    /* Centra el ícono verticalmente */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    transition: background-color 0.3s, transform 0.2s;
+    /* Transiciones suaves */
 }
 
 .btn-warning:hover {
-    background-color: #e0a800; /* Color amarillo más oscuro al pasar el mouse */
-    transform: translateY(-2px); /* Mueve ligeramente hacia arriba en hover */
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Aumenta la sombra al pasar el mouse */
+    background-color: #e0a800;
+    /* Color amarillo más oscuro al pasar el mouse */
+    transform: translateY(-2px);
+    /* Mueve ligeramente hacia arriba en hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    /* Aumenta la sombra al pasar el mouse */
 }
 
 /* Para asegurar que el ícono dentro sea más grande */
 .btn-warning i {
-    font-size: 1.5rem; /* Ajusta el tamaño del ícono */
+    font-size: 1.5rem;
+    /* Ajusta el tamaño del ícono */
+}
+
+/* Estilos de los botones del Modal de Dificultad */
+.modal-body button {
+    width: 100%;
+    /* Asegura que los botones ocupen el ancho completo */
+    margin-bottom: 10px;
+    /* Añade espacio entre los botones */
+    padding: 15px;
+    /* Ajusta el tamaño del botón */
+    font-size: 1.2rem;
+    font-family: 'Amatic SC', cursive;
+    transition: background-color 0.3s ease, transform 0.3s;
+}
+
+/* Efecto de hover para los botones del modal */
+.modal-body button:hover {
+    transform: scale(1.05);
+    /* Agranda el botón al pasar el mouse */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Sombra más fuerte al pasar el mouse */
+}
+
+/* Estilos para el modal de ayuda, configuración, etc. */
+.modal-dialog-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para los botones de ayuda, configuración y logout (en el footer del menú) */
+.modal-footer button {
+    width: 100%;
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    transition: transform 0.3s ease;
+}
+
+/* Efecto de hover en los botones de modal */
+.modal-footer button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
