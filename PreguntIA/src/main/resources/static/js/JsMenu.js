@@ -37,34 +37,27 @@ document.getElementById("confirmLogoutButton").addEventListener("click", functio
 
 
 // JsMenu.js
-
-function startGame(difficulty) {
-    const url = `/start-game?difficulty=${difficulty}`;
-
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Game started with difficulty:", difficulty);
-
-            // Redirigir a la página de la ruleta pasando el gameId como parámetro
-            if (data.gameId) {
-                window.location.href = `/ruleta.html?gameId=${data.gameId}`;
-            } else {
-                console.error("Error: No se recibió un gameId válido.");
-            }
-        })
-        .catch(error => {
-            console.error("Error al iniciar el juego:", error);
+async function startGame(difficulty) {
+    try {
+        const response = await fetch(`/start-game/start-singleplayer?difficulty=${difficulty}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
         });
+
+        if (!response.ok) throw new Error("Error al iniciar el juego");
+
+        const data = await response.json();
+        console.log("Respuesta del servidor:", data);
+
+        if (data.gameId) {
+            window.location.href = `/ruleta?gameId=${data.gameId}&difficulty=${difficulty}`;
+        } else {
+            console.error("Error: `gameId` no se recibió en la respuesta del servidor");
+        }
+    } catch (error) {
+        console.error("Error en startGame:", error);
+    }
 }
 
-export { startGame };
 
-
-export { startGame };
 

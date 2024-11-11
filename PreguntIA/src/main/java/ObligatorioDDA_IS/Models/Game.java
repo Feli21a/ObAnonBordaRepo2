@@ -2,88 +2,22 @@ package ObligatorioDDA_IS.Models;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+public interface Game {
 
-@Entity
-public class Game {
+    void startGame();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idGame;
+    void endGame();
 
-    private String gameType;
-    private LocalDateTime startDateTime;
-    private int score;
-    private int winnerId;
-    private String status;
-    private Duration duration;
+    void updateScore(int points);
 
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Participant> participants;
+    int getScore();
 
-    public Game() {
-    }
+    String getStatus();
 
-    public Game(String gameType, List<Participant> participants) {
-        this.gameType = gameType;
-        this.participants = participants;
-        this.status = "Not Started";
-        this.score = 0;
-    }
+    LocalDateTime getStartDateTime();
 
-    public void startGame() {
-        this.startDateTime = LocalDateTime.now();
-        this.status = "In Progress";
-    }
+    Duration getDuration();
 
-    public void endGame() {
-        this.duration = Duration.between(startDateTime, LocalDateTime.now());
-        this.status = "Completed";
-    }
-
-    public void updateScore(int points) {
-        this.score += points;
-    }
-
-    public int getIdGame() {
-        return idGame;
-    }
-
-    public String getGameType() {
-        return gameType;
-    }
-
-    public LocalDateTime getStartDateTime() {
-        return startDateTime;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public int getWinnerId() {
-        return winnerId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public List<Participant> getParticipants() {
-        return participants;
-    }
-
-    
+    int getIdGame();
 }

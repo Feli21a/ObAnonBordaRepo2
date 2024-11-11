@@ -21,8 +21,8 @@ public class PageController {
     }
 
     @GetMapping("/ruleta")
-    public String showruletaPage() {
-        return "ruleta"; // Spring buscará el archivo `register.html` en el directorio `templates`
+    public String showRuletaPage() {
+        return "ruleta";
     }
 
     @GetMapping("/menu")

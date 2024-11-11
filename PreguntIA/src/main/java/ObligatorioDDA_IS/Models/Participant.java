@@ -1,3 +1,4 @@
+/* 
 package ObligatorioDDA_IS.Models;
 
 import jakarta.persistence.Entity;
@@ -35,3 +36,4 @@ public class Participant {
 
     // Getters and setters
 }
+    */

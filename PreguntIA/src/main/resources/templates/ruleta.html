@@ -424,7 +424,23 @@
         console.log("Game ID:", gameId);
 
         // Usa el gameId para realizar otras acciones, como cargar información de preguntas o registrar el inicio
-
+        // Cargar el nombre de usuario al cargar la página
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/api/users/perfil")
+                .then(response => {
+                    if (response.ok) {
+                        return response.text(); // Obtener el nombre de usuario
+                    } else {
+                        throw new Error("No se pudo cargar el perfil");
+                    }
+                })
+                .then(username => {
+                    document.getElementById("playerName").textContent = username;
+                })
+                .catch(error => {
+                    console.error("Error al cargar el nombre de usuario:", error);
+                });
+        });
     </script>
 </body>
 
