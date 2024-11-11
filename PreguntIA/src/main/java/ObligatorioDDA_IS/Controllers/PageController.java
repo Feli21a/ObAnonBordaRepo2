@@ -1,7 +1,11 @@
 package ObligatorioDDA_IS.Controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import ObligatorioDDA_IS.Models.User;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PageController {
@@ -20,6 +24,14 @@ public class PageController {
     public String showruletaPage() {
         return "ruleta"; // Spring buscará el archivo `register.html` en el directorio `templates`
     }
-    
-    
+
+    @GetMapping("/menu")
+    public String getMenuPage(HttpSession session, Model model) {
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser != null) {
+            model.addAttribute("username", loggedInUser.getUsername());
+        }
+        return "menu"; // nombre de la vista HTML
+    }
+
 }

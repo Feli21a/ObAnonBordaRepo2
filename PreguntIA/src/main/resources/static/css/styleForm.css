@@ -1,7 +1,8 @@
 /* Estilos Generales */
 body {
     font-family: 'Special Elite', sans-serif;
-    background: #f3e5ab;
+    background: url('/img/LoginBG.png') no-repeat center center fixed;
+    background-size: cover;
     color: #333;
     display: flex;
     justify-content: center;

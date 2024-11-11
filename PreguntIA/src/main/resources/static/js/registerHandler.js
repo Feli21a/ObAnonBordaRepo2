@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 alertMessage.classList.remove("d-none");
 
                 setTimeout(() => {
-                    window.location.href = "/login.html"; // Redirige a la página de login
+                    window.location.href = "/login"; // Redirige a la página de login
                 }, 2000);
             })
             .catch(error => {

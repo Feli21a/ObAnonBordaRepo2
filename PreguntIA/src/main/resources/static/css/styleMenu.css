@@ -1,0 +1,102 @@
+/* Estilos Generales del Menú */
+body {
+    font-family: 'Special Elite', sans-serif;
+    background: url('/img/MenuBG.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    overflow-x: hidden;
+}
+
+/* Contenedor Principal del Menú */
+.container {
+    max-width: 500px;
+    width: 100%;
+    background: #fdf6e3;
+    border: 2px solid #333;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+    overflow: hidden;
+}
+
+/* Título del Menú */
+h2 {
+    font-family: 'Amatic SC', cursive;
+    font-size: 3rem;
+    color: #8b4513;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px #d2691e;
+}
+
+/* Botones de Menú */
+.btn-primary,
+.btn-secondary,
+.btn-info {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    color: #fff;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    max-width: 90%;
+    margin: 0 auto 1rem;
+}
+
+.btn-primary {
+    background-color: #8b4513;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #a0522d;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #565e64;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+/* Botones de Ayuda, Configuración y Logout */
+.btn-warning {
+    background-color: #ffc107; /* Color amarillo */
+    border: none; /* Sin borde */
+    width: 60px; /* Ancho */
+    height: 60px; /* Alto */
+    display: flex; /* Alinear el ícono en el centro */
+    justify-content: center; /* Centra el ícono */
+    align-items: center; /* Centra el ícono verticalmente */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
+}
+
+.btn-warning:hover {
+    background-color: #e0a800; /* Color amarillo más oscuro al pasar el mouse */
+    transform: translateY(-2px); /* Mueve ligeramente hacia arriba en hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Aumenta la sombra al pasar el mouse */
+}
+
+/* Para asegurar que el ícono dentro sea más grande */
+.btn-warning i {
+    font-size: 1.5rem; /* Ajusta el tamaño del ícono */
+}
