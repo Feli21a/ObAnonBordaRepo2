@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 
 @Entity
 public class SinglePlayerGame implements Game {
@@ -23,6 +24,9 @@ public class SinglePlayerGame implements Game {
     private String difficulty;
     private boolean gameEnded; // Indicador para finalizar el juego si el jugador falla
 
+    @Transient
+    private Question currentQuestion; // Pregunta actual de la partida
+
     public SinglePlayerGame(String difficulty) {
         this.difficulty = difficulty;
         this.status = "No ha empezado";
@@ -31,7 +35,7 @@ public class SinglePlayerGame implements Game {
     }
 
     public SinglePlayerGame() {
-        
+
     }
 
     @Override
@@ -58,6 +62,15 @@ public class SinglePlayerGame implements Game {
     // Métodos específicos para SinglePlayerGame
     public void playerFailed() {
         endGame(); // Finaliza el juego si el jugador comete un error
+    }
+
+    // Métodos para la pregunta actual
+    public Question getCurrentQuestion() {
+        return currentQuestion;
+    }
+
+    public void setCurrentQuestion(Question question) {
+        this.currentQuestion = question;
     }
 
     // Getters and Setters
@@ -106,5 +119,4 @@ public class SinglePlayerGame implements Game {
     public void setGameType(String gameType) {
         this.gameType = gameType;
     }
-
 }

@@ -1,8 +1,11 @@
 package ObligatorioDDA_IS.Services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ObligatorioDDA_IS.Models.Question;
 import ObligatorioDDA_IS.Models.SinglePlayerGame;
 import ObligatorioDDA_IS.Repository.SPGameRepository;
 
@@ -16,34 +19,28 @@ public class SPGameService {
         this.gameRepository = gameRepository;
     }
 
-    // Método para crear una nueva partida de un solo jugador
     public SinglePlayerGame createSinglePlayerGame(String difficulty) {
-        // Crear nueva partida para un solo jugador
-        SinglePlayerGame game = new SinglePlayerGame();
-        game.setDifficulty(difficulty);
-        game.setGameType("SinglePlayer");
-        game.setStatus("Not Started");
-
-        // Guardar la partida
+        SinglePlayerGame game = new SinglePlayerGame(difficulty);
         return gameRepository.save(game);
     }
 
-    // Método para iniciar una partida de un solo jugador
-    public SinglePlayerGame startSinglePlayerGame(int gameId) {
-        SinglePlayerGame game = (SinglePlayerGame) gameRepository.findById(gameId)
-                .orElseThrow(() -> new IllegalArgumentException("Game not found with ID: " + gameId));
-
-        game.startGame(); // Cambia el estado a "In Progress" y registra la fecha de inicio
-        return gameRepository.save(game);
+    public SinglePlayerGame findGameById(int gameId) {
+        Optional<SinglePlayerGame> game = gameRepository.findById(gameId);
+        return game.orElseThrow(() -> new IllegalArgumentException("Game not found"));
     }
 
-    // Método para finalizar una partida de un solo jugador
-    public SinglePlayerGame endSinglePlayerGame(int gameId, int finalScore) {
-        SinglePlayerGame game = (SinglePlayerGame) gameRepository.findById(gameId)
-                .orElseThrow(() -> new IllegalArgumentException("Game not found with ID: " + gameId));
+    public void startSinglePlayerGame(int gameId) {
+        SinglePlayerGame game = findGameById(gameId);
+        game.startGame();
+        gameRepository.save(game);
+    }
 
-        game.updateScore(finalScore); // Actualiza la puntuación final
-        game.endGame(); // Registra la duración y cambia el estado a "Completed"
-        return gameRepository.save(game);
+    public void saveGame(SinglePlayerGame game) {
+        gameRepository.save(game);
+    }
+
+    public Question getCurrentQuestion(int gameId) {
+        SinglePlayerGame game = findGameById(gameId);
+        return game.getCurrentQuestion();
     }
 }

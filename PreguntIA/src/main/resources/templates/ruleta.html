@@ -273,6 +273,62 @@
             transform: scale(1.15);
             background: rgba(255, 255, 255, 1);
         }
+
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 10px;
+            width: 400px;
+            padding: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .modal-content h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .answer-button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #667eea;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .answer-button:hover {
+            background-color: #764ba2;
+        }
+
+        .close-modal-button {
+            background-color: #764ba2;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -306,6 +362,21 @@
         <ul class="answers-list" id="answers-list"></ul>
         <button class="back-button" onclick="hideAnswers()">Volver</button>
     </div>
+
+    <!-- Modal de Pregunta y Respuestas -->
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-question-text">Pregunta</h2>
+            <div id="modal-options">
+                <button class="answer-button" onclick="selectAnswer(this)">Opción 1</button>
+                <button class="answer-button" onclick="selectAnswer(this)">Opción 2</button>
+                <button class="answer-button" onclick="selectAnswer(this)">Opción 3</button>
+                <button class="answer-button" onclick="selectAnswer(this)">Opción 4</button>
+            </div>
+            <button class="close-modal-button" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
 
     <!-- Botón de música -->
     <button id="musicToggle" class="music-button">🔇</button>
@@ -379,13 +450,19 @@
             rotation += 90 - Math.round(ps / 2);
             vis.transition().duration(3000).ease("cubic-out").attrTween("transform", rotTween).each("end", function () {
                 spinSound.pause(); spinSound.currentTime = 0;
-                d3.select("#question h1").text(data[picked].question);
+
+                // Muestra el modal con la pregunta y opciones después de que la ruleta termina de girar
+                const question = data[picked].question;
+                const answers = data[picked].answers;
+                showQuestionModal(question, answers); // Llama a la función para mostrar el modal
+
                 oldrotation = rotation;
                 winnerCategory.textContent = data[picked].label;
                 winnerPopup.classList.add('active');
-                setTimeout(() => { winnerPopup.classList.remove('active'); showAnswers(); }, 3000);
+                setTimeout(() => { winnerPopup.classList.remove('active'); spinButton.style.opacity = '1'; }, 3000);
             });
         }
+
 
         function showAnswers() {
             questionText.textContent = data[picked].question;
@@ -441,6 +518,42 @@
                     console.error("Error al cargar el nombre de usuario:", error);
                 });
         });
+
+        // Referencias a los elementos del modal
+        const questionModal = document.getElementById("questionModal");
+        const modalQuestionText = document.getElementById("modal-question-text");
+        const modalOptions = document.querySelectorAll(".answer-button");
+
+        // Función para mostrar el modal con la pregunta y respuestas
+        function showQuestionModal(question, answers) {
+            // Establece la pregunta en el modal
+            modalQuestionText.textContent = question;
+
+            // Mezcla las respuestas aleatoriamente
+            const shuffledAnswers = answers.sort(() => Math.random() - 0.5);
+
+            // Asigna cada respuesta a un botón
+            modalOptions.forEach((button, index) => {
+                button.textContent = shuffledAnswers[index];
+            });
+
+            // Muestra el modal
+            questionModal.style.display = "flex";
+        }
+
+        // Función para ocultar el modal
+        function closeModal() {
+            questionModal.style.display = "none";
+        }
+
+        // Función que se ejecuta cuando el usuario selecciona una respuesta
+        function selectAnswer(button) {
+            const selectedAnswer = button.textContent;
+            console.log("Respuesta seleccionada:", selectedAnswer);
+            // Aquí podrías llamar a la función submitAnswer(selectedAnswer);
+            closeModal(); // Cierra el modal después de seleccionar la respuesta
+        }
+
     </script>
 </body>
 
