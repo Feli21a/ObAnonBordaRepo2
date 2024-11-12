@@ -39,7 +39,7 @@ document.getElementById("confirmLogoutButton").addEventListener("click", functio
 // JsMenu.js
 async function startGame(difficulty) {
     try {
-        const response = await fetch(`/start-game/start-singleplayer?difficulty=${difficulty}`, {
+        const response = await fetch(`/game/start-singleplayer?difficulty=${difficulty}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -50,6 +50,7 @@ async function startGame(difficulty) {
         console.log("Respuesta del servidor:", data);
 
         if (data.gameId) {
+            // Redirige a la pantalla de la ruleta con el gameId y la dificultad seleccionada
             window.location.href = `/ruleta?gameId=${data.gameId}&difficulty=${difficulty}`;
         } else {
             console.error("Error: `gameId` no se recibió en la respuesta del servidor");
@@ -58,6 +59,8 @@ async function startGame(difficulty) {
         console.error("Error en startGame:", error);
     }
 }
+
+
 
 
 

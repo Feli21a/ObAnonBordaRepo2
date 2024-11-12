@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class ChatGPTAPIClient {
 
-    @Value("${chatgpt.api.key}")
+    @Value("${CHATGPT_API_KEY}")
     private String apiKey;
 
     private final String apiUrl = "https://api.openai.com/v1/completions";

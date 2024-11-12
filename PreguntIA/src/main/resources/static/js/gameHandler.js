@@ -24,12 +24,14 @@ async function startGame(difficulty) {
     }
 }
 // Obtener una nueva pregunta
+// Obtener una nueva pregunta con la dificultad almacenada
 async function fetchQuestion() {
     const gameId = sessionStorage.getItem('gameId');
+    const difficulty = sessionStorage.getItem('difficulty'); // Obtener dificultad
     const category = 'Science'; // O la categoría que seleccione el usuario
 
     try {
-        const response = await fetch(`/game/fetch-question?gameId=${gameId}&category=${category}`, {
+        const response = await fetch(`/game/fetch-question?gameId=${gameId}&category=${category}&difficulty=${difficulty}`, {
             method: 'POST'
         });
         const data = await response.json();
@@ -44,6 +46,7 @@ async function fetchQuestion() {
         console.error('Error:', error);
     }
 }
+
 
 // Mostrar la pregunta en la interfaz
 function displayQuestion(question) {

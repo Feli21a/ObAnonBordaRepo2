@@ -491,14 +491,20 @@
 
         musicToggle.addEventListener("click", toggleMusic);
 
-        // Captura el gameId de la URL
-        function getGameIdFromURL() {
+        // Obtener parámetros de URL
+        function getURLParams() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('gameId');
+            const gameId = urlParams.get("gameId");
+            const difficulty = urlParams.get("difficulty");
+            return { gameId, difficulty };
         }
 
-        const gameId = getGameIdFromURL();
-        console.log("Game ID:", gameId);
+        // Cargar la dificultad y gameId al iniciar
+        const { gameId, difficulty } = getURLParams();
+        sessionStorage.setItem("gameId", gameId);  // Guardar en sessionStorage
+        sessionStorage.setItem("difficulty", difficulty);
+        console.log(`Dificultad seleccionada: ${difficulty}`);
+
 
         // Usa el gameId para realizar otras acciones, como cargar información de preguntas o registrar el inicio
         // Cargar el nombre de usuario al cargar la página

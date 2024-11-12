@@ -32,10 +32,7 @@ public class GameController {
     @PostMapping("/start-singleplayer")
     public ResponseEntity<Map<String, Object>> startSinglePlayerGame(@RequestParam String difficulty) {
         try {
-            // Crea una nueva partida de un solo jugador con la dificultad especificada
             SinglePlayerGame game = gameService.createSinglePlayerGame(difficulty);
-
-            // Inicia la partida y actualiza el estado
             gameService.startSinglePlayerGame(game.getIdGame());
 
             Map<String, Object> response = new HashMap<>();
@@ -54,12 +51,14 @@ public class GameController {
         try {
             SinglePlayerGame game = gameService.findGameById(gameId);
 
-            // Verifica si el juego ya ha terminado
+            if (game == null) {
+                return ResponseEntity.status(404).body(Collections.singletonMap("error", "Game not found."));
+            }
+
             if (game.getStatus().equals("Completado")) {
                 return ResponseEntity.status(400).body(Collections.singletonMap("error", "Game has already ended."));
             }
 
-            // Obtiene una pregunta basada en la categoría y dificultad del juego
             Question question = questionService.fetchQuestion(category, game.getDifficulty());
             game.setCurrentQuestion(question); // Guarda la pregunta actual en el juego
             gameService.saveGame(game);
