@@ -10,11 +10,12 @@
 
     <title>Ruleta de Preguntas con Respuestas</title>
 </head>
+
 <body>
     <!-- Información del jugador -->
-    <div id="player-info">
-        <h2>Jugador: <span id="playerName">Juan</span></h2>
-        <p>Preguntas Correctas: <span id="correctAnswers">0</span></p>
+    <div id="player-info" class="small-player-info">
+        <h3>Jugador: <span id="playerName">Cargando...</span></h3>
+        <p>Correctas: <span id="correctAnswers">0</span></p>
     </div>
 
 
@@ -42,6 +43,15 @@
 
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/api/users/perfil")
+                .then(response => response.ok ? response.text() : Promise.reject("No se pudo cargar el perfil"))
+                .then(username => {
+                    document.getElementById("playerName").textContent = username;
+                })
+                .catch(error => console.error("Error al cargar el nombre de usuario:", error));
+        });
+        
         var w = 500, h = 500, r = Math.min(w, h) / 2, rotation = 0, oldrotation = 0, picked = 100000, oldpick = [],
             color = d3.scale.category20();
 
