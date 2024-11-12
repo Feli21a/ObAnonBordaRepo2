@@ -29,7 +29,6 @@ body {
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     position: relative;
     background: url('img/RuletaBG.png') center/cover no-repeat;
-    /* Fondo con la imagen RuletaBG */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,7 +88,7 @@ body {
     top: 20px;
     left: 20px;
     width: 180px;
-    padding: 20px;
+    padding: 15px;
     background-color: #f0e6d2;
     border: 2px solid #8b4513;
     border-radius: 15px;
@@ -97,19 +96,33 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-family: 'Amatic SC', cursive;
     font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    /* Para apilar los elementos verticalmente */
+    align-items: center;
+    /* Centra horizontalmente */
+    justify-content: center;
+    /* Centra verticalmente */
+    text-align: center;
+    /* Asegura que el texto esté centrado */
 }
 
 /* Título de la información del jugador */
 #player-info h2 {
     font-size: 24px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    /* Centrado del título */
 }
 
 /* Estilo para el número de preguntas correctas */
 #player-info p {
     font-size: 18px;
-    margin-top: 0;
+    margin-top: 5px;
+    text-align: center;
+    /* Centrado del número de respuestas */
 }
+
 
 /* Modal de pregunta y respuestas */
 .modal {
@@ -166,4 +179,72 @@ body {
 /* Botón de cerrar el modal */
 .close-modal-button {
     display: none;
+}
+
+/* Media Queries - Diseño Responsivo */
+@media (max-width: 768px) {
+
+    /* Información del jugador */
+    #player-info {
+        width: 180px;
+        padding: 15px;
+        font-size: 16px;
+        /* Reduce el tamaño en pantallas pequeñas */
+    }
+
+    /* Aumentamos el tamaño de la ruleta en dispositivos móviles */
+    #chart {
+        width: 350px;
+        height: 350px;
+    }
+
+    /* Botón de girar */
+    .spin-button {
+        width: 100px;
+        height: 100px;
+        font-size: 25px;
+    }
+
+    /* Modal de preguntas */
+    .modal-content {
+        width: 80%;
+        /* Hacemos que el modal ocupe más espacio en pantallas pequeñas */
+    }
+
+    .modal-content h2 {
+        font-size: 24px;
+    }
+
+    .answer-button {
+        font-size: 18px;
+    }
+}
+
+/* Media Query para pantallas pequeñas (por debajo de 480px) */
+@media (max-width: 480px) {
+    #player-info {
+        width: 150px;
+        padding: 10px;
+        font-size: 14px;
+        /* Más pequeño para pantallas de móvil */
+    }
+
+    #chart {
+        width: 300px;
+        height: 300px;
+    }
+
+    .spin-button {
+        width: 80px;
+        height: 80px;
+        font-size: 20px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+
+    .answer-button {
+        font-size: 16px;
+    }
 }
