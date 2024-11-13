@@ -43,6 +43,24 @@ body {
     fill: #8b4513;
 }
 
+/* Estilos de texto para los sectores oscuros */
+#chart .slice:nth-child(odd) text {
+    fill: #f0e6d2;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    /* Sombra para textos claros */
+}
+
+/* Estilos de texto para los sectores claros */
+#chart .slice:nth-child(even) text {
+    fill: #8b4513;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    /* Sombra para textos oscuros */
+}
+
 /* Marcador de la ruleta */
 #marker {
     position: absolute;
