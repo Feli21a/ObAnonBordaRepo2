@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/LogoPreguntiaSF.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Special+Elite&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/styleRuleta.css">
@@ -44,6 +45,7 @@
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // Cargar el nombre del usuario
             fetch("/api/users/perfil")
                 .then(response => response.ok ? response.text() : Promise.reject("No se pudo cargar el perfil"))
                 .then(username => {
@@ -52,18 +54,20 @@
                 .catch(error => console.error("Error al cargar el nombre de usuario:", error));
         });
 
+        // Configuración para la ruleta
         var w = 500, h = 500, r = Math.min(w, h) / 2, rotation = 0, oldrotation = 0, picked = 100000, oldpick = [],
             color = d3.scale.category20();
 
         var data = [
-            { "label": "Geografía", "image": "img/MundiGeografo.png", "question": "¿Cuál es el país más grande del mundo?", "answers": ["Rusia", "Canadá", "China", "Estados Unidos"] },
-            { "label": "Entretenimiento", "image": "img/MundiEntretenimiento.png", "question": "¿Cuánto es 8 * 7?", "answers": ["56", "54", "58", "62"] },
-            { "label": "Historia", "image": "img/MundiHistoriador.png", "question": "¿Quién fue el primer presidente de los Estados Unidos?", "answers": ["George Washington", "Thomas Jefferson", "John Adams", "Benjamin Franklin"] },
-            { "label": "Ciencia", "image": "img/MundiCientifico.png", "question": "¿Qué planeta es conocido como el planeta rojo?", "answers": ["Marte", "Venus", "Júpiter", "Saturno"] },
-            { "label": "Tecnología", "image": "img/MundiTecnologico.png", "question": "¿Quién escribió 'Don Quijote de la Mancha'?", "answers": ["Miguel de Cervantes", "Federico García Lorca", "Gabriel García Márquez", "Jorge Luis Borges"] },
-            { "label": "Deportes", "image": "img/MundiDeportista.png", "question": "¿Quién escribió 'Don Quijote de la Mancha'?", "answers": ["Miguel de Cervantes", "Federico García Lorca", "Gabriel García Márquez", "Jorge Luis Borges"] }
+            { "label": "Geografía", "image": "img/MundiGeografo.png" },
+            { "label": "Entretenimiento", "image": "img/MundiEntretenimiento.png" },
+            { "label": "Historia", "image": "img/MundiHistoriador.png" },
+            { "label": "Ciencia", "image": "img/MundiCientifico.png" },
+            { "label": "Tecnología", "image": "img/MundiTecnologico.png" },
+            { "label": "Deportes", "image": "img/MundiDeportista.png" }
         ];
 
+        // Configuración del gráfico D3
         var svg = d3.select('#chart').append("svg").data([data]).attr("width", w).attr("height", h);
         var container = svg.append("g").attr("class", "chartholder").attr("transform", "translate(" + (w / 2) + "," + (h / 2) + ")");
         var vis = container.append("g");
@@ -73,53 +77,46 @@
 
         var arcs = vis.selectAll("g.slice").data(pie).enter().append("g").attr("class", "slice");
 
-        // Añadimos el path (sector) de la ruleta
         arcs.append("path")
             .attr("fill", function (d, i) { return d3.scale.category20()(i); })
             .attr("d", arc);
 
-        // Añadimos la imagen de la categoría, centrada en cada sector de la ruleta y girando con ella
+        // Añadir imágenes de categorías en la ruleta
         arcs.append("image")
-            .attr("xlink:href", function (d, i) { return data[i].image; }) // Ruta de la imagen correspondiente
-            .attr("width", 70)  // Ajuste del tamaño de la imagen
+            .attr("xlink:href", function (d, i) { return data[i].image; })
+            .attr("width", 70)
             .attr("height", 70)
             .attr("transform", function (d) {
-                const angle = (d.startAngle + d.endAngle) / 2 * 180 / Math.PI - 90; // Ángulo medio de cada sector
-                return `rotate(${angle})translate(${r - 102}, -45)`; // Ajusta la posición para centrar la imagen en el sector
+                const angle = (d.startAngle + d.endAngle) / 2 * 180 / Math.PI - 90;
+                return `rotate(${angle})translate(${r - 102}, -45)`;
             })
-            .style("filter", "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2))"); // Agrega la sombra a la imagen;
+            .style("filter", "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2))");
 
-
-        // Añadimos el texto de la categoría debajo de la imagen, centrado en el sector
+        // Añadir etiquetas de categorías en la ruleta
         arcs.append("text")
             .attr("transform", function (d) {
-                const angle = (d.startAngle + d.endAngle) / 2 * 180 / Math.PI - 90; // Ángulo medio de cada sector
-                return `rotate(${angle})translate(${r - 65}, 40)`; // Ajusta la posición para colocar el texto debajo de la imagen
+                const angle = (d.startAngle + d.endAngle) / 2 * 180 / Math.PI - 90;
+                return `rotate(${angle})translate(${r - 65}, 40)`;
             })
             .attr("text-anchor", "middle")
             .text(function (d, i) { return data[i].label; });
 
-        // Variable para controlar si la ruleta está girando
         let isSpinning = false;
 
         function spin() {
-            // Evita que la ruleta gire si ya está girando
             if (isSpinning) return;
 
-            isSpinning = true; // Indica que la ruleta está girando
-            document.getElementById("spinButton").disabled = true; // Deshabilita el botón
+            isSpinning = true;
+            document.getElementById("spinButton").disabled = true;
 
-            if (oldpick.length === data.length) {
-                oldpick = []; // Reinicia el array oldpick para permitir giros infinitos
-            }
+            if (oldpick.length === data.length) oldpick = [];
 
-            var ps = 360 / data.length;
-            var rng = Math.floor((Math.random() * 1440) + 360);
+            const ps = 360 / data.length;
+            const rng = Math.floor((Math.random() * 1440) + 360);
             rotation = (Math.round(rng / ps) * ps);
             picked = Math.round(data.length - (rotation % 360) / ps);
             picked = picked >= data.length ? (picked % data.length) : picked;
 
-            // Si el índice ya ha sido seleccionado en este ciclo, gira nuevamente
             if (oldpick.indexOf(picked) !== -1) {
                 spin();
                 return;
@@ -133,12 +130,39 @@
                 .ease("cubic-out")
                 .attrTween("transform", rotTween)
                 .each("end", function () {
-                    const question = data[picked].question;
-                    const answers = data[picked].answers;
-                    showQuestionModal(question, answers); // Muestra la pregunta y las respuestas en el modal
+                    const selectedCategory = data[picked].label;
+                    fetchQuestionFromAPI(selectedCategory, "medium");
                     oldrotation = rotation;
                 });
         }
+
+        function fetchQuestionFromAPI(category, difficulty) {
+            fetch(`/api/questions/generate?category=${encodeURIComponent(category)}&difficulty=${difficulty}`)
+                .then(response => {
+                    console.log("Estado de respuesta:", response.status); // Registro del estado de la respuesta
+                    if (!response.ok) {
+                        console.error(`Error al obtener la pregunta: ${response.status} - ${response.statusText}`);
+                        throw new Error("Error al obtener la pregunta");
+                    }
+                    return response.json();
+                })
+                .then(questionData => {
+                    console.log("Datos de la respuesta de la API:", questionData); // Log para ver el contenido de la respuesta
+                    if (!questionData.question || !questionData.options) {
+                        throw new Error("La respuesta de la API no contiene los datos esperados");
+                    }
+                    showQuestionModal(questionData.question, questionData.options);
+                    isSpinning = false;
+                    document.getElementById("spinButton").disabled = false;
+                })
+                .catch(error => {
+                    console.error("Error en la solicitud o datos de la API:", error);
+                    alert("Hubo un error al cargar la pregunta. Intenta de nuevo.");
+                    isSpinning = false;
+                    document.getElementById("spinButton").disabled = false;
+                });
+        }
+
 
         function rotTween(to) {
             var i = d3.interpolate(oldrotation % 360, rotation);
@@ -147,43 +171,38 @@
             };
         }
 
-        // Modal para mostrar la pregunta y las respuestas
         const questionModal = document.getElementById("questionModal");
-        const modalQuestionText = document.getElementById("modal-question-text");
-        const modalOptions = document.querySelectorAll(".answer-button");
 
-        // Función para mostrar el modal con la pregunta y respuestas
-        function showQuestionModal(question, answers) {
-            modalQuestionText.textContent = question;
-            const shuffledAnswers = answers.sort(() => Math.random() - 0.5);
+        function showQuestionModal(questionText, options) {
+            document.getElementById("modal-question-text").textContent = questionText || "Pregunta no disponible";
+            const modalOptions = document.querySelectorAll(".answer-button");
+
             modalOptions.forEach((button, index) => {
-                button.textContent = shuffledAnswers[index];
-                button.onclick = () => selectAnswer(button.textContent);
+                if (options[index]) {
+                    button.textContent = options[index];
+                    button.style.display = "inline-block";
+                    button.onclick = () => selectAnswer(options[index]);
+                } else {
+                    button.style.display = "none"; // Oculta botones si hay menos de 4 opciones
+                }
             });
+
             questionModal.style.display = "flex";
         }
 
-        // Función para cerrar el modal
         function closeModal() {
             questionModal.style.display = "none";
         }
 
-        // Función para responder una pregunta y habilitar el botón de giro nuevamente
         function selectAnswer(selectedAnswer) {
             console.log("Respuesta seleccionada:", selectedAnswer);
-            closeModal(); // Cierra el modal después de seleccionar la respuesta
-            isSpinning = false; // Permite girar nuevamente
-            document.getElementById("spinButton").disabled = false; // Habilita el botón
+            closeModal();
+            isSpinning = false;
+            document.getElementById("spinButton").disabled = false;
         }
 
-        // Cargar el nombre de usuario al cargar la página
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("/api/users/perfil")
-                .then(response => response.ok ? response.text() : Promise.reject("No se pudo cargar el perfil"))
-                .then(username => document.getElementById("playerName").textContent = username)
-                .catch(error => console.error("Error al cargar el nombre de usuario:", error));
-        });
     </script>
+
 </body>
 
 </html>
