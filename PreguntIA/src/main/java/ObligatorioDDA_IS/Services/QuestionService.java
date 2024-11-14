@@ -22,7 +22,12 @@ public class QuestionService {
 
     public Question fetchQuestion(String category, String difficulty) throws JSONException {
         String prompt = generatePrompt(category, difficulty);
-        String response = apiClient.sendRequest(prompt);
+        String response;
+        try {
+            response = apiClient.sendRequest(prompt);
+        } catch (Exception e) {
+            throw new RuntimeException("Error en la solicitud a la API de ChatGPT: " + e.getMessage(), e);
+        }
         return parseQuestion(response);
     }
 
@@ -33,11 +38,16 @@ public class QuestionService {
     }
 
     private Question parseQuestion(String response) throws JSONException {
-        // Parse JSON response from ChatGPT
-        JSONObject json = new JSONObject(response);
-        String questionText = json.getString("question");
-        String correctAnswer = json.getString("answer");
-        String[] optionsArray = json.getJSONArray("options").join(",").split(",");
-        return new Question(questionText, Arrays.asList(optionsArray), correctAnswer);
+        try {
+            JSONObject json = new JSONObject(response);
+            String questionText = json.getString("question");
+            String correctAnswer = json.getString("answer");
+            String[] optionsArray = json.getJSONArray("options").join(",").split(",");
+            return new Question(questionText, Arrays.asList(optionsArray), correctAnswer);
+        } catch (JSONException e) {
+            System.err.println("Error al analizar la respuesta JSON de la API de ChatGPT: " + e.getMessage());
+            throw e;
+        }
     }
+
 }

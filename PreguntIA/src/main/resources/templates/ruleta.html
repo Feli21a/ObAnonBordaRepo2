@@ -9,6 +9,7 @@
         rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/styleRuleta.css">
     <script src="/js/soundEffects.js" type="module"></script>
+    <script src="/js/gameHandler.js"></script>
 
     <title>Ruleta de Preguntas con Respuestas</title>
 </head>
@@ -136,69 +137,11 @@
                 });
         }
 
-        function fetchQuestionFromAPI(category, difficulty) {
-            fetch(`/api/questions/generate?category=${encodeURIComponent(category)}&difficulty=${difficulty}`)
-                .then(response => {
-                    console.log("Estado de respuesta:", response.status); // Registro del estado de la respuesta
-                    if (!response.ok) {
-                        console.error(`Error al obtener la pregunta: ${response.status} - ${response.statusText}`);
-                        throw new Error("Error al obtener la pregunta");
-                    }
-                    return response.json();
-                })
-                .then(questionData => {
-                    console.log("Datos de la respuesta de la API:", questionData); // Log para ver el contenido de la respuesta
-                    if (!questionData.question || !questionData.options) {
-                        throw new Error("La respuesta de la API no contiene los datos esperados");
-                    }
-                    showQuestionModal(questionData.question, questionData.options);
-                    isSpinning = false;
-                    document.getElementById("spinButton").disabled = false;
-                })
-                .catch(error => {
-                    console.error("Error en la solicitud o datos de la API:", error);
-                    alert("Hubo un error al cargar la pregunta. Intenta de nuevo.");
-                    isSpinning = false;
-                    document.getElementById("spinButton").disabled = false;
-                });
-        }
-
-
         function rotTween(to) {
             var i = d3.interpolate(oldrotation % 360, rotation);
             return function (t) {
                 return "rotate(" + i(t) + ")";
             };
-        }
-
-        const questionModal = document.getElementById("questionModal");
-
-        function showQuestionModal(questionText, options) {
-            document.getElementById("modal-question-text").textContent = questionText || "Pregunta no disponible";
-            const modalOptions = document.querySelectorAll(".answer-button");
-
-            modalOptions.forEach((button, index) => {
-                if (options[index]) {
-                    button.textContent = options[index];
-                    button.style.display = "inline-block";
-                    button.onclick = () => selectAnswer(options[index]);
-                } else {
-                    button.style.display = "none"; // Oculta botones si hay menos de 4 opciones
-                }
-            });
-
-            questionModal.style.display = "flex";
-        }
-
-        function closeModal() {
-            questionModal.style.display = "none";
-        }
-
-        function selectAnswer(selectedAnswer) {
-            console.log("Respuesta seleccionada:", selectedAnswer);
-            closeModal();
-            isSpinning = false;
-            document.getElementById("spinButton").disabled = false;
         }
 
     </script>

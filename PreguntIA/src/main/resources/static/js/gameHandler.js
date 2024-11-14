@@ -1,100 +1,126 @@
+// gameHandler.js
+
 // Iniciar partida con dificultad seleccionada
 async function startGame(difficulty) {
     try {
         const response = await fetch('/game/start-singleplayer', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({ difficulty: difficulty })
         });
         const data = await response.json();
-
         if (response.ok) {
             console.log('Game started:', data);
-            // Guarda el gameId para futuras solicitudes
             sessionStorage.setItem('gameId', data.gameId);
-            // Actualiza la interfaz para mostrar la primera pregunta
+            sessionStorage.setItem('difficulty', difficulty); // Guarda la dificultad
             fetchQuestion();
         } else {
             console.error('Error starting game:', data);
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error en startGame:', error);
     }
 }
-// Obtener una nueva pregunta
-// Obtener una nueva pregunta con la dificultad almacenada
-async function fetchQuestion() {
-    const gameId = sessionStorage.getItem('gameId');
-    const difficulty = sessionStorage.getItem('difficulty'); // Obtener dificultad
-    const category = 'Science'; // O la categoría que seleccione el usuario
 
+// Obtener una nueva pregunta desde la API después de girar la ruleta
+async function fetchQuestionFromAPI(category) {
+    const gameId = sessionStorage.getItem('gameId');
     try {
-        const response = await fetch(`/game/fetch-question?gameId=${gameId}&category=${category}&difficulty=${difficulty}`, {
-            method: 'POST'
+        const response = await fetch(`/question/fetch?gameId=${gameId}&category=${encodeURIComponent(category)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
         });
         const data = await response.json();
+        if (response.ok) {
+            console.log('Pregunta obtenida:', data);
+            showQuestionModal(data.question, data.options);
+        } else {
+            console.error('Error al obtener la pregunta:', data);
+        }
+    } catch (error) {
+        console.error('Error en fetchQuestionFromAPI:', error);
+    }
+}
 
+// Obtener una nueva pregunta basada en la dificultad y categoría almacenada
+async function fetchQuestion(category = 'Science') {
+    const gameId = sessionStorage.getItem('gameId');
+    const difficulty = sessionStorage.getItem('difficulty');
+    try {
+        const response = await fetch(`/question/fetch?gameId=${gameId}&category=${category}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
         if (response.ok) {
             console.log('Question fetched:', data);
-            displayQuestion(data.question);
+            showQuestionModal(data.question, data.options);
         } else {
             console.error('Error fetching question:', data);
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error en fetchQuestion:', error);
     }
 }
 
-
-// Mostrar la pregunta en la interfaz
-function displayQuestion(question) {
-    document.getElementById('questionText').innerText = question.questionText;
-    const optionsContainer = document.getElementById('optionsContainer');
-    optionsContainer.innerHTML = '';
-
-    question.options.forEach(option => {
-        const optionButton = document.createElement('button');
-        optionButton.innerText = option;
-        optionButton.onclick = () => submitAnswer(option);
-        optionsContainer.appendChild(optionButton);
+// Mostrar la pregunta y opciones en el modal
+function showQuestionModal(questionText, options) {
+    document.getElementById("modal-question-text").textContent = questionText || "Pregunta no disponible";
+    const modalOptions = document.querySelectorAll(".answer-button");
+    modalOptions.forEach((button, index) => {
+        if (options[index]) {
+            button.textContent = options[index];
+            button.style.display = "inline-block";
+            button.onclick = () => submitAnswer(options[index]);
+        } else {
+            button.style.display = "none";
+        }
     });
+    document.getElementById("questionModal").style.display = "flex";
 }
+
 // Enviar la respuesta seleccionada
 async function submitAnswer(selectedAnswer) {
     const gameId = sessionStorage.getItem('gameId');
-
     try {
-        const response = await fetch(`/game/submit-answer?gameId=${gameId}&answer=${selectedAnswer}`, {
-            method: 'POST'
+        const response = await fetch(`/answer/submit?gameId=${gameId}&answer=${encodeURIComponent(selectedAnswer)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
         });
         const data = await response.json();
-
         if (response.ok) {
             if (data.isCorrect) {
-                console.log('Correct answer!');
-                updateScore(data.score); // Actualizar el puntaje en la interfaz
-                fetchQuestion(); // Obtener una nueva pregunta
+                alert("¡Respuesta correcta!");
+                updateScore(data.score);
+                closeModal();
+                fetchQuestion();
             } else {
-                console.log('Incorrect answer. Game over!');
+                alert("Respuesta incorrecta. Juego terminado.");
                 endGame(data.score, data.status);
+                closeModal();
             }
         } else {
-            console.error('Error submitting answer:', data);
+            console.error("Error en submitAnswer:", data);
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error en submitAnswer:', error);
     }
 }
 
-// Función para actualizar el puntaje en la interfaz
+// Actualizar el puntaje en la interfaz
 function updateScore(score) {
-    document.getElementById('score').innerText = `Score: ${score}`;
+    document.getElementById('correctAnswers').textContent = score;
 }
 
-// Función para finalizar el juego y mostrar resultados
+// Finalizar el juego y mostrar resultados
 function endGame(score, status) {
-    document.getElementById('gameStatus').innerText = `Game Over - ${status}`;
-    document.getElementById('finalScore').innerText = `Final Score: ${score}`;
+    document.getElementById("gameStatus").textContent = `Juego terminado - ${status}`;
+    document.getElementById("finalScore").textContent = `Puntaje final: ${score}`;
+    alert("Juego terminado. Puntaje final: " + score);
 }
+
+// Cerrar el modal
+function closeModal() {
+    document.getElementById("questionModal").style.display = "none";
+}
+
