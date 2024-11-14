@@ -2,6 +2,11 @@
 body {
     font-family: 'Amatic SC', 'Special Elite', Helvetica, Arial, sans-serif;
     background: url('/img/RuletaBG.png') no-repeat center center fixed;
+    background-size: cover;
+    /* Ajusta la imagen al tamaño de la pantalla */
+    background-position: center;
+    background-attachment: fixed;
+    /* Mantiene la imagen fija al hacer scroll */
     color: #fff;
     display: flex;
     justify-content: center;
