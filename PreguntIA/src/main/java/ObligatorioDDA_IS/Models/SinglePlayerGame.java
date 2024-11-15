@@ -48,7 +48,7 @@ public class SinglePlayerGame implements Game {
     @Override
     public void endGame() {
         this.duration = Duration.between(startDateTime, LocalDateTime.now());
-        this.status = "Completado";
+        this.status = "Finalizado";
         this.gameEnded = true;
     }
 
@@ -118,5 +118,9 @@ public class SinglePlayerGame implements Game {
 
     public void setGameType(String gameType) {
         this.gameType = gameType;
+    }
+
+    public void setGameEnded(boolean gameEnd) {
+        this.gameEnded = gameEnd;
     }
 }

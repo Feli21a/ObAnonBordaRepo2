@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ObligatorioDDA_IS.Models.Question;
 import ObligatorioDDA_IS.Models.SinglePlayerGame;
 import ObligatorioDDA_IS.Repository.SPGameRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class SPGameService {
@@ -36,6 +37,13 @@ public class SPGameService {
     }
 
     public void saveGame(SinglePlayerGame game) {
+        gameRepository.save(game);
+    }
+
+    public void finalizarPartida(int gameId) {
+        SinglePlayerGame game = gameRepository.findById(gameId)
+                .orElseThrow(() -> new EntityNotFoundException("Partida no encontrada"));
+        game.endGame(); // Llama a endGame() para configurar el estado y gameEnded
         gameRepository.save(game);
     }
 

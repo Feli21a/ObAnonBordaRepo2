@@ -112,7 +112,7 @@ function showQuestionModal(questionText, options, correctAnswer) {
                     button.classList.add("correct-answer");
 
                     playCorrectAnswerSound();
-                    incrementCorrectAnswers();
+                    updateScore();
 
                     setTimeout(() => {
                         closeModal();

@@ -39,7 +39,7 @@ document.getElementById("confirmLogoutButton").addEventListener("click", functio
 // JsMenu.js
 async function startGame(difficulty) {
     try {
-        const response = await fetch(`/game/start-singleplayer?difficulty=${difficulty}`, {
+        const response = await fetch(`/spgame/start?difficulty=${difficulty}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
