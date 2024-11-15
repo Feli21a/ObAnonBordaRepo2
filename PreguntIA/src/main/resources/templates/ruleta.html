@@ -7,6 +7,7 @@
     <link rel="icon" href="/img/LogoPreguntiaSF.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Special+Elite&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" type="text/css" href="/css/styleRuleta.css">
     <script src="/js/soundEffects.js" type="module"></script>
     <script src="/js/gameHandler.js"></script>
@@ -51,6 +52,24 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de Partida Finalizada -->
+    <div id="endGameModal" class="modal">
+        <div class="modal-content">
+            <h2>Partida Finalizada</h2>
+            <p>Tu racha fue de <span id="finalScore"></span> respuestas correctas.</p>
+            <div class="modal-buttons">
+                <!-- Botón de Volver a Jugar con icono -->
+                <button class="replay-button" onclick="replayGame()">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <!-- Botón de Volver al Menú -->
+                <button class="menu-button" onclick="goToMenu()">Volver al Menú</button>
+            </div>
+        </div>
+    </div>
+
+
 
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script>

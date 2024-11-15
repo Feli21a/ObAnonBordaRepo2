@@ -17,6 +17,9 @@ buttons.forEach(button => {
     button.addEventListener('mouseover', playHoverSound);
 });
 
+// soundEffects.js
+
+
 /* Reproductor de Música Lofi
 const lofiMusic = document.createElement('audio');
 lofiMusic.src = 'audio/MusicaAmbienteMenu.mp3'; // Ruta relativa a la carpeta audio

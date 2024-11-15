@@ -85,24 +85,6 @@ function showCategoryModal(category) {
     }, 2000); // Duración de la animación de zoom en milisegundos
 }
 
-
-function terminateGame() {
-    console.log("Juego terminado. Respuesta incorrecta.");
-    alert("Juego terminado. Respuesta incorrecta.");
-    // Puedes agregar lógica para mostrar un resumen o redirigir al usuario
-    window.location.href = "/game-over"; // Ajusta la URL según corresponda
-}
-
-function incrementCorrectAnswers() {
-    const correctAnswersElement = document.getElementById("correctAnswers");
-
-    // Convertir el texto actual a número y sumar 1
-    let currentCount = parseInt(correctAnswersElement.textContent, 10) || 0;
-    correctAnswersElement.textContent = currentCount + 1;
-
-    console.log("Incrementado el contador de respuestas correctas. Nuevo valor:", currentCount + 1);
-}
-
 // Mostrar la pregunta y opciones en el modal
 function showQuestionModal(questionText, options, correctAnswer) {
     document.getElementById("modal-question-text").textContent = questionText || "Pregunta no disponible";
@@ -115,8 +97,8 @@ function showQuestionModal(questionText, options, correctAnswer) {
         if (sanitizedOptions[index]) {
             button.textContent = sanitizedOptions[index];
             button.style.display = "inline-block";
-            button.style.backgroundColor = ""; // Restablecer color
-            button.style.color = ""; // Restablecer color de texto
+            button.style.backgroundColor = ""; // Restablecer color de fondo
+            button.style.color = ""; // Restablecer color del texto
             button.disabled = false; // Habilitar el botón
 
             button.onclick = () => {
@@ -129,32 +111,34 @@ function showQuestionModal(questionText, options, correctAnswer) {
                     button.style.color = "white";
                     button.classList.add("correct-answer");
 
+                    playCorrectAnswerSound();
                     incrementCorrectAnswers();
 
-                    // Permitir girar nuevamente después de cerrar el modal
                     setTimeout(() => {
                         closeModal();
-                        document.getElementById("spinButton").disabled = false; // Habilitar botón
+                        document.getElementById("spinButton").disabled = false;
                         console.log("Listo para girar de nuevo.");
                     }, 1000);
                 } else {
                     console.log("Respuesta incorrecta detectada");
                     button.style.backgroundColor = "red";
                     button.style.color = "white";
-                    terminateGame(); // Llama a la función para terminar el juego
+
+                    playIncorrectAnswerSound(); // Reproducir sonido de respuesta incorrecta
+                    const finalScore = document.getElementById("correctAnswers").textContent;
+                    endGame(finalScore, "incorrect"); // Mostrar el modal de fin de partida con el puntaje final
                 }
 
-                modalOptions.forEach(btn => btn.disabled = true); // Desactivar botones
+                modalOptions.forEach(btn => btn.disabled = true); // Desactivar todos los botones
             };
         } else {
-            button.style.display = "none"; // Ocultar botones no usados
+            button.style.display = "none"; // Ocultar botones no utilizados
         }
     });
 
     document.getElementById("questionModal").style.display = "flex";
-    console.log("Modal mostrado");
+    console.log("Modal de pregunta mostrado");
 }
-
 
 // Enviar la respuesta seleccionada
 async function submitAnswer(selectedAnswer, buttonElement) {
@@ -189,17 +173,52 @@ async function submitAnswer(selectedAnswer, buttonElement) {
 
 // Actualizar el puntaje en la interfaz
 function updateScore(score) {
-    document.getElementById('correctAnswers').textContent = score;
+    const correctAnswersElement = document.getElementById("correctAnswers");
+
+    // Convertir el texto actual a número y sumar 1
+    let currentCount = parseInt(correctAnswersElement.textContent, 10) || 0;
+    correctAnswersElement.textContent = currentCount + 1;
+
+    console.log("Incrementado el contador de respuestas correctas. Nuevo valor:", currentCount + 1);
 }
 
 // Finalizar el juego y mostrar resultados
 function endGame(score, status) {
-    document.getElementById("gameStatus").textContent = `Juego terminado - ${status}`;
-    document.getElementById("finalScore").textContent = `Puntaje final: ${score}`;
-    alert("Juego terminado. Puntaje final: " + score);
+    const finalScoreElement = document.getElementById("finalScore");
+    const endGameModal = document.getElementById("endGameModal");
 
-    // Redirigir a la pantalla de finalización del juego (opcional) // ACA TENDRIAMOS QUE VER DESP DE TERMINAR EL JUEGO A DONDE REEDIRIGIR.
-    window.location.href = "/game-over"; // Cambia esta URL según tu configuración
+    // Verifica que el elemento exista antes de modificarlo
+    if (finalScoreElement) {
+        finalScoreElement.textContent = score;
+    } else {
+        console.error("Elemento 'finalScore' no encontrado en el DOM.");
+    }
+
+    // Asegúrate de que el modal exista antes de mostrarlo
+    if (endGameModal) {
+        endGameModal.style.display = "flex";
+    } else {
+        console.error("Modal 'endGameModal' no encontrado en el DOM.");
+    }
+
+    // Reproduce el sonido correspondiente
+    if (status === "incorrect") {
+        playIncorrectAnswerSound();
+    } else {
+        playCorrectAnswerSound();
+    }
+}
+
+
+function replayGame() {
+    // Reinicia el juego (resetear el puntaje, la ruleta, etc.)
+    document.getElementById("correctAnswers").textContent = "0";
+    document.getElementById("endGameModal").style.display = "none";
+    // Aquí puedes agregar código adicional para reiniciar el estado del juego
+}
+
+function goToMenu() {
+    window.location.href = "/menu"; // Replace with the actual URL of your menu
 }
 
 // Cerrar el modal
@@ -214,9 +233,21 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "/menu"; // Ajusta la URL del menú según corresponda
     }
 }
-
-
-
-
 );
+
+function playCorrectAnswerSound() {
+    const correctAnswerSound = new Audio('/audio/respuestaCorrecta.mp3');
+    correctAnswerSound.currentTime = 0;
+    correctAnswerSound.play().catch(error => {
+        console.error("Error playing correct answer sound:", error);
+    });
+}
+
+function playIncorrectAnswerSound() {
+    const incorrectAnswerSound = new Audio('/audio/respuestaIncorrecta.mp3');
+    incorrectAnswerSound.currentTime = 0;
+    incorrectAnswerSound.play().catch(error => {
+        console.error("Error playing incorrect answer sound:", error);
+    });
+}
 
