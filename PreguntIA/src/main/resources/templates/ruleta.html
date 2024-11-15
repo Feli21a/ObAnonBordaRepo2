@@ -29,6 +29,16 @@
         </div>
     </div>
 
+    <!-- Modal de Categoría -->
+    <div id="categoryModal" class="category-modal">
+        <div class="category-modal-content">
+            <div id="categoryZoomContainer" class="zoom-container">
+                <img id="categoryImage" class="zoom-image" src="" alt="Imagen de la categoría">
+                <div id="categoryName">Nombre de la Categoría</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Pregunta y Respuestas -->
     <div id="questionModal" class="modal">
         <div class="modal-content">
@@ -132,10 +142,11 @@
                 .attrTween("transform", rotTween)
                 .each("end", function () {
                     const selectedCategory = data[picked].label;
-                    fetchQuestionFromAPI(selectedCategory, "medium");
+                    showCategoryModal(selectedCategory); // Llama al modal de categoría
                     oldrotation = rotation;
                 });
         }
+
 
         function rotTween(to) {
             var i = d3.interpolate(oldrotation % 360, rotation);

@@ -33,7 +33,7 @@ public class QuestionService {
 
     private String generatePrompt(String category, String difficulty) {
         return "Crea una pregunta para trivia de dificultad " + difficulty + " para la categoria " + category +
-                "Inclute 4 respuestas para la pregunta y especifica la correcta en un fortmato JSON como este: " +
+                "Incluye 4 respuestas para la pregunta y especifica la correcta en un fortmato JSON como este: " +
                 "{\"question\": \"Your question?\", \"options\": [\"option1\", \"option2\", \"option3\", \"option4\"], \"answer\": \"correct option\"}";
     }
 

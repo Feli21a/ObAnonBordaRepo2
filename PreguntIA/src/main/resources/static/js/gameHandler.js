@@ -40,6 +40,36 @@ async function fetchQuestion(category = 'Science') {
     }
 }
 
+function showCategoryModal(category) {
+    const selectedCategory = data.find(item => item.label === category);
+    if (!selectedCategory) return;
+
+    const categoryImage = document.getElementById("categoryImage");
+    const categoryName = document.getElementById("categoryName");
+    const categoryZoomContainer = document.getElementById("categoryZoomContainer");
+
+    // Configura la imagen y el nombre de la categoría
+    categoryImage.src = selectedCategory.image;
+    categoryName.textContent = category;
+
+    // Muestra el modal de categoría y aplica la animación de zoom al contenedor
+    const categoryModal = document.getElementById("categoryModal");
+    categoryModal.style.display = "flex";
+    categoryZoomContainer.classList.add("zoom");
+
+    // Después de 2 segundos, cambia la animación a "alejamiento" y oculta el modal luego de 1 segundo
+    setTimeout(() => {
+        categoryZoomContainer.classList.remove("zoom");
+        categoryZoomContainer.classList.add("shrink"); // Aplica la clase de alejamiento
+        setTimeout(() => {
+            categoryZoomContainer.classList.remove("shrink"); // Restablece el tamaño del contenedor
+            categoryModal.style.display = "none"; // Oculta el modal de categoría
+            fetchQuestionFromAPI(category); // Llama a la función para obtener la pregunta
+        }, 1000); // Tiempo para el efecto de alejamiento
+    }, 2000); // Duración de la animación de zoom en milisegundos (total: 3 segundos)
+}
+
+
 
 // Mostrar la pregunta y opciones en el modal
 function showQuestionModal(questionText, options) {
