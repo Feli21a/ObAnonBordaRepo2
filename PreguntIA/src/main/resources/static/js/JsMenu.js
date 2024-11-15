@@ -50,7 +50,11 @@ async function startGame(difficulty) {
         console.log("Respuesta del servidor:", data);
 
         if (data.gameId) {
-            // Redirige a la pantalla de la ruleta con el gameId y la dificultad seleccionada
+            // Guarda el `gameId` y `difficulty` en sessionStorage
+            sessionStorage.setItem('gameId', data.gameId);
+            sessionStorage.setItem('difficulty', difficulty);
+
+            // Redirige a la pantalla de la ruleta
             window.location.href = `/ruleta?gameId=${data.gameId}&difficulty=${difficulty}`;
         } else {
             console.error("Error: `gameId` no se recibió en la respuesta del servidor");

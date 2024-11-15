@@ -1,27 +1,4 @@
 // gameHandler.js
-
-// Iniciar partida con dificultad seleccionada
-async function startGame(difficulty) {
-    try {
-        const response = await fetch('/game/start-singleplayer', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ difficulty: difficulty })
-        });
-        const data = await response.json();
-        if (response.ok) {
-            console.log('Game started:', data);
-            sessionStorage.setItem('gameId', data.gameId);
-            sessionStorage.setItem('difficulty', difficulty); // Guarda la dificultad
-            fetchQuestion();
-        } else {
-            console.error('Error starting game:', data);
-        }
-    } catch (error) {
-        console.error('Error en startGame:', error);
-    }
-}
-
 // Obtener una nueva pregunta desde la API después de girar la ruleta
 async function fetchQuestionFromAPI(category) {
     const gameId = sessionStorage.getItem('gameId');
@@ -53,15 +30,16 @@ async function fetchQuestion(category = 'Science') {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('Question fetched:', data);
+            console.log('Pregunta obtenida:', data);
             showQuestionModal(data.question, data.options);
         } else {
-            console.error('Error fetching question:', data);
+            console.error('Error al obtener la pregunta:', data);
         }
     } catch (error) {
         console.error('Error en fetchQuestion:', error);
     }
 }
+
 
 // Mostrar la pregunta y opciones en el modal
 function showQuestionModal(questionText, options) {
@@ -123,4 +101,12 @@ function endGame(score, status) {
 function closeModal() {
     document.getElementById("questionModal").style.display = "none";
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const gameId = sessionStorage.getItem('gameId');
+    if (!gameId) {
+        alert("No se encontró un ID de juego activo. Volviendo al menú.");
+        window.location.href = "/menu"; // Ajusta la URL del menú según corresponda
+    }
+});
 
