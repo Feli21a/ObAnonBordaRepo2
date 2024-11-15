@@ -316,4 +316,39 @@ body {
     .answer-button {
         font-size: 16px;
     }
+
+/* Efecto de respuesta correcta */
+.correct-answer {
+    animation: correctGlow 0.5s ease-in-out forwards; /* Añade un efecto suave */
+}
+
+@keyframes correctGlow {
+    0% {
+        box-shadow: 0 0 5px green;
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 15px green;
+        transform: scale(1.05);
+    }
+    100% {
+        box-shadow: 0 0 5px green;
+        transform: scale(1);
+    }
+}
+
+/* Transiciones suaves en botones */
+.answer-button {
+    transition: all 0.3s ease;
+}
+
+.answer-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+
+
+
 }

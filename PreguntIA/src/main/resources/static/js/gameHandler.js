@@ -8,14 +8,26 @@ async function fetchQuestionFromAPI(category) {
             headers: { 'Content-Type': 'application/json' }
         });
         const data = await response.json();
+
         if (response.ok) {
-            console.log('Pregunta obtenida:', data);
-            showQuestionModal(data.question, data.options);
+            console.log("Datos recibidos de la API:", data);
+
+            // Validar que los datos estén completos
+            if (!data.question || !data.options || !data.correctAnswer) {
+                console.error("Error: La API no devolvió los datos esperados.", data);
+                alert("No se pudo obtener la pregunta correctamente. Por favor, intenta más tarde.");
+                return;
+            }
+
+            // Llamar al modal con los datos correctos
+            showQuestionModal(data.question, data.options, data.correctAnswer);
         } else {
-            console.error('Error al obtener la pregunta:', data);
+            console.error("Error al obtener la pregunta:", data);
+            alert("Error al obtener la pregunta. Intenta nuevamente.");
         }
     } catch (error) {
-        console.error('Error en fetchQuestionFromAPI:', error);
+        console.error("Error en fetchQuestionFromAPI:", error);
+        alert("Error de conexión. Por favor, revisa tu conexión a Internet.");
     }
 }
 
@@ -69,26 +81,81 @@ function showCategoryModal(category) {
     }, 2000); // Duración de la animación de zoom en milisegundos (total: 3 segundos)
 }
 
-
-
-// Mostrar la pregunta y opciones en el modal
-function showQuestionModal(questionText, options) {
-    document.getElementById("modal-question-text").textContent = questionText || "Pregunta no disponible";
-    const modalOptions = document.querySelectorAll(".answer-button");
-    modalOptions.forEach((button, index) => {
-        if (options[index]) {
-            button.textContent = options[index];
-            button.style.display = "inline-block";
-            button.onclick = () => submitAnswer(options[index]);
-        } else {
-            button.style.display = "none";
-        }
-    });
-    document.getElementById("questionModal").style.display = "flex";
+function terminateGame() {
+    console.log("Juego terminado. Respuesta incorrecta.");
+    alert("Juego terminado. Respuesta incorrecta.");
+    // Puedes agregar lógica para mostrar un resumen o redirigir al usuario
+    window.location.href = "/game-over"; // Ajusta la URL según corresponda
 }
 
+
+
+
+function incrementCorrectAnswers() {
+    const correctAnswersElement = document.getElementById("correctAnswers");
+
+    // Convertir el texto actual a número y sumar 1
+    let currentCount = parseInt(correctAnswersElement.textContent, 10) || 0;
+    correctAnswersElement.textContent = currentCount + 1;
+
+    console.log("Incrementado el contador de respuestas correctas. Nuevo valor:", currentCount + 1);
+}
+
+// Mostrar la pregunta y opciones en el modal
+function showQuestionModal(questionText, options, correctAnswer) {
+    document.getElementById("modal-question-text").textContent = questionText || "Pregunta no disponible";
+
+    const sanitizedOptions = options.map(option => option.replace(/"/g, ""));
+    const sanitizedCorrectAnswer = correctAnswer.trim();
+
+    const modalOptions = document.querySelectorAll(".answer-button");
+    modalOptions.forEach((button, index) => {
+        if (sanitizedOptions[index]) {
+            button.textContent = sanitizedOptions[index];
+            button.style.display = "inline-block";
+            button.style.backgroundColor = ""; // Restablecer color
+            button.style.color = ""; // Restablecer color de texto
+            button.disabled = false; // Habilitar el botón
+
+            button.onclick = () => {
+                console.log("Opción seleccionada:", sanitizedOptions[index]);
+                console.log("Respuesta correcta:", sanitizedCorrectAnswer);
+
+                if (sanitizedOptions[index].trim().toLowerCase() === sanitizedCorrectAnswer.trim().toLowerCase()) {
+                    console.log("Respuesta correcta detectada");
+                    button.style.backgroundColor = "green";
+                    button.style.color = "white";
+                    button.classList.add("correct-answer");
+
+                    incrementCorrectAnswers();
+
+                    // Permitir girar nuevamente después de cerrar el modal
+                    setTimeout(() => {
+                        closeModal();
+                        document.getElementById("spinButton").disabled = false; // Habilitar botón
+                        console.log("Listo para girar de nuevo.");
+                    }, 1000);
+                } else {
+                    console.log("Respuesta incorrecta detectada");
+                    button.style.backgroundColor = "red";
+                    button.style.color = "white";
+                    terminateGame(); // Llama a la función para terminar el juego
+                }
+
+                modalOptions.forEach(btn => btn.disabled = true); // Desactivar botones
+            };
+        } else {
+            button.style.display = "none"; // Ocultar botones no usados
+        }
+    });
+
+    document.getElementById("questionModal").style.display = "flex";
+    console.log("Modal mostrado");
+}
+   
+
 // Enviar la respuesta seleccionada
-async function submitAnswer(selectedAnswer) {
+async function submitAnswer(selectedAnswer, buttonElement) {
     const gameId = sessionStorage.getItem('gameId');
     try {
         const response = await fetch(`/answer/submit?gameId=${gameId}&answer=${encodeURIComponent(selectedAnswer)}`, {
@@ -96,22 +163,25 @@ async function submitAnswer(selectedAnswer) {
             headers: { 'Content-Type': 'application/json' }
         });
         const data = await response.json();
+
         if (response.ok) {
             if (data.isCorrect) {
+                // Respuesta correcta
+                buttonElement.style.backgroundColor = "green";
+                buttonElement.style.color = "white";
                 alert("¡Respuesta correcta!");
                 updateScore(data.score);
-                closeModal();
-                fetchQuestion();
             } else {
-                alert("Respuesta incorrecta. Juego terminado.");
-                endGame(data.score, data.status);
-                closeModal();
+                // Respuesta incorrecta
+                buttonElement.style.backgroundColor = "red";
+                buttonElement.style.color = "white";
+                alert("Respuesta incorrecta.");
             }
         } else {
-            console.error("Error en submitAnswer:", data);
+            console.error("Error al enviar la respuesta:", data);
         }
     } catch (error) {
-        console.error('Error en submitAnswer:', error);
+        console.error("Error en submitAnswer:", error);
     }
 }
 
@@ -125,6 +195,9 @@ function endGame(score, status) {
     document.getElementById("gameStatus").textContent = `Juego terminado - ${status}`;
     document.getElementById("finalScore").textContent = `Puntaje final: ${score}`;
     alert("Juego terminado. Puntaje final: " + score);
+
+    // Redirigir a la pantalla de finalización del juego (opcional) // ACA TENDRIAMOS QUE VER DESP DE TERMINAR EL JUEGO A DONDE REEDIRIGIR.
+    window.location.href = "/game-over"; // Cambia esta URL según tu configuración
 }
 
 // Cerrar el modal
@@ -138,5 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("No se encontró un ID de juego activo. Volviendo al menú.");
         window.location.href = "/menu"; // Ajusta la URL del menú según corresponda
     }
-});
+}
+
+
+
+
+);
 
