@@ -73,13 +73,18 @@ function showCategoryModal(category) {
     setTimeout(() => {
         categoryZoomContainer.classList.remove("zoom");
         categoryZoomContainer.classList.add("shrink"); // Aplica la clase de alejamiento
+
+        // Inicia la generación de la pregunta mientras se reproduce el efecto de alejamiento
+        fetchQuestionFromAPI(category);
+
+        // Oculta el modal de categoría tras el efecto de alejamiento
         setTimeout(() => {
             categoryZoomContainer.classList.remove("shrink"); // Restablece el tamaño del contenedor
             categoryModal.style.display = "none"; // Oculta el modal de categoría
-            fetchQuestionFromAPI(category); // Llama a la función para obtener la pregunta
         }, 1000); // Tiempo para el efecto de alejamiento
-    }, 2000); // Duración de la animación de zoom en milisegundos (total: 3 segundos)
+    }, 2000); // Duración de la animación de zoom en milisegundos
 }
+
 
 function terminateGame() {
     console.log("Juego terminado. Respuesta incorrecta.");
@@ -87,9 +92,6 @@ function terminateGame() {
     // Puedes agregar lógica para mostrar un resumen o redirigir al usuario
     window.location.href = "/game-over"; // Ajusta la URL según corresponda
 }
-
-
-
 
 function incrementCorrectAnswers() {
     const correctAnswersElement = document.getElementById("correctAnswers");
@@ -152,7 +154,7 @@ function showQuestionModal(questionText, options, correctAnswer) {
     document.getElementById("questionModal").style.display = "flex";
     console.log("Modal mostrado");
 }
-   
+
 
 // Enviar la respuesta seleccionada
 async function submitAnswer(selectedAnswer, buttonElement) {

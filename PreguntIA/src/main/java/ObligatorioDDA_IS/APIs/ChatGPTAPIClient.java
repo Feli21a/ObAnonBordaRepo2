@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 public class ChatGPTAPIClient {
     
     private String apiKey;
-                
 
     private final String apiUrl = "https://api.openai.com/v1/chat/completions";
 

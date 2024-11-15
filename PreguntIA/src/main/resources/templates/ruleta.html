@@ -114,45 +114,37 @@
         let isSpinning = false;
 
         function spin() {
-    if (isSpinning) {
-        console.log("El giro ya está en progreso. Espera a que termine.");
-        return;
-    }
+            if (isSpinning) {
+                console.log("El giro ya está en progreso. Espera a que termine.");
+                return;
+            }
 
-    isSpinning = true; // Marca que el giro está en progreso
-    document.getElementById("spinButton").disabled = true; // Desactiva el botón mientras gira
+            isSpinning = true; // Marca que el giro está en progreso
+            document.getElementById("spinButton").disabled = true; // Desactiva el botón mientras gira
 
-    if (oldpick.length === data.length) oldpick = [];
+            const ps = 360 / data.length; // Grados por sector
+            const rng = Math.floor((Math.random() * 1440) + 360); // Generar rotación aleatoria
+            rotation = (Math.round(rng / ps) * ps); // Ajustar al sector más cercano
+            picked = Math.round(data.length - (rotation % 360) / ps);
+            picked = picked >= data.length ? (picked % data.length) : picked;
 
-    const ps = 360 / data.length;
-    const rng = Math.floor((Math.random() * 1440) + 360);
-    rotation = (Math.round(rng / ps) * ps);
-    picked = Math.round(data.length - (rotation % 360) / ps);
-    picked = picked >= data.length ? (picked % data.length) : picked;
+            // Aquí se elimina la verificación de si ya fue seleccionado
+            rotation += 90 - Math.round(ps / 2);
 
-    if (oldpick.indexOf(picked) !== -1) {
-        spin();
-        return;
-    } else {
-        oldpick.push(picked);
-    }
+            vis.transition()
+                .duration(3000)
+                .ease("cubic-out")
+                .attrTween("transform", rotTween)
+                .each("end", function () {
+                    const selectedCategory = data[picked].label;
+                    showCategoryModal(selectedCategory); // Muestra el modal de categoría
+                    oldrotation = rotation;
 
-    rotation += 90 - Math.round(ps / 2);
-    vis.transition()
-        .duration(3000)
-        .ease("cubic-out")
-        .attrTween("transform", rotTween)
-        .each("end", function () {
-            const selectedCategory = data[picked].label;
-            showCategoryModal(selectedCategory); // Llama al modal de categoría
-            oldrotation = rotation;
-
-            // Restablecer `isSpinning` al finalizar el giro
-            isSpinning = false;
-            console.log("El giro ha terminado. El botón de girar está listo.");
-        });
-}
-
+                    isSpinning = false; // Restablece la bandera
+                    document.getElementById("spinButton").disabled = false; // Habilita el botón
+                    console.log("El giro ha terminado. Categoría seleccionada:", selectedCategory);
+                });
+        }
 
 
         function rotTween(to) {
