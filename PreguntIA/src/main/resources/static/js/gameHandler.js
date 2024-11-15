@@ -125,8 +125,20 @@ function showQuestionModal(questionText, options, correctAnswer) {
                     button.style.color = "white";
 
                     playIncorrectAnswerSound(); // Reproducir sonido de respuesta incorrecta
-                    const finalScore = document.getElementById("correctAnswers").textContent;
-                    endGame(finalScore, "incorrect"); // Mostrar el modal de fin de partida con el puntaje final
+
+                    // Resaltar la respuesta correcta en verde
+                    modalOptions.forEach((btn, idx) => {
+                        if (sanitizedOptions[idx].trim().toLowerCase() === sanitizedCorrectAnswer.toLowerCase()) {
+                            btn.style.backgroundColor = "green";
+                            btn.style.color = "white";
+                        }
+                    });
+
+                    // Esperar 3 segundos antes de finalizar el juego
+                    setTimeout(() => {
+                        const finalScore = document.getElementById("correctAnswers").textContent;
+                        endGame(finalScore, "incorrect"); // Mostrar el modal de fin de partida con el puntaje final
+                    }, 3000);
                 }
 
                 modalOptions.forEach(btn => btn.disabled = true); // Desactivar todos los botones
@@ -172,7 +184,7 @@ async function submitAnswer(selectedAnswer, buttonElement) {
 }
 
 // Actualizar el puntaje en la interfaz
-function updateScore(score) {
+function updateScore() {
     const correctAnswersElement = document.getElementById("correctAnswers");
 
     // Convertir el texto actual a número y sumar 1
@@ -183,7 +195,8 @@ function updateScore(score) {
 }
 
 // Finalizar el juego y mostrar resultados
-function endGame(score, status) {
+async function endGame(score, status) {
+    const gameId = sessionStorage.getItem('gameId');
     const finalScoreElement = document.getElementById("finalScore");
     const endGameModal = document.getElementById("endGameModal");
 
@@ -207,8 +220,21 @@ function endGame(score, status) {
     } else {
         playCorrectAnswerSound();
     }
-}
 
+    // Llamada al backend para actualizar el estado del juego a "Finalizada"
+    try {
+        const response = await fetch(`/spgame/${gameId}/end`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+            console.error("Error al finalizar la partida en el servidor.");
+        }
+    } catch (error) {
+        console.error("Error en la conexión para finalizar la partida:", error);
+    }
+}
 
 function replayGame() {
     // Reinicia el juego (resetear el puntaje, la ruleta, etc.)

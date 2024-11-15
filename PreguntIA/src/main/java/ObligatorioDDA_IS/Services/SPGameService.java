@@ -43,8 +43,10 @@ public class SPGameService {
     public void finalizarPartida(int gameId) {
         SinglePlayerGame game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Partida no encontrada"));
-        game.endGame(); // Llama a endGame() para configurar el estado y gameEnded
-        gameRepository.save(game);
+
+        game.setStatus("Finalizada"); // Cambia el estado a "Finalizada"
+        game.setGameEnded(true); // Marca que el juego ha terminado
+        gameRepository.save(game); // Guarda los cambios en la base de datos
     }
 
     public Question getCurrentQuestion(int gameId) {

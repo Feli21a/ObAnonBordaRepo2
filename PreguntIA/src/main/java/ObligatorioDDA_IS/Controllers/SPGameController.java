@@ -43,9 +43,13 @@ public class SPGameController { // Nombre actualizado de la clase
         }
     }
 
-    @PostMapping("/{gameId}/finalizar")
+    @PostMapping("/{gameId}/end")
     public ResponseEntity<Void> finalizarJuego(@PathVariable int gameId) {
-        gameService.finalizarPartida(gameId);
-        return ResponseEntity.ok().build();
+        try {
+            gameService.finalizarPartida(gameId); // Llama al método para finalizar la partida en el servicio
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build(); // Devuelve un error 500 si algo falla
+        }
     }
 }

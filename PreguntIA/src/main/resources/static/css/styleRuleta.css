@@ -189,21 +189,35 @@ body {
     width: 100%;
     padding: 16px;
     margin: 15px 0;
-    /* Más espacio entre botones */
     font-size: 20px;
     border: none;
     border-radius: 10px;
     background-color: #8b4513;
     color: #f0e6d2;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
     font-family: 'Amatic SC', cursive;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Sombra suave */
+}
+
+/* Estilo del texto de la pregunta */
+#modal-question-text {
+    font-size: 24px;
+    color: #8b4513;
+    font-family: 'Amatic SC', cursive;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+    /* Sombra al texto */
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .answer-button:hover {
     background-color: #a0522d;
     color: #fff;
     transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    /* Sombra más fuerte en hover */
 }
 
 /* === Modal de Categoría === */

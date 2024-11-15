@@ -108,6 +108,10 @@ public class SinglePlayerGame implements Game {
         this.difficulty = difficulty;
     }
 
+    public boolean getGameEnded() {
+        return gameEnded;
+    }
+
     public void setScore(int score) {
         this.score = score;
     }
