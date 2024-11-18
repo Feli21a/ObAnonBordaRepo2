@@ -21,11 +21,14 @@ public class ChatGPTAPIClient {
     private final String apiUrl = "https://api.openai.com/v1/chat/completions";
 
     public ChatGPTAPIClient() {
-        // Configura dotenv para buscar en la carpeta PreguntIA
+        // Intenta cargar el archivo .env desde el directorio raíz o un directorio
+        // específico
         Dotenv dotenv = Dotenv.configure()
-                .directory("C:/Users/felia/Desktop/CEI/DDA/Obligatorio/ObAnonBordaRepo2/PreguntIA")
+                .filename(".env") // Nombre del archivo
+                .directory("./PreguntIA") // Ruta relativa desde la raíz
                 .load();
 
+        // Obtiene la API_KEY del archivo .env
         this.apiKey = dotenv.get("API_KEY");
 
         if (this.apiKey == null || this.apiKey.isEmpty()) {
