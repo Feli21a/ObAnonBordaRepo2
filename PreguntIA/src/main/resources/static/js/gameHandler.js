@@ -85,6 +85,40 @@ function showCategoryModal(category) {
     }, 2000); // Duración de la animación de zoom en milisegundos
 }
 
+// Ruta del sonido del temporizador
+const timerSound = new Audio('/audio/timer.mp3');
+timerSound.loop = true; // El sonido del temporizador se repetirá mientras el temporizador esté activo
+
+// Función para iniciar el temporizador con efecto de sonido
+function startTimer(onTimeout) {
+    const timerElement = document.getElementById("timer");
+    let timeLeft = 15; // Tiempo en segundos
+
+    // Iniciar el sonido del temporizador
+    timerSound.play().catch(error => console.error("Error reproduciendo el sonido del temporizador:", error));
+
+    timerElement.textContent = `${timeLeft} segundos`;
+
+    timer = setInterval(() => {
+        timeLeft -= 1;
+        timerElement.textContent = `${timeLeft} segundos`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timer); // Detener el temporizador
+            timerSound.pause(); // Detener el sonido del temporizador
+            timerSound.currentTime = 0; // Reiniciar el sonido para el futuro
+            playTimeUpSound(); // Reproducir un sonido de tiempo agotado
+            onTimeout(); // Ejecutar la acción al terminar el tiempo
+        }
+    }, 1000);
+}
+
+// Reproducir sonido cuando el tiempo se agota
+function playTimeUpSound() {
+    const timeUpSound = new Audio('/audio/timeUp.mp3'); // Asegúrate de tener este archivo de sonido
+    timeUpSound.play().catch(error => console.error("Error reproduciendo el sonido de tiempo agotado:", error));
+}
+
 // Mostrar la pregunta y opciones en el modal
 function showQuestionModal(questionText, options, correctAnswer) {
     document.getElementById("modal-question-text").textContent = questionText || "Pregunta no disponible";
@@ -102,6 +136,10 @@ function showQuestionModal(questionText, options, correctAnswer) {
             button.disabled = false; // Habilitar el botón
 
             button.onclick = () => {
+                clearTimeout(timer); // Detener el temporizador al seleccionar una respuesta
+                timerSound.pause(); // Detener el sonido del temporizador
+                timerSound.currentTime = 0; // Reiniciar el sonido para el futuro
+
                 console.log("Opción seleccionada:", sanitizedOptions[index]);
                 console.log("Respuesta correcta:", sanitizedCorrectAnswer);
 
@@ -148,8 +186,24 @@ function showQuestionModal(questionText, options, correctAnswer) {
         }
     });
 
+    // Mostrar el modal de pregunta
     document.getElementById("questionModal").style.display = "flex";
     console.log("Modal de pregunta mostrado");
+
+    // Iniciar el temporizador con efecto de sonido
+    startTimer(() => {
+        console.log("Tiempo agotado. Partida finalizada.");
+        const finalScore = document.getElementById("correctAnswers").textContent;
+        endGame(finalScore, "incorrect"); // Finalizar partida como incorrecta
+    });
+}
+
+// Detener el temporizador y su sonido al cerrar el modal
+function closeModal() {
+    clearInterval(timer); // Detener el temporizador si el modal se cierra
+    timerSound.pause(); // Detener el sonido del temporizador
+    timerSound.currentTime = 0; // Reiniciar el sonido para el futuro
+    document.getElementById("questionModal").style.display = "none";
 }
 
 // Enviar la respuesta seleccionada
@@ -245,11 +299,6 @@ function replayGame() {
 
 function goToMenu() {
     window.location.href = "/menu"; // Replace with the actual URL of your menu
-}
-
-// Cerrar el modal
-function closeModal() {
-    document.getElementById("questionModal").style.display = "none";
 }
 
 document.addEventListener('DOMContentLoaded', () => {

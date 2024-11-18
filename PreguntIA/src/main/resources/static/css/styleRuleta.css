@@ -461,3 +461,49 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: scale(1.05);
 }
+
+/* Estilo para el temporizador */
+#timer {
+    font-size: 24px;
+    /* Tamaño de fuente */
+    color: #8b4513;
+    /* Marrón oscuro, acorde a tu diseño */
+    font-family: 'Amatic SC', cursive;
+    /* Fuente consistente */
+    background-color: #f0e6d2;
+    /* Fondo beige para destacar */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    border-radius: 15px;
+    /* Bordes redondeados */
+    border: 2px solid #8b4513;
+    /* Borde marrón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    display: inline-block;
+    /* Ajuste de tamaño */
+    text-align: center;
+    /* Centrar texto */
+    margin-bottom: 20px;
+    /* Espaciado inferior */
+    animation: pulse 1s infinite;
+    /* Efecto de pulso */
+}
+
+/* Animación de pulso */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}
