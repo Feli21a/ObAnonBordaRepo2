@@ -112,7 +112,7 @@ body {
     color: #8b4513;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-family: 'Amatic SC', cursive;
-    font-size: 18px;
+    font-size: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -178,7 +178,7 @@ body {
     width: 100px;
     height: 100px;
     position: absolute;
-    top: -30px;
+    top: -35px;
     /* Ajustar para que quede encima del modal */
     left: calc(50% - 50px);
     /* Centrar horizontalmente */
@@ -285,7 +285,7 @@ body {
     #player-info {
         width: 180px;
         padding: 15px;
-        font-size: 16px;
+        font-size: 18px;
     }
 
     #chart {
@@ -316,7 +316,7 @@ body {
     #player-info {
         width: 150px;
         padding: 10px;
-        font-size: 14px;
+        font-size: 16px;
     }
 
     #chart {
@@ -373,19 +373,6 @@ body {
 }
 
 /* Modal de Partida Finalizada */
-#endGameModal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-}
-
 #endGameModal .modal-content {
     background-color: #f0e6d2;
     border-radius: 15px;
@@ -398,14 +385,28 @@ body {
     font-family: 'Amatic SC', 'Special Elite', Helvetica, Arial, sans-serif;
 }
 
+/* Agregar imagen decorativa al modal */
+#endGameModal .modal-content::before {
+    content: '';
+    background: url('/img/MundiTriste.png') no-repeat center center;
+    background-size: contain;
+    width: 100px;
+    /* Ajusta el tamaño según sea necesario */
+    height: 100px;
+    position: absolute;
+    top: -50px;
+    /* Posición encima del modal */
+    left: calc(50% - 50px);
+}
+
 /* Estilo del título y texto en el modal */
 #endGameModal h2 {
-    font-size: 24px;
+    font-size: 26px;
     color: #8b4513;
 }
 
 #endGameModal p {
-    font-size: 18px;
+    font-size: 24px;
     margin: 20px 0;
 }
 
@@ -450,11 +451,13 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-size: 18px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     font-family: 'Amatic SC', 'Special Elite', Helvetica, Arial, sans-serif;
     transition: background-color 0.3s, transform 0.2s;
 }
 
 .menu-button:hover {
     background-color: #a0522d;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transform: scale(1.05);
 }
