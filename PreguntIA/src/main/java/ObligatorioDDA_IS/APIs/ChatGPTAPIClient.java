@@ -11,12 +11,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 @Component
 public class ChatGPTAPIClient {
-    
+
     private String apiKey;
-     
+
     private final String apiUrl = "https://api.openai.com/v1/chat/completions";
+
+    public ChatGPTAPIClient() {
+        // Configura dotenv para buscar en la carpeta PreguntIA
+        Dotenv dotenv = Dotenv.configure()
+                .directory("C:/Users/felia/Desktop/CEI/DDA/Obligatorio/ObAnonBordaRepo2/PreguntIA")
+                .load();
+
+        this.apiKey = dotenv.get("API_KEY");
+
+        if (this.apiKey == null || this.apiKey.isEmpty()) {
+            throw new RuntimeException("La API key no se encuentra configurada en el archivo .env");
+        }
+    }
 
     public String sendRequest(String prompt) {
         RestTemplate restTemplate = new RestTemplate();
