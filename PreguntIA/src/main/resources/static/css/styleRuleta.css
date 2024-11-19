@@ -60,23 +60,24 @@ body {
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* === Marcador de la Ruleta === */
 #marker {
     position: absolute;
     top: 50%;
     right: -30px;
-    transform: translateY(-50%) rotate(90deg);
-    width: 0;
-    height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 55px solid #000000;
+    transform: translateY(-50%) rotate(-90deg); /* Gira el marcador -90 grados */
+    width: 60px;
+    height: 60px;
+    background-color: #f0e6d2; /* Color beige */
+    border: 2px solid #8b4513; /* Borde marrón */
+    clip-path: polygon(50% 0, 100% 100%, 0 100%); /* Triángulo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Sombra más visible */
 }
+
 
 /* === Botón de Girar === */
 .spin-button {
     background: #ffffff;
-    border: 2px solid #8b4513;
+    border: 3px solid #8b4513;
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -129,9 +130,11 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(10px); /* Efecto de desenfoque */
     justify-content: center;
     align-items: center;
+    animation: fadeIn 0.3s ease; /* Animación de entrada */
 }
 
 .modal-content {
@@ -230,6 +233,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px); /* Efecto de desenfoque */
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.3s ease;
