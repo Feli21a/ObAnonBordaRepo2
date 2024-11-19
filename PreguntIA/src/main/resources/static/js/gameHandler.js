@@ -269,33 +269,42 @@ async function submitAnswer(selectedAnswer, buttonElement) {
 async function updateScore() {
     const correctAnswersElement = document.getElementById("correctAnswers");
 
-    // Convertir el texto actual a número y sumar 1
     let currentCount = parseInt(correctAnswersElement.textContent, 10) || 0;
     currentCount += 1;
     correctAnswersElement.textContent = currentCount;
 
     console.log("Incrementado el contador de respuestas correctas. Nuevo valor:", currentCount);
 
-    // Obtener el ID del juego desde el almacenamiento de sesión
     const gameId = sessionStorage.getItem('gameId');
-
     if (!gameId) {
         console.error("No se encontró un ID de juego en la sesión.");
         return;
     }
 
-    // Enviar la actualización al backend
     try {
         const response = await fetch(`/spgame/${gameId}/update-score`, {
-            method: 'POST', // Puedes usar PUT si prefieres
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ score: currentCount }) // Enviar el nuevo puntaje
+            body: JSON.stringify({ score: currentCount })
         });
 
-        if (!response.ok) {
-            console.error("Error al actualizar el puntaje en el backend.");
-        } else {
+        if (response.ok) {
             console.log("Puntaje actualizado en el backend correctamente.");
+
+            // Actualizar maxScoreSP del usuario si es necesario
+            const userResponse = await fetch("/api/users/update-score", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ maxScoreSP: currentCount })
+            });
+
+            if (userResponse.ok) {
+                console.log("MaxScoreSP actualizado correctamente en el backend.");
+            } else {
+                console.error("Error al actualizar MaxScoreSP en el backend.");
+            }
+        } else {
+            console.error("Error al actualizar el puntaje en el backend.");
         }
     } catch (error) {
         console.error("Error al intentar actualizar el puntaje en el backend:", error);
@@ -330,27 +339,78 @@ async function endGame(score, status) {
         playCorrectAnswerSound();
     }
 
-    // Llamada al backend para actualizar el estado del juego a "Finalizada"
     try {
         const response = await fetch(`/spgame/${gameId}/end`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
 
-        if (!response.ok) {
-            console.error("Error al finalizar la partida en el servidor.");
+        if (response.ok) {
+            console.log("Juego finalizado en el backend. Actualizando perfil.");
+            await refreshUserProfile(); // Refresca el perfil después de finalizar el juego
+        } else {
+            console.error("Error al finalizar el juego en el backend.");
         }
     } catch (error) {
-        console.error("Error en la conexión para finalizar la partida:", error);
+        console.error("Error al finalizar el juego:", error);
     }
 }
 
-function replayGame() {
-    // Reinicia el juego (resetear el puntaje, la ruleta, etc.)
-    document.getElementById("correctAnswers").textContent = "0";
-    document.getElementById("endGameModal").style.display = "none";
-    // Aquí puedes agregar código adicional para reiniciar el estado del juego
+async function refreshUserProfile() {
+    try {
+        const response = await fetch("/api/users/perfil");
+        if (!response.ok) throw new Error("Error al obtener el perfil del usuario");
+
+        const data = await response.json();
+        document.getElementById("usernameDisplay").textContent = data.username || "Sin Nombre";
+        document.getElementById("currentAvatar").src = data.avatar || "/img/default-avatar.png";
+        document.getElementById("maxScoreSPDisplay").textContent = data.maxScoreSP || "0";
+    } catch (error) {
+        console.error("Error al actualizar el perfil del usuario:", error);
+    }
 }
+
+async function replayGame() {
+    try {
+        // Obtener la dificultad de la partida actual desde sessionStorage
+        const difficulty = sessionStorage.getItem('difficulty');
+        if (!difficulty) {
+            console.error("Error: No se encontró dificultad en sessionStorage.");
+            alert("Error: No se puede reiniciar la partida. Por favor, vuelve al menú.");
+            window.location.href = "/menu"; // Redirigir al menú en caso de error
+            return;
+        }
+
+        // Hacer una nueva solicitud para iniciar el juego con la misma dificultad
+        const response = await fetch(`/spgame/start?difficulty=${difficulty}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) throw new Error("Error al reiniciar el juego");
+
+        const data = await response.json();
+        console.log("Respuesta del servidor (reinicio):", data);
+
+        if (data.gameId) {
+            // Actualizar sessionStorage con el nuevo gameId
+            sessionStorage.setItem('gameId', data.gameId);
+
+            // Reiniciar la interfaz
+            document.getElementById("correctAnswers").textContent = "0";
+            document.getElementById("endGameModal").style.display = "none";
+
+            // Redirigir a la pantalla de la ruleta con el nuevo gameId
+            window.location.href = `/ruleta?gameId=${data.gameId}&difficulty=${difficulty}`;
+        } else {
+            console.error("Error: `gameId` no se recibió en la respuesta del servidor al reiniciar.");
+        }
+    } catch (error) {
+        console.error("Error en replayGame:", error);
+        alert("Hubo un problema al reiniciar la partida. Por favor, intenta más tarde.");
+    }
+}
+
 
 function goToMenu() {
     window.location.href = "/menu"; // Replace with the actual URL of your menu

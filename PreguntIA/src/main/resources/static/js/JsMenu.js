@@ -1,20 +1,23 @@
 // Al abrir el modal de perfil, cargar los datos del usuario
-document.getElementById("perfilModal").addEventListener("show.bs.modal", async function () {
-    try {
-        const response = await fetch("/api/users/perfil");
-        if (!response.ok) throw new Error("Error al cargar el perfil del usuario");
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/api/users/perfil")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al obtener el perfil del usuario");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const { username, avatar, maxScoreSP } = data;
 
-        const data = await response.json();
-
-        // Cargar avatar, nombre, y estadísticas
-        document.getElementById("currentAvatar").src = data.avatar || "/img/MundiPensando.png";
-        document.getElementById("usernameDisplay").textContent = data.username || "Sin Nombre";
-        document.getElementById("maxScoreSPDisplay").textContent = data.maxScoreSP || "0";
-
-    } catch (error) {
-        console.error("Error al cargar el perfil del usuario:", error);
-    }
+            // Configurar el perfil en la interfaz
+            document.getElementById("usernameDisplay").textContent = username || "Sin Nombre";
+            document.getElementById("currentAvatar").src = avatar || "/img/MundiTriste.png";
+            document.getElementById("maxScoreSPDisplay").textContent = maxScoreSP || "0";
+        })
+        .catch(error => console.error("Error al cargar el perfil del usuario:", error));
 });
+
 
 // Manejar la selección de un avatar desde el modal
 document.querySelectorAll('.avatar-option').forEach(avatar => {

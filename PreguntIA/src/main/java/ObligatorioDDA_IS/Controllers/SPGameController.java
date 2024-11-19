@@ -58,14 +58,24 @@ public class SPGameController { // Nombre actualizado de la clase
     }
 
     @PostMapping("/{gameId}/end")
-    public ResponseEntity<Void> endGame(@PathVariable int gameId) {
+    public ResponseEntity<String> endGame(@PathVariable int gameId, HttpSession session) {
         try {
-            gameService.endGame(gameId); // Llama al método para finalizar la partida en el servicio
-            return ResponseEntity.ok().build();
+            SinglePlayerGame game = gameService.endGame(gameId);
+    
+            // Actualiza el maxScoreSP del usuario autenticado
+            User loggedInUser = (User) session.getAttribute("user");
+            if (loggedInUser != null && game.getScore() > loggedInUser.getMaxScoreSP()) {
+                loggedInUser.setMaxScoreSP(game.getScore());
+                userRepository.save(loggedInUser); // Guarda los cambios en la base de datos
+                session.setAttribute("user", loggedInUser); // Actualiza el usuario en la sesión
+            }
+    
+            return ResponseEntity.ok("Juego finalizado y puntaje actualizado");
         } catch (Exception e) {
-            return ResponseEntity.status(500).build(); // Devuelve un error 500 si algo falla
+            return ResponseEntity.status(500).body("Error al finalizar el juego");
         }
     }
+    
 
     @PostMapping("/{gameId}/update-score")
     public ResponseEntity<Void> updateScore(@PathVariable int gameId, @RequestBody Map<String, Integer> payload) {

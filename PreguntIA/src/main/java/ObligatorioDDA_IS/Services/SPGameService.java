@@ -50,19 +50,15 @@ public class SPGameService {
         gameRepository.save(game);
     }
 
-    public void endGame(int gameId) {
+    public SinglePlayerGame endGame(int gameId) {
         SinglePlayerGame game = gameRepository.findById(gameId)
-                .orElseThrow(() -> new RuntimeException("Game not found"));
+                .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
 
         game.endGame();
+
         gameRepository.save(game);
 
-        // Actualizar maxScoreSP si corresponde
-        User user = game.getUser();
-        if (game.getScore() > user.getMaxScoreSP()) {
-            user.setMaxScoreSP(game.getScore());
-            userRepository.save(user);
-        }
+        return game;
     }
 
     public Question getCurrentQuestion(int gameId) {

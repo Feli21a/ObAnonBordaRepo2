@@ -24,7 +24,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -51,19 +51,17 @@ public class UserController {
 
     @GetMapping("/perfil")
     public ResponseEntity<?> getUserProfile(HttpSession session) {
-        // Obtén el usuario autenticado desde la sesión
         User loggedInUser = (User) session.getAttribute("user");
 
         if (loggedInUser != null) {
-            // Crear un objeto de respuesta con los datos del perfil
+            // Reflejar el valor actualizado del perfil
             Map<String, Object> profileData = new HashMap<>();
             profileData.put("username", loggedInUser.getUsername());
-            profileData.put("maxScoreSP", loggedInUser.getMaxScoreSP()); 
-            profileData.put("avatar", loggedInUser.getAvatar()); // Asegúrate de que este campo esté configurado
-            // Devolver la respuesta como JSON
+            profileData.put("maxScoreSP", loggedInUser.getMaxScoreSP());
+            profileData.put("avatar",
+                    loggedInUser.getAvatar() != null ? loggedInUser.getAvatar() : "/img/MundiTriste.png");
             return ResponseEntity.ok(profileData);
         } else {
-            // Devolver un estado 401 si el usuario no está autenticado
             return ResponseEntity.status(401).body("Usuario no autenticado");
         }
     }
@@ -81,6 +79,24 @@ public class UserController {
             return ResponseEntity.ok("Avatar actualizado correctamente");
         } else {
             return ResponseEntity.status(400).body("No se pudo actualizar el avatar");
+        }
+    }
+
+    @PostMapping("/update-score")
+    public ResponseEntity<String> updateMaxScoreSP(HttpSession session, @RequestBody Map<String, Integer> scoreData) {
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser != null && scoreData.containsKey("maxScoreSP")) {
+            int newScore = scoreData.get("maxScoreSP");
+
+            // Actualiza solo si el nuevo puntaje es mayor
+            if (newScore > loggedInUser.getMaxScoreSP()) {
+                loggedInUser.setMaxScoreSP(newScore);
+                userRepository.save(loggedInUser); // Guarda los cambios en la base de datos
+            }
+
+            return ResponseEntity.ok("MaxScoreSP actualizado correctamente");
+        } else {
+            return ResponseEntity.status(400).body("No se pudo actualizar el MaxScoreSP");
         }
     }
 

@@ -141,3 +141,29 @@ body {
         white-space: normal;
     }
 }
+
+/* Ajuste del botón de alternar visibilidad */
+.toggle-password {
+    border: 2px solid #5d4037;
+    border-left: none;
+    background-color: #8b4513;
+    color: #fff;
+    border-radius: 0 8px 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Icono dentro del botón */
+.toggle-password i {
+    font-size: 1.2rem;
+}
+
+/* Hover para el botón de alternar visibilidad */
+.toggle-password:hover {
+    background-color: #a0522d;
+    transform: scale(1.05);
+}

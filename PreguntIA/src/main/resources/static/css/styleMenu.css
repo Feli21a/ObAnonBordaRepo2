@@ -222,8 +222,8 @@ h2 {
 
 /* Contenedor de Avatar en el Modal de Perfil */
 .perfil-avatar-container {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     border: 2px solid #8b4513;
     overflow: hidden;
@@ -249,7 +249,7 @@ h2 {
 /* Información del Usuario en el Modal de Perfil */
 .perfil-user-info h5 {
     font-family: 'Amatic SC', cursive;
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(2.0rem, 3vw, 2.5rem);
     color: #8b4513;
     text-align: center;
     margin: 0;
@@ -260,20 +260,20 @@ h2 {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #ccc;
-    text-align: center;
+    text-align: left;
     width: 100%;
 }
 
 .perfil-statistics h6 {
     font-family: 'Special Elite', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     color: #8b4513;
     margin-bottom: 0.5rem;
 }
 
 .perfil-statistics p {
     font-family: 'Amatic SC', cursive;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     margin: 0;
     color: #333;
 }
