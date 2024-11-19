@@ -1,6 +1,5 @@
 package ObligatorioDDA_IS.Models;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 public interface Game {
@@ -16,8 +15,6 @@ public interface Game {
     String getStatus();
 
     LocalDateTime getStartDateTime();
-
-    Duration getDuration();
 
     int getIdGame();
 }

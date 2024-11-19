@@ -1,6 +1,5 @@
 package ObligatorioDDA_IS.Models;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -20,7 +19,6 @@ public class SinglePlayerGame implements Game {
     private LocalDateTime startDateTime;
     private int score;
     private String status;
-    private Duration duration;
     private String difficulty;
     private boolean gameEnded; // Indicador para finalizar el juego si el jugador falla
 
@@ -47,7 +45,6 @@ public class SinglePlayerGame implements Game {
 
     @Override
     public void endGame() {
-        this.duration = Duration.between(startDateTime, LocalDateTime.now());
         this.status = "Finalizado";
         this.gameEnded = true;
     }
@@ -93,11 +90,6 @@ public class SinglePlayerGame implements Game {
     @Override
     public LocalDateTime getStartDateTime() {
         return startDateTime;
-    }
-
-    @Override
-    public Duration getDuration() {
-        return duration;
     }
 
     public String getDifficulty() {

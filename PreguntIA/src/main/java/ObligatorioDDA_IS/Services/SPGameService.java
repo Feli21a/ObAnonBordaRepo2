@@ -40,7 +40,7 @@ public class SPGameService {
         gameRepository.save(game);
     }
 
-    public void finalizarPartida(int gameId) {
+    public void endGame(int gameId) {
         SinglePlayerGame game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new EntityNotFoundException("Partida no encontrada"));
 

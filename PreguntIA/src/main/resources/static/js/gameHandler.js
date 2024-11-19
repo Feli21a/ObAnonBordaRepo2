@@ -92,7 +92,7 @@ timerSound.loop = true; // El sonido del temporizador se repetirá mientras el t
 // Función para iniciar el temporizador con efecto de sonido
 function startTimer(onTimeout) {
     const timerElement = document.getElementById("timer");
-    let timeLeft = 15; // Tiempo en segundos
+    let timeLeft = 10; // Tiempo en segundos
 
     // Iniciar el sonido del temporizador
     timerSound.play().catch(error => console.error("Error reproduciendo el sonido del temporizador:", error));
