@@ -1,4 +1,3 @@
-/* 
 package ObligatorioDDA_IS.Models;
 
 import jakarta.persistence.Entity;
@@ -14,18 +13,20 @@ public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idParticipant;
+
     private int score;
-    private int userId;
 
     @ManyToOne
-    @JoinColumn(name = "game_id")
-    private Game game;
+    @JoinColumn(name = "user_id", nullable = false) // Relación con el usuario
+    private User user;
 
-    public Participant() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "game_id", nullable = false) // Relación con la partida
+    private SinglePlayerGame game;
 
-    public Participant(int userId, Game game) {
-        this.userId = userId;
+    // Constructor, Getters y Setters
+    public Participant(User user, SinglePlayerGame game) {
+        this.user = user;
         this.game = game;
         this.score = 0;
     }
@@ -33,7 +34,4 @@ public class Participant {
     public void addScore(int points) {
         this.score += points;
     }
-
-    // Getters and setters
 }
-    */

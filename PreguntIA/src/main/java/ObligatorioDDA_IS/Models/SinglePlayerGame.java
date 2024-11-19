@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Transient;
 
 @Entity
@@ -24,6 +26,10 @@ public class SinglePlayerGame implements Game {
 
     @Transient
     private Question currentQuestion; // Pregunta actual de la partida
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // Relación con el usuario
+    private User user;
 
     public SinglePlayerGame(String difficulty) {
         this.difficulty = difficulty;
@@ -96,6 +102,10 @@ public class SinglePlayerGame implements Game {
         return difficulty;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
@@ -118,5 +128,9 @@ public class SinglePlayerGame implements Game {
 
     public void setGameEnded(boolean gameEnd) {
         this.gameEnded = gameEnd;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

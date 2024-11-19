@@ -36,7 +36,7 @@ document.getElementById("confirmLogoutButton").addEventListener("click", functio
 });
 
 
-// JsMenu.js
+
 async function startGame(difficulty) {
     try {
         const response = await fetch(`/spgame/start?difficulty=${difficulty}`, {
@@ -63,6 +63,7 @@ async function startGame(difficulty) {
         console.error("Error en startGame:", error);
     }
 }
+
 
 
 

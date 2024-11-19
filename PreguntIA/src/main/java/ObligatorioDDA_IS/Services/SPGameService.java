@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 
 import ObligatorioDDA_IS.Models.Question;
 import ObligatorioDDA_IS.Models.SinglePlayerGame;
+import ObligatorioDDA_IS.Models.User;
 import ObligatorioDDA_IS.Repository.SPGameRepository;
-import jakarta.persistence.EntityNotFoundException;
+import ObligatorioDDA_IS.Repository.UserRepository;
 
 @Service
 public class SPGameService {
@@ -20,9 +21,18 @@ public class SPGameService {
         this.gameRepository = gameRepository;
     }
 
-    public SinglePlayerGame createSinglePlayerGame(String difficulty) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public SinglePlayerGame createSinglePlayerGame(String difficulty, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
         SinglePlayerGame game = new SinglePlayerGame(difficulty);
-        return gameRepository.save(game);
+        game.setUser(user); // Vincula el usuario al juego
+        gameRepository.save(game);
+
+        return game;
     }
 
     public SinglePlayerGame findGameById(int gameId) {
@@ -42,15 +52,33 @@ public class SPGameService {
 
     public void endGame(int gameId) {
         SinglePlayerGame game = gameRepository.findById(gameId)
-                .orElseThrow(() -> new EntityNotFoundException("Partida no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Game not found"));
 
-        game.setStatus("Finalizada"); // Cambia el estado a "Finalizada"
-        game.setGameEnded(true); // Marca que el juego ha terminado
-        gameRepository.save(game); // Guarda los cambios en la base de datos
+        game.endGame();
+        gameRepository.save(game);
+
+        // Actualizar maxScoreSP si corresponde
+        User user = game.getUser();
+        if (game.getScore() > user.getMaxScoreSP()) {
+            user.setMaxScoreSP(game.getScore());
+            userRepository.save(user);
+        }
     }
 
     public Question getCurrentQuestion(int gameId) {
         SinglePlayerGame game = findGameById(gameId);
         return game.getCurrentQuestion();
+    }
+
+    public void updateScore(int gameId, int score) {
+        SinglePlayerGame game = gameRepository.findById(gameId)
+                .orElseThrow(() -> new RuntimeException("Game not found"));
+
+        if (!game.getGameEnded()) {
+            game.setScore(score); // Actualiza el puntaje
+            gameRepository.save(game);
+        } else {
+            throw new RuntimeException("No se puede actualizar el puntaje de un juego finalizado.");
+        }
     }
 }

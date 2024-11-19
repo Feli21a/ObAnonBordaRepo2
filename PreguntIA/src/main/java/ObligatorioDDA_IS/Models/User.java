@@ -32,6 +32,8 @@ public class User {
     @NotNull(message = "La contraseña no puede estar vacía")
     private String password;
 
+    private int maxScoreSP = 0;
+
     // Getters y Setters
     public String getUsername() {
         return username;
@@ -49,12 +51,20 @@ public class User {
         this.email = email;
     }
 
+    public void setMaxScoreSP(int score) {
+        this.maxScoreSP = score;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getMaxScoreSP() {
+        return maxScoreSP;
     }
 
 }

@@ -237,16 +237,43 @@ async function submitAnswer(selectedAnswer, buttonElement) {
     }
 }
 
-// Actualizar el puntaje en la interfaz
-function updateScore() {
+// Actualizar el puntaje en la interfaz y sincronizar con el backend
+async function updateScore() {
     const correctAnswersElement = document.getElementById("correctAnswers");
 
     // Convertir el texto actual a número y sumar 1
     let currentCount = parseInt(correctAnswersElement.textContent, 10) || 0;
-    correctAnswersElement.textContent = currentCount + 1;
+    currentCount += 1;
+    correctAnswersElement.textContent = currentCount;
 
-    console.log("Incrementado el contador de respuestas correctas. Nuevo valor:", currentCount + 1);
+    console.log("Incrementado el contador de respuestas correctas. Nuevo valor:", currentCount);
+
+    // Obtener el ID del juego desde el almacenamiento de sesión
+    const gameId = sessionStorage.getItem('gameId');
+
+    if (!gameId) {
+        console.error("No se encontró un ID de juego en la sesión.");
+        return;
+    }
+
+    // Enviar la actualización al backend
+    try {
+        const response = await fetch(`/spgame/${gameId}/update-score`, {
+            method: 'POST', // Puedes usar PUT si prefieres
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ score: currentCount }) // Enviar el nuevo puntaje
+        });
+
+        if (!response.ok) {
+            console.error("Error al actualizar el puntaje en el backend.");
+        } else {
+            console.log("Puntaje actualizado en el backend correctamente.");
+        }
+    } catch (error) {
+        console.error("Error al intentar actualizar el puntaje en el backend:", error);
+    }
 }
+
 
 // Finalizar el juego y mostrar resultados
 async function endGame(score, status) {
