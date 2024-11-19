@@ -34,6 +34,8 @@ public class User {
 
     private int maxScoreSP = 0;
 
+    private String avatar;
+
     // Getters y Setters
     public String getUsername() {
         return username;

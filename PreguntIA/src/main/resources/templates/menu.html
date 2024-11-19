@@ -22,10 +22,10 @@
 
 <body>
     <div class="container d-flex flex-column justify-content-between vh-100">
-        <div class="text-center mt-5">
+        <header class="text-center mt-5">
             <h2>PreguntIA</h2>
             <h3>Menú Principal</h3>
-        </div>
+        </header>
 
         <!-- Botones del Menú -->
         <div class="d-flex flex-column align-items-center">
@@ -40,124 +40,159 @@
             </button>
         </div>
 
-        <!-- Botones de Ayuda, Configuración y Logout alineados al fondo -->
-        <div class="d-flex justify-content-around mb-4">
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ayudaModal"
-                style="width: 60px; height: 60px;">
+        <!-- Botones Inferiores -->
+        <footer class="d-flex justify-content-around mb-4">
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ayudaModal">
                 <i class="bi bi-question-circle"></i>
             </button>
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#configuracionModal"
-                style="width: 60px; height: 60px;">
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#configuracionModal">
                 <i class="bi bi-gear"></i>
             </button>
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#logoutModal"
-                style="width: 60px; height: 60px;">
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="bi bi-box-arrow-right"></i>
             </button>
-        </div>
-
+        </footer>
     </div>
 
-    <!-- Modal de Dificultad -->
-    <div class="modal fade" id="dificultadModal" tabindex="-1" aria-labelledby="dificultadModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="dificultadModalLabel">Selecciona la Dificultad</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex flex-column align-items-center">
-                    <button class="btn btn-outline-success mb-2" onclick="startGame('easy')">Fácil</button>
-                    <button class="btn btn-outline-warning mb-2" onclick="startGame('normal')">Normal</button>
-                    <button class="btn btn-outline-danger" onclick="startGame('hard')">Difícil</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Perfil -->
-    <div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="perfilModalLabel">Información del Perfil</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Nombre de Usuario:</strong> <span id="usernameDisplay"></span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Ayuda -->
-    <div class="modal fade" id="ayudaModal" tabindex="-1" aria-labelledby="ayudaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Cambié a modal-lg para más espacio -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ayudaModalLabel">Instrucciones del Juego</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex"> <!-- Cambié a un diseño flex para la imagen y el contenido -->
-                    <div class="image-container">
-                        <img src="/img/ModalHelpImg.png" alt="Instrucciones del juego" class="img-fluid">
-                        <!-- Cambia el src a tu imagen -->
+    <!-- Modales -->
+    <div id="modals-container">
+        <!-- Modal de Dificultad -->
+        <div class="modal fade" id="dificultadModal" tabindex="-1" aria-labelledby="dificultadModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dificultadModalLabel">Selecciona la Dificultad</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="instructions-container ms-3"> <!-- Agregué la clase ms-3 para margen izquierdo -->
-                        <p>Aquí tienes las instrucciones del juego:</p>
-                        <ul>
-                            <li>Selecciona la categoría y dificultad.</li>
-                            <li>Responde a las preguntas lo más rápido posible.</li>
-                            <li>Gana puntos por cada respuesta correcta.</li>
-                            <li>Disfruta y aprende mientras juegas.</li>
-                        </ul>
+                    <div class="modal-body modal-buttons-vertical">
+                        <button class="btn btn-outline-success mb-2" onclick="startGame('easy')">Fácil</button>
+                        <button class="btn btn-outline-warning mb-2" onclick="startGame('normal')">Normal</button>
+                        <button class="btn btn-outline-danger" onclick="startGame('hard')">Difícil</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal de Configuración -->
-    <div class="modal fade" id="configuracionModal" tabindex="-1" aria-labelledby="configuracionModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="configuracionModalLabel">Configuración</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Aquí puedes ajustar tus configuraciones.</p>
-                    <!-- Puedes agregar más opciones de configuración aquí -->
+        <!-- Modal de Perfil -->
+        <div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content perfil-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="perfilModalLabel">Perfil de Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body perfil-body text-center">
+                        <div id="perfil-avatar-container" class="perfil-avatar-container">
+                            <img src="" alt="Avatar del Usuario" id="currentAvatar">
+                        </div>
+                        <div class="perfil-user-info">
+                            <h5 id="usernameDisplay">Cargando...</h5>
+                        </div>
+                        <div class="perfil-statistics">
+                            <h6>Estadísticas</h6>
+                            <p><strong>Máximo Puntaje (SP):</strong> <span id="maxScoreSPDisplay">0</span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal de Logout -->
-    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="logoutModalLabel">Cerrar Sesión</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <p>¿Seguro que quieres cerrar sesión?</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger" id="confirmLogoutButton">Sí</button>
+        <!-- Modal de Selección de Avatar -->
+        <div class="modal fade" id="avatarSelectModal" tabindex="-1" aria-labelledby="avatarSelectModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="avatarSelectModalLabel">Selecciona tu Avatar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="avatar-gallery d-flex flex-wrap justify-content-center gap-3">
+                            <img src="/img/MundiDeportista.png" alt="Avatar 1" class="avatar-option rounded-circle"
+                                data-avatar="/img/MundiDeportista.png">
+                            <img src="/img/MundiEntretenimiento.png" alt="Avatar 2" class="avatar-option rounded-circle"
+                                data-avatar="/img/MundiEntretenimiento.png">
+                            <img src="/img/MundiGeografo.png" alt="Avatar 3" class="avatar-option rounded-circle"
+                                data-avatar="/img/MundiGeografo.png">
+                            <img src="/img/MundiTecnologico.png" alt="Avatar 4" class="avatar-option rounded-circle"
+                                data-avatar="/img/MundiTecnologico.png">
+                            <img src="/img/MundiHistoriador.png" alt="Avatar 5" class="avatar-option rounded-circle"
+                                data-avatar="/img/MundiHistoriador.png">
+                            <img src="/img/MundiCientifico.png" alt="Avatar 6" class="avatar-option rounded-circle"
+                                data-avatar="/img/MundiCientifico.png">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/jsMenu.js"></script>
 
+        <!-- Modal de Ayuda -->
+        <div class="modal fade" id="ayudaModal" tabindex="-1" aria-labelledby="ayudaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ayudaModalLabel">Instrucciones del Juego</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex">
+                        <div class="image-container">
+                            <img src="/img/ModalHelpImg.png" alt="Instrucciones del juego" class="img-fluid">
+                        </div>
+                        <div class="instructions-container ms-3">
+                            <p>Aquí tienes las instrucciones del juego:</p>
+                            <ul>
+                                <li>Selecciona la categoría y dificultad.</li>
+                                <li>Responde a las preguntas lo más rápido posible.</li>
+                                <li>Gana puntos por cada respuesta correcta.</li>
+                                <li>Disfruta y aprende mientras juegas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Configuración -->
+        <div class="modal fade" id="configuracionModal" tabindex="-1" aria-labelledby="configuracionModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="configuracionModalLabel">Configuración</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Aquí puedes ajustar tus configuraciones.</p>
+                        <!-- Puedes agregar más opciones de configuración aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Logout -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logoutModalLabel">Cerrar Sesión</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>¿Seguro que quieres cerrar sesión?</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-danger" id="confirmLogoutButton">Sí</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/jsMenu.js"></script>
 
 </body>
 

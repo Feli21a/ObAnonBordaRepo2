@@ -1,42 +1,59 @@
-// /jsMenu.js
+// Al abrir el modal de perfil, cargar los datos del usuario
+document.getElementById("perfilModal").addEventListener("show.bs.modal", async function () {
+    try {
+        const response = await fetch("/api/users/perfil");
+        if (!response.ok) throw new Error("Error al cargar el perfil del usuario");
 
-// Cargar el nombre de usuario en el modal de perfil
-document.getElementById("perfilModal").addEventListener("show.bs.modal", function () {
-    fetch("/api/users/perfil")
-        .then(response => {
-            if (response.ok) {
-                return response.text(); // Obtener el nombre de usuario
-            } else {
-                throw new Error("No se pudo cargar el perfil");
-            }
-        })
-        .then(username => {
-            document.getElementById("usernameDisplay").textContent = username;
-        })
-        .catch(error => {
-            console.error(error);
-        });
+        const data = await response.json();
+
+        // Cargar avatar, nombre, y estadísticas
+        document.getElementById("currentAvatar").src = data.avatar || "/img/MundiPensando.png";
+        document.getElementById("usernameDisplay").textContent = data.username || "Sin Nombre";
+        document.getElementById("maxScoreSPDisplay").textContent = data.maxScoreSP || "0";
+
+    } catch (error) {
+        console.error("Error al cargar el perfil del usuario:", error);
+    }
 });
 
-// Configuración de Logout
-document.getElementById("confirmLogoutButton").addEventListener("click", function () {
-    fetch("/api/users/logout", {
-        method: "POST"
-    })
-        .then(response => {
+// Manejar la selección de un avatar desde el modal
+document.querySelectorAll('.avatar-option').forEach(avatar => {
+    avatar.addEventListener('click', async function () {
+        const selectedAvatar = this.getAttribute('data-avatar');
+
+        // Actualizar el avatar en el frontend inmediatamente
+        document.getElementById("currentAvatar").src = selectedAvatar;
+
+        try {
+            // Guardar el avatar seleccionado en el servidor
+            const response = await fetch('/api/users/update-avatar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ avatar: selectedAvatar }), // Enviar la URL del avatar al backend
+            });
+
             if (response.ok) {
-                window.location.href = "/login"; // Redirige a la página de inicio de sesión después del logout
+                console.log('Avatar actualizado correctamente');
             } else {
-                console.error("Error al cerrar sesión");
+                console.error('Error al actualizar el avatar');
             }
-        })
-        .catch(error => {
-            console.error("Error de conexión al cerrar sesión", error);
-        });
+        } catch (error) {
+            console.error("Error al guardar el avatar:", error);
+        }
+
+        // Cerrar el modal de selección de avatar
+        const avatarSelectModal = bootstrap.Modal.getInstance(document.getElementById("avatarSelectModal"));
+        avatarSelectModal.hide();
+    });
 });
 
+// Abrir el modal de selección de avatar al hacer clic en el avatar actual
+document.getElementById("perfil-avatar-container").addEventListener("click", function () {
+    const avatarSelectModal = new bootstrap.Modal(document.getElementById("avatarSelectModal"));
+    avatarSelectModal.show();
+});
 
-
+// Función para iniciar un juego con dificultad seleccionada
 async function startGame(difficulty) {
     try {
         const response = await fetch(`/spgame/start?difficulty=${difficulty}`, {
@@ -63,9 +80,3 @@ async function startGame(difficulty) {
         console.error("Error en startGame:", error);
     }
 }
-
-
-
-
-
-

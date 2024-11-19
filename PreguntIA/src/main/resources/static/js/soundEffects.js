@@ -1,21 +1,25 @@
 // Cargar el sonido
-const hoverSound = new Audio('audio/btnSound.mp3'); // Cambia 'btnSound.mp3' por el nombre de tu archivo
+const hoverSound = new Audio('audio/btnSound.mp3'); // Cambia 'btnSound.mp3' por la ruta de tu archivo de sonido
 
 // Función para reproducir sonido al pasar el mouse
-function playHoverSound() {
+function playHoverSound(event) {
+    // Ignorar si el evento se origina en un elemento <i>
+    if (event.target.tagName.toLowerCase() === 'i') return;
+
     hoverSound.currentTime = 0; // Reinicia el sonido
     hoverSound.play().catch(error => {
         console.error("Error al reproducir el sonido: ", error);
     });
 }
 
-// Obtener todos los botones que deben tener el sonido
-const buttons = document.querySelectorAll('button'); // Selecciona todos los botones en el documento
+// Obtener todos los botones y avatares que deben tener el sonido
+const hoverElements = document.querySelectorAll('button, .avatar-option'); // Incluye los botones y los avatares
 
-// Añadir el evento de mouseover a cada botón
-buttons.forEach(button => {
-    button.addEventListener('mouseover', playHoverSound);
+// Añadir el evento de mouseover a cada elemento
+hoverElements.forEach(element => {
+    element.addEventListener('mouseover', playHoverSound);
 });
+
 
 // soundEffects.js
 

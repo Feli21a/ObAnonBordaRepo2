@@ -1,55 +1,118 @@
-/* Modal de Ayuda */
+/* General - Modal de Ayuda */
 .modal-body {
-    display: flex; /* Utiliza flexbox para el layout */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Aplicar Blur cuando hay un modal abierto */
+body.modal-open .container {
+    filter: blur(5px);
+    pointer-events: none;
+
 }
 
 /* Modal de Dificultad */
 .modal-content {
     font-family: 'Special Elite', sans-serif;
     background: #fdf6e3;
-    border: 2px solid #333;
+    border: 2px solid #8b4513;
     border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.modal-content:hover {
+    transform: scale(1.02); 
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+
 }
 
 .modal-title {
     font-family: 'Amatic SC', cursive;
     font-size: 2rem;
     color: #8b4513;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px #d2691e;
 }
 
-/* Estilo para el botón "No" y "Sí" en el modal de logout */
+/* Botones en el Modal de Logout */
 .modal-footer .btn-danger {
-    flex: 1; /* Hace que ambos botones ocupen el mismo espacio */
-    margin: 0 5px; /* Espacio entre los botones */
-    transition: transform 0.2s, box-shadow 0.2s; /* Transiciones para efecto de escala y sombra */
+    flex: 1;
+    margin: 0 5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-size: 1.1rem;
 }
 
 .modal-footer .btn-danger:hover {
-    transform: scale(1.05); /* Aplica la escala en hover a ambos botones */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra al pasar el mouse */
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #b22222;
+    color: #fff;
 }
 
+/* Contenedor de la Imagen en el Modal de Ayuda */
 .image-container {
-    flex: 0 0 30%; /* 30% del ancho del modal para la imagen */
-    margin-right: 1rem; /* Espacio entre la imagen y las instrucciones */
-    transition: 0.5s;
+    flex: 0 0 30%;
+    transition: transform 0.3s ease;
+    margin-right: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.image-container:hover{
-    transform: scale(1.02);
+.image-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.instructions-container {
-    flex: 1; /* El resto del espacio para las instrucciones */
-}
-
-.instructions-container ul {
-    margin: 0; /* Elimina el margen por defecto de la lista */
-    padding-left: 1.5rem; /* Padding para que se vea mejor */
-}
-
-/* Asegúrate de que la imagen se ajuste correctamente */
+/* Estilos de la Imagen */
 .image-container img {
-    width: 100%; /* Hace que la imagen sea responsiva */
-    height: auto; /* Mantiene la proporción de la imagen */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Contenedor de las Instrucciones */
+.instructions-container {
+    flex: 1;
+    color: #333;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Lista de Instrucciones */
+.instructions-container ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.instructions-container ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Mejoras Responsivas */
+@media (max-width: 768px) {
+    .modal-body {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .image-container {
+        flex: 0 0 auto;
+        margin-bottom: 1rem;
+    }
+}
+
+.modal-buttons-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
 }

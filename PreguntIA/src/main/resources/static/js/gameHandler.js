@@ -1,4 +1,32 @@
 // gameHandler.js
+document.addEventListener("DOMContentLoaded", function () {
+    // Cargar datos del jugador (nombre y avatar)
+    fetch("/api/users/perfil")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al obtener el perfil del usuario");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const { username, avatar } = data;
+
+            // Configurar el nombre del usuario
+            document.getElementById("playerName").textContent = username || "Jugador";
+
+            // Configurar el avatar solo si es válido
+            const avatarElement = document.getElementById("playerAvatar");
+            if (avatar) {
+                avatarElement.src = avatar; // Usa la URL desde la base de datos
+            } else {
+                avatarElement.src = "/img/default-avatar.png"; // Fallback
+            }
+        })
+        .catch(error => console.error("Error al cargar el perfil del jugador:", error));
+});
+
+
+
 // Obtener una nueva pregunta desde la API después de girar la ruleta
 async function fetchQuestionFromAPI(category) {
     const gameId = sessionStorage.getItem('gameId');

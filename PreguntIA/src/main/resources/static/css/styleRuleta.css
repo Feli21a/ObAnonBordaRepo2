@@ -64,13 +64,18 @@ body {
     position: absolute;
     top: 50%;
     right: -30px;
-    transform: translateY(-50%) rotate(-90deg); /* Gira el marcador -90 grados */
+    transform: translateY(-50%) rotate(-90deg);
+    /* Gira el marcador -90 grados */
     width: 60px;
     height: 60px;
-    background-color: #f0e6d2; /* Color beige */
-    border: 2px solid #8b4513; /* Borde marrón */
-    clip-path: polygon(50% 0, 100% 100%, 0 100%); /* Triángulo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Sombra más visible */
+    background-color: #f0e6d2;
+    /* Color beige */
+    border: 2px solid #8b4513;
+    /* Borde marrón */
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    /* Triángulo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    /* Sombra más visible */
 }
 
 
@@ -101,25 +106,59 @@ body {
 }
 
 /* === Información del Jugador === */
-#player-info {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 180px;
-    padding: 15px;
-    background-color: #f0e6d2;
-    border: 2px solid #8b4513;
-    border-radius: 15px;
-    color: #8b4513;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    font-family: 'Amatic SC', cursive;
-    font-size: 20px;
+/* Estilo para el contenedor de información del jugador */
+.player-info {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #fdf6e3;
+    border: 2px solid #8b4513;
+    border-radius: 15px;
+    padding: 1rem;
+    width: 200px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+/* Contenedor del Avatar */
+.avatar-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #8b4513;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Estilo para el Nombre del Jugador */
+.player-name {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.8rem;
+    color: #8b4513;
+    margin: 0 0 10px 0;
     text-align: center;
 }
+
+/* Estilo para el Contador */
+.correct-answers {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.4rem;
+    color: #333;
+    margin: 0;
+    text-align: center;
+}
+
 
 /* === Modal de Pregunta y Respuestas === */
 .modal {
@@ -130,11 +169,14 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-    backdrop-filter: blur(10px); /* Efecto de desenfoque */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(10px);
+    /* Efecto de desenfoque */
     justify-content: center;
     align-items: center;
-    animation: fadeIn 0.3s ease; /* Animación de entrada */
+    animation: fadeIn 0.3s ease;
+    /* Animación de entrada */
 }
 
 .modal-content {
@@ -233,7 +275,8 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px); /* Efecto de desenfoque */
+    backdrop-filter: blur(10px);
+    /* Efecto de desenfoque */
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.3s ease;
