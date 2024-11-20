@@ -1,6 +1,8 @@
 package ObligatorioDDA_IS.Services;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -14,6 +16,7 @@ import ObligatorioDDA_IS.Models.Question;
 public class QuestionService {
 
     private final ChatGPTAPIClient apiClient;
+    private final Set<String> previousQuestions = new HashSet<>(); // Almacena solo el texto de las preguntas
 
     @Autowired
     public QuestionService(ChatGPTAPIClient apiClient) {
@@ -22,19 +25,34 @@ public class QuestionService {
 
     public Question fetchQuestion(String category, String difficulty) throws JSONException {
         String prompt = generatePrompt(category, difficulty);
+
+        // Imprime el prompt en la consola para pruebas
+        System.out.println("Prompt enviado a la API: " + prompt);
+
         String response;
+        Question question;
         try {
-            response = apiClient.sendRequest(prompt);
+            do {
+                response = apiClient.sendRequest(prompt);
+                question = parseQuestion(response); // Parsea la respuesta para extraer el texto de la pregunta
+            } while (previousQuestions.contains(question.getQuestionText())); // Reintenta si la pregunta ya existe
+
+            previousQuestions.add(question.getQuestionText()); // Agrega solo el texto al set
         } catch (Exception e) {
             throw new RuntimeException("Error en la solicitud a la API de ChatGPT: " + e.getMessage(), e);
         }
-        return parseQuestion(response);
+        return question;
     }
 
     private String generatePrompt(String category, String difficulty) {
-        return "Crea una pregunta en español para trivia, de dificultad " + difficulty + " para la categoria " + category +
-                "Incluye 4 respuestas para la pregunta y especifica la correcta en un fortmato JSON como este: " +
-                "{\"question\": \"Your question?\", \"options\": [\"option1\", \"option2\", \"option3\", \"option4\"], \"answer\": \"correct option\"}";
+        String prompt = String.format(
+                "Crea una pregunta en español para trivia, de dificultad %s para la categoria %s. Incluye 4 respuestas para la pregunta y especifica la correcta en un formato JSON como este: {\"question\": \"Your question?\", \"options\": [\"option1\", \"option2\", \"option3\", \"option4\"], \"answer\": \"correct option\"}. ID: %.5f",
+                difficulty, category, Math.random());
+
+        // Imprimir el prompt generado en la consola
+        System.out.println("Prompt generado: " + prompt);
+
+        return prompt;
     }
 
     private Question parseQuestion(String response) throws JSONException {
@@ -49,5 +67,4 @@ public class QuestionService {
             throw e;
         }
     }
-
 }
