@@ -132,6 +132,17 @@
             .attr("text-anchor", "middle")
             .text(function (d, i) { return data[i].label; });
 
+        // Cargar el sonido del giro de la ruleta
+        const spinSound = new Audio('/audio/sonidoRuleta.mp3');
+
+        // Función para reproducir el sonido del giro
+        function playSpinSound() {
+            spinSound.currentTime = 0; // Reinicia el sonido
+            spinSound.play().catch(error => {
+                console.error("Error al reproducir el sonido del giro: ", error);
+            });
+        }
+
         let isSpinning = false;
 
         function spin() {
@@ -142,6 +153,9 @@
 
             isSpinning = true; // Marca que el giro está en progreso
             document.getElementById("spinButton").disabled = true; // Desactiva el botón mientras gira
+
+            // Reproducir sonido del giro
+            playSpinSound();
 
             const ps = 360 / data.length; // Grados por sector
             const rng = Math.floor((Math.random() * 1440) + 360); // Generar rotación aleatoria
