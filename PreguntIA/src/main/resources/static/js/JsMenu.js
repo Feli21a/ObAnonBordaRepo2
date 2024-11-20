@@ -57,7 +57,7 @@ document.getElementById("perfil-avatar-container").addEventListener("click", fun
 });
 
 // Función para iniciar un juego con dificultad seleccionada
-async function startGame(difficulty) {
+window.startGame = async function startGame(difficulty) {
     try {
         const response = await fetch(`/spgame/start?difficulty=${difficulty}`, {
             method: 'POST',
@@ -82,4 +82,101 @@ async function startGame(difficulty) {
     } catch (error) {
         console.error("Error en startGame:", error);
     }
-}
+};
+
+import AlertManager from './alertManager.js';
+
+// Crear una instancia del AlertManager
+const alertManager = new AlertManager("alertMessage");
+
+// Lógica para actualizar el nombre de usuario
+document.getElementById("saveUsernameButton").addEventListener("click", async function () {
+    const newUsername = document.getElementById("newUsername").value.trim();
+
+    if (!newUsername) {
+        alertManager.showAlert("El nombre de usuario no puede estar vacío.", "danger");
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/users/update-username', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: newUsername })
+        });
+
+        if (response.ok) {
+            alertManager.showAlert("Nombre de usuario actualizado con éxito.", "success");
+            setTimeout(() => location.reload(), 2000); // Recargar después de 2 segundos
+        } else {
+            const errorMessage = await response.text();
+            alertManager.showAlert(`Error al actualizar el nombre de usuario: ${errorMessage}`, "danger");
+        }
+    } catch (error) {
+        console.error("Error al actualizar el nombre de usuario:", error);
+        alertManager.showAlert("Error inesperado. Inténtalo más tarde.", "danger");
+    }
+});
+
+// Lógica para actualizar la contraseña
+document.getElementById("savePasswordButton").addEventListener("click", async function () {
+    const newPassword = document.getElementById("newPassword").value.trim();
+
+    if (!newPassword) {
+        alertManager.showAlert("La contraseña no puede estar vacía.", "danger");
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/users/update-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password: newPassword })
+        });
+
+        if (response.ok) {
+            alertManager.showAlert("Contraseña actualizada con éxito. Redirigiendo al inicio de sesión...", "success");
+            setTimeout(() => {
+                window.location.href = "/login"; // Redirige al inicio de sesión
+            }, 2000);
+        } else {
+            const errorMessage = await response.text();
+            alertManager.showAlert(`Error al actualizar la contraseña: ${errorMessage}`, "danger");
+        }
+
+    } catch (error) {
+        console.error("Error al actualizar la contraseña:", error);
+        alertManager.showAlert("Error inesperado. Inténtalo más tarde.", "danger");
+    }
+});
+
+
+document.getElementById("confirmLogoutButton").addEventListener("click", async function () {
+    try {
+        // Realiza una solicitud al endpoint de logout
+        const response = await fetch("api/users/logout", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            // Cierre de sesión exitoso
+            console.log("Sesión cerrada con éxito");
+            // Redirige al usuario a la página de inicio de sesión
+            window.location.href = "/login";
+        } else {
+            // Muestra un error si la respuesta no es satisfactoria
+            console.error("Error al cerrar sesión");
+        }
+    } catch (error) {
+        // Manejo de errores
+        console.error("Error en la solicitud de logout:", error);
+    }
+});
+

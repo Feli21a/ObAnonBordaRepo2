@@ -1,6 +1,5 @@
 package ObligatorioDDA_IS.Controllers;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ObligatorioDDA_IS.DTO.UserRegistrationDTO;
 import ObligatorioDDA_IS.Models.User;
-import ObligatorioDDA_IS.Repository.UserRepository;
 import ObligatorioDDA_IS.Services.UserService;
 import jakarta.servlet.http.HttpSession;
 
@@ -24,9 +22,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@ModelAttribute UserRegistrationDTO user) {
@@ -41,9 +36,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@ModelAttribute UserRegistrationDTO user, HttpSession session) {
         try {
-            User loggedInUser = userService.authenticateUser(user.getEmail(), user.getPassword());
-            session.setAttribute("user", loggedInUser); // Agrega el usuario a la sesión
-            return ResponseEntity.ok().body("/menu"); // Redirige a la página de menú
+            User authenticatedUser = userService.authenticateUser(user.getEmail(), user.getPassword());
+            session.setAttribute("user", authenticatedUser);
+            System.out.println("Usuario autenticado y guardado en la sesión: " + authenticatedUser.getUsername());
+            return ResponseEntity.ok("/menu");
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }
@@ -51,58 +47,57 @@ public class UserController {
 
     @GetMapping("/perfil")
     public ResponseEntity<?> getUserProfile(HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("user");
-
-        if (loggedInUser != null) {
-            // Reflejar el valor actualizado del perfil
-            Map<String, Object> profileData = new HashMap<>();
-            profileData.put("username", loggedInUser.getUsername());
-            profileData.put("maxScoreSP", loggedInUser.getMaxScoreSP());
-            profileData.put("avatar",
-                    loggedInUser.getAvatar() != null ? loggedInUser.getAvatar() : "/img/MundiTriste.png");
-            return ResponseEntity.ok(profileData);
-        } else {
-            return ResponseEntity.status(401).body("Usuario no autenticado");
+        try {
+            return ResponseEntity.ok(userService.getUserProfile(session));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
         }
     }
 
     @PostMapping("/update-avatar")
     public ResponseEntity<String> updateAvatar(@RequestBody Map<String, String> avatarData, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("user");
-        if (loggedInUser != null && avatarData.containsKey("avatar")) {
-            // Actualizar el avatar en el objeto del usuario
-            loggedInUser.setAvatar(avatarData.get("avatar"));
-
-            // Guardar los cambios en la base de datos (o repositorio)
-            userRepository.save(loggedInUser);
-
+        try {
+            userService.updateAvatar(avatarData.get("avatar"), session);
             return ResponseEntity.ok("Avatar actualizado correctamente");
-        } else {
-            return ResponseEntity.status(400).body("No se pudo actualizar el avatar");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping("/update-score")
-    public ResponseEntity<String> updateMaxScoreSP(HttpSession session, @RequestBody Map<String, Integer> scoreData) {
-        User loggedInUser = (User) session.getAttribute("user");
-        if (loggedInUser != null && scoreData.containsKey("maxScoreSP")) {
-            int newScore = scoreData.get("maxScoreSP");
-
-            // Actualiza solo si el nuevo puntaje es mayor
-            if (newScore > loggedInUser.getMaxScoreSP()) {
-                loggedInUser.setMaxScoreSP(newScore);
-                userRepository.save(loggedInUser); // Guarda los cambios en la base de datos
-            }
-
+    public ResponseEntity<String> updateMaxScoreSP(@RequestBody Map<String, Integer> scoreData, HttpSession session) {
+        try {
+            userService.updateMaxScoreSP(scoreData.get("maxScoreSP"), session);
             return ResponseEntity.ok("MaxScoreSP actualizado correctamente");
-        } else {
-            return ResponseEntity.status(400).body("No se pudo actualizar el MaxScoreSP");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/update-username")
+    public ResponseEntity<String> updateUsername(@RequestBody Map<String, String> payload, HttpSession session) {
+        try {
+            userService.updateUsername(payload.get("username"), session);
+            return ResponseEntity.ok("Nombre de usuario actualizado");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> payload, HttpSession session) {
+        try {
+            String newPassword = payload.get("password");
+            userService.updatePassword(newPassword, session);
+            return ResponseEntity.ok("Contraseña actualizada, cierre de sesión requerido.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
-        session.invalidate(); // Invalida la sesión actual
+        userService.logout(session);
         return ResponseEntity.ok("Sesión cerrada con éxito");
     }
 }
