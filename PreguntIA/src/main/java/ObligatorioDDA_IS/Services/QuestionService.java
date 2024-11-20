@@ -46,9 +46,8 @@ public class QuestionService {
 
     private String generatePrompt(String category, String difficulty) {
         String prompt = String.format(
-            "Crea una pregunta en español para trivia, de dificultad %s para la categoria %s. Incluye 4 respuestas para la pregunta y especifica la correcta en un formato JSON como este: {\"question\": \"Your question?\", \"options\": [\"option1\", \"option2\", \"option3\", \"option4\"], \"answer\": \"correct option\"}. ID: %.5f",
-            difficulty, category, Math.random()
-        );
+                "Crea una pregunta en español para trivia, de dificultad %s para la categoria %s. Incluye 4 respuestas para la pregunta y especifica la correcta en un formato JSON como este: {\"question\": \"Your question?\", \"options\": [\"option1\", \"option2\", \"option3\", \"option4\"], \"answer\": \"correct option\"}. ID: %.5f",
+                difficulty, category, Math.random());
 
         // Imprimir el prompt generado en la consola
         System.out.println("Prompt generado: " + prompt);
