@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Configurar el perfil en la interfaz
             document.getElementById("usernameDisplay").textContent = username || "Sin Nombre";
-            document.getElementById("currentAvatar").src = avatar || "/img/MundiTriste.png";
+            document.getElementById("currentAvatar").src = avatar || "/img/Avatar1.png";
             document.getElementById("maxScoreSPDisplay").textContent = maxScoreSP || "0";
         })
         .catch(error => console.error("Error al cargar el perfil del usuario:", error));
@@ -178,5 +178,27 @@ document.getElementById("confirmLogoutButton").addEventListener("click", async f
         // Manejo de errores
         console.error("Error en la solicitud de logout:", error);
     }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Verificar si el usuario está autenticado
+    fetch("/api/users/perfil")
+        .then(response => {
+            if (response.ok) {
+                // Usuario autenticado: mostrar el botón de salir
+                document.getElementById("logoutButton").classList.remove("d-none");
+                document.getElementById("loginButton").classList.add("d-none");
+            } else {
+                // Usuario no autenticado: mostrar el botón de ingresar
+                document.getElementById("loginButton").classList.remove("d-none");
+                document.getElementById("logoutButton").classList.add("d-none");
+            }
+        })
+        .catch(error => {
+            console.error("Error al verificar el estado del usuario:", error);
+            // En caso de error, asumimos que no hay usuario autenticado
+            document.getElementById("loginButton").classList.remove("d-none");
+            document.getElementById("logoutButton").classList.add("d-none");
+        });
 });
 

@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <div class="container d-flex flex-column justify-content-between vh-100">
+    <div class="container d-flex flex-column justify-content-between vh-100 main-container">
         <header class="text-center mt-5">
             <h2>PreguntIA</h2>
             <h3>Menú Principal</h3>
@@ -46,9 +46,19 @@
             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#configuracionModal">
                 <i class="bi bi-gear"></i>
             </button>
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                <i class="bi bi-box-arrow-right"></i>
+
+            <a id="loginButton"
+                class="btn custom-green-btn d-none w-auto d-flex justify-content-center align-items-center"
+                href="/login">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Ingresar
+            </a>
+
+            <button id="logoutButton"
+                class="btn custom-red-btn d-none w-auto d-flex justify-content-center align-items-center"
+                data-bs-toggle="modal" data-bs-target="#logoutModal">
+                <i class="bi bi-box-arrow-right me-2"></i> Salir
             </button>
+
         </footer>
     </div>
 
@@ -107,24 +117,39 @@
                     </div>
                     <div class="modal-body">
                         <div class="avatar-gallery d-flex flex-wrap justify-content-center gap-3">
-                            <img src="/img/MundiDeportista.png" alt="Avatar 1" class="avatar-option rounded-circle"
-                                data-avatar="/img/MundiDeportista.png">
-                            <img src="/img/MundiEntretenimiento.png" alt="Avatar 2" class="avatar-option rounded-circle"
-                                data-avatar="/img/MundiEntretenimiento.png">
-                            <img src="/img/MundiGeografo.png" alt="Avatar 3" class="avatar-option rounded-circle"
-                                data-avatar="/img/MundiGeografo.png">
-                            <img src="/img/MundiTecnologico.png" alt="Avatar 4" class="avatar-option rounded-circle"
-                                data-avatar="/img/MundiTecnologico.png">
-                            <img src="/img/MundiHistoriador.png" alt="Avatar 5" class="avatar-option rounded-circle"
-                                data-avatar="/img/MundiHistoriador.png">
-                            <img src="/img/MundiCientifico.png" alt="Avatar 6" class="avatar-option rounded-circle"
-                                data-avatar="/img/MundiCientifico.png">
+                            <img src="/img/Avatar1.png" alt="Avatar 1" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar1.png">
+                            <img src="/img/Avatar2.png" alt="Avatar 2" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar2.png">
+                            <img src="/img/Avatar3.png" alt="Avatar 3" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar3.png">
+                            <img src="/img/Avatar4.png" alt="Avatar 4" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar4.png">
+                            <img src="/img/Avatar5.png" alt="Avatar 5" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar5.png">
+                            <img src="/img/Avatar6.png" alt="Avatar 6" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar6.png">
+                            <img src="/img/Avatar7.png" alt="Avatar 7" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar7.png">
+                            <img src="/img/Avatar8.png" alt="Avatar 8" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar8.png">
+                            <img src="/img/Avatar9.png" alt="Avatar 9" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar9.png">
+                            <img src="/img/Avatar10.png" alt="Avatar 10" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar10.png">
+                            <img src="/img/Avatar11.png" alt="Avatar 11" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar11.png">
+                            <img src="/img/Avatar12.png" alt="Avatar 12" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar12.png">
+                            <img src="/img/Avatar13.png" alt="Avatar 13" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar13.png">
+                            <img src="/img/Avatar14.png" alt="Avatar 14" class="avatar-option rounded-circle"
+                                data-avatar="/img/Avatar15.png">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <!-- Modal de Información (Ayuda) -->
         <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
@@ -168,8 +193,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <!-- Modal de Configuración -->
         <div class="modal fade" id="configuracionModal" tabindex="-1" aria-labelledby="configuracionModalLabel"

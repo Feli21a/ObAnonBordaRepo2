@@ -16,7 +16,9 @@ body {
     background: #fdf6e3;
     border-radius: 15px;
     padding: 2rem;
+    border: 3px solid #8b4513;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
 }
 
 /* Título del Menú */
@@ -36,7 +38,7 @@ h2 {
     font-size: 1.5rem;
     padding: 0.75rem 1.5rem;
     color: #fff;
-    border-radius: 8px;
+    border-radius: 5px;
     transition: background-color 0.3s, transform 0.2s;
     width: 100%;
     max-width: 90%;
@@ -69,9 +71,9 @@ h2 {
 
 /* Botones de Ayuda, Configuración y Logout */
 .btn-warning {
-    background-color: #ffc107;
+    background-color: #ffa600;
     border: none;
-    width: 60px;
+    width: 100px;
     height: 60px;
     display: flex;
     justify-content: center;
@@ -81,14 +83,66 @@ h2 {
 }
 
 .btn-warning:hover {
-    background-color: #e0a800;
-    transform: translateY(-2px);
+    background-color: #e49f00;
+    transform: scale(1.05);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 
 }
 
 .btn-warning i {
-    font-size: 1.5rem;
+    color: #ffffff;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+}
+
+/* Botón verde */
+.custom-green-btn {
+    width: 100px;
+    height: 60px;
+    background-color: #208d3e;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-green-btn:hover {
+    transform: scale(1.05);
+    background-color: #1d7e37;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón rojo */
+.custom-red-btn {
+    width: 100px;
+    height: 60px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-red-btn:hover {
+    transform: scale(1.05);
+    background-color: #b02a37;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.d-none {
+    display: none;
 }
 
 /* Estilos de los botones del Modal de Dificultad */
@@ -98,6 +152,7 @@ h2 {
     padding: 15px;
     font-size: 1.2rem;
     font-family: 'Amatic SC', cursive;
+    border-radius: 5px;
     transition: background-color 0.3s ease, transform 0.3s;
 }
 
@@ -107,34 +162,16 @@ h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilos para el modal de ayuda, configuración, etc. */
-.modal-dialog-centered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Estilo general para el modal */
-.modal-content {
-    font-family: 'Special Elite', sans-serif;
-    background: #fdf6e3;
-    border-radius: 15px;
-    border: 2px solid #8b4513;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 1rem;
-}
-
 /* Avatar Container */
 .avatar-container {
     width: 150px;
     height: 150px;
-    border-radius: 50%;
+    border-radius: 5px;
     overflow: hidden;
     border: 2px solid #8b4513;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 
 /* Hover Effect */
 .avatar-container:hover {
@@ -204,8 +241,8 @@ h2 {
 .modal-content.perfil-modal {
     font-family: 'Special Elite', sans-serif;
     background: #fdf6e3;
-    border-radius: 15px;
-    border: 2px solid #8b4513;
+    border-radius: 5px;
+    border: 3px solid #8b4513;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     padding: 1rem;
 }
@@ -222,10 +259,10 @@ h2 {
 
 /* Contenedor de Avatar en el Modal de Perfil */
 .perfil-avatar-container {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    border: 2px solid #8b4513;
+    border: 3px solid #8b4513;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -244,7 +281,6 @@ h2 {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
-
 
 /* Información del Usuario en el Modal de Perfil */
 .perfil-user-info h5 {
@@ -309,7 +345,7 @@ h2 {
 .avatar-gallery::-webkit-scrollbar-thumb {
     background-color: #8b4513;
     border-radius: 10px;
-    border: 2px solid #fdf6e3;
+    border: 3px solid #fdf6e3;
 }
 
 /* Avatares en la galería */
@@ -318,7 +354,7 @@ h2 {
     height: 100px;
     object-fit: cover;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 3px solid #8b4513;
     transition: transform 0.3s ease, border 0.3s ease;
 }
 

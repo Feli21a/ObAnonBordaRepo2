@@ -30,39 +30,39 @@ public class QuestionController {
     }
 
     @PostMapping("/fetch")
-public ResponseEntity<Map<String, Object>> fetchQuestion(@RequestParam int gameId, @RequestParam String category) {
-    try {
-        SinglePlayerGame game = gameService.findGameById(gameId);
+    public ResponseEntity<Map<String, Object>> fetchQuestion(@RequestParam int gameId, @RequestParam String category) {
+        try {
+            SinglePlayerGame game = gameService.findGameById(gameId);
 
-        if (game == null) {
-            return ResponseEntity.status(404).body(Collections.singletonMap("error", "Game not found."));
+            if (game == null) {
+                return ResponseEntity.status(404).body(Collections.singletonMap("error", "Game not found."));
+            }
+
+            if ("Completado".equals(game.getStatus())) {
+                return ResponseEntity.status(400).body(Collections.singletonMap("error", "Game has already ended."));
+            }
+
+            Question question = questionService.fetchQuestion(category, game.getDifficulty());
+            if (question == null) {
+                return ResponseEntity.status(500).body(
+                        Collections.singletonMap("error", "No question found for the given category and difficulty."));
+            }
+
+            game.setCurrentQuestion(question);
+            gameService.saveGame(game);
+
+            // Construir la respuesta con "correctAnswer"
+            Map<String, Object> response = new HashMap<>();
+            response.put("question", question.getQuestionText());
+            response.put("options", question.getOptions());
+            response.put("correctAnswer", question.getCorrectAnswer()); // Incluir la respuesta correcta
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .body(Collections.singletonMap("error", "Internal Server Error: " + e.getMessage()));
         }
-
-        if ("Completado".equals(game.getStatus())) {
-            return ResponseEntity.status(400).body(Collections.singletonMap("error", "Game has already ended."));
-        }
-
-        Question question = questionService.fetchQuestion(category, game.getDifficulty());
-        if (question == null) {
-            return ResponseEntity.status(500).body(
-                    Collections.singletonMap("error", "No question found for the given category and difficulty."));
-        }
-
-        game.setCurrentQuestion(question);
-        gameService.saveGame(game);
-
-        // Construir la respuesta con "correctAnswer"
-        Map<String, Object> response = new HashMap<>();
-        response.put("question", question.getQuestionText());
-        response.put("options", question.getOptions());
-        response.put("correctAnswer", question.getCorrectAnswer()); // Incluir la respuesta correcta
-
-        return ResponseEntity.ok(response);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(500)
-                .body(Collections.singletonMap("error", "Internal Server Error: " + e.getMessage()));
     }
-}
 
 }

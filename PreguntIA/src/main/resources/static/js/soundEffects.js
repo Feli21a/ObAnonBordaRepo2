@@ -13,7 +13,7 @@ function playHoverSound(event) {
 }
 
 // Obtener todos los botones y avatares que deben tener el sonido
-const hoverElements = document.querySelectorAll('button, .avatar-option'); // Incluye los botones y los avatares
+const hoverElements = document.querySelectorAll('button, .avatar-option, a'); // Incluye los botones y los avatares
 
 // Añadir el evento de mouseover a cada elemento
 hoverElements.forEach(element => {
