@@ -338,3 +338,87 @@ h2 {
         max-height: 300px;
     }
 }
+
+/* Contenedor de desplazamiento */
+.help-scroll-container {
+    max-height: 400px;
+    /* Altura máxima del contenido con scrollbar */
+    overflow-y: auto;
+    /* Habilitar desplazamiento vertical */
+    padding-right: 10px;
+    /* Espaciado para el scrollbar */
+    scrollbar-width: thin;
+    /* Ancho del scrollbar */
+    scrollbar-color: #8b4513 #fdf6e3;
+    /* Colores del scrollbar */
+    flex: 2;
+    /* Reduce el ancho del texto para dar espacio a la imagen */
+    text-align: left;
+    /* Alinea el texto a la izquierda */
+}
+
+/* Scrollbar personalizado para navegadores webkit */
+.help-scroll-container::-webkit-scrollbar {
+    width: 8px;
+    background-color: #fdf6e3;
+    border-radius: 10px;
+}
+
+.help-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #8b4513;
+    border-radius: 10px;
+    border: 2px solid #fdf6e3;
+}
+
+/* Contenedor de la imagen */
+.info-image-container {
+    flex: 1;
+    max-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, border 0.3s ease;
+}
+
+.info-image-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagen dentro del modal */
+.info-image {
+    width: 100%;
+    /* Ajusta al contenedor */
+    height: auto;
+    /* Mantiene proporción */
+    object-fit: cover;
+    /* Ajusta la imagen sin distorsión */
+    border-radius: 15px;
+    /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Títulos dentro del modal */
+.help-title {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.5rem;
+    color: #8b4513;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Listas de ayuda */
+.help-list {
+    font-family: 'Special Elite', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    margin-left: 1rem;
+}
+
+.help-list li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}

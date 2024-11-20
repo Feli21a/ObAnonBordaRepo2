@@ -40,8 +40,8 @@
 
         <!-- Botones Inferiores -->
         <footer class="d-flex justify-content-around mb-4">
-            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ayudaModal">
-                <i class="bi bi-question-circle"></i>
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#infoModal">
+                <i class="bi bi-info-circle"></i>
             </button>
             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#configuracionModal">
                 <i class="bi bi-gear"></i>
@@ -126,31 +126,50 @@
         </div>
 
 
-        <!-- Modal de Ayuda -->
-        <div class="modal fade" id="ayudaModal" tabindex="-1" aria-labelledby="ayudaModalLabel" aria-hidden="true">
+        <!-- Modal de Información (Ayuda) -->
+        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
+                    <!-- Encabezado del Modal -->
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ayudaModalLabel">Instrucciones del Juego</h5>
+                        <h5 class="modal-title" id="infoModalLabel">Información del Juego</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <!-- Cuerpo del Modal -->
                     <div class="modal-body d-flex">
-                        <div class="image-container">
-                            <img src="/img/ModalHelpImg.png" alt="Instrucciones del juego" class="img-fluid">
+                        <!-- Contenedor de la Imagen -->
+                        <div class="info-image-container">
+                            <img src="/img/ModalHelpImg.png" alt="HelpImg" class="info-image">
                         </div>
-                        <div class="instructions-container ms-3">
-                            <p>Aquí tienes las instrucciones del juego:</p>
-                            <ul>
-                                <li>Selecciona la categoría y dificultad.</li>
-                                <li>Responde a las preguntas lo más rápido posible.</li>
-                                <li>Gana puntos por cada respuesta correcta.</li>
-                                <li>Disfruta y aprende mientras juegas.</li>
+                        <!-- Contenedor del Texto -->
+                        <div class="help-scroll-container ms-3">
+                            <!-- Instrucciones para Un Jugador -->
+                            <h6 class="help-title">Modo Un Jugador</h6>
+                            <p>¡Sigue estos pasos para jugar!</p>
+                            <ul class="help-list">
+                                <li>Selecciona la dificultad deseada: Fácil, Normal o Difícil.</li>
+                                <li>Gira la ruleta para determinar la categoría de tu pregunta.</li>
+                                <li>Responde correctamente antes de que el tiempo se acabe.</li>
+                                <li>Si aciertas, podrás seguir girando. Si fallas, el juego termina.</li>
+                                <li>¡Acumula la mayor cantidad de respuestas correctas posibles!</li>
+                            </ul>
+                            <!-- Instrucciones para Multijugador -->
+                            <h6 class="help-title">Modo Multijugador</h6>
+                            <p>En el modo multijugador, la diversión está garantizada:</p>
+                            <ul class="help-list">
+                                <li>Reúne a tus amigos y seleccionen un anfitrión.</li>
+                                <li>El anfitrión crea la sala y comparte el código.</li>
+                                <li>Los jugadores se turnan para responder preguntas.</li>
+                                <li>Cada respuesta correcta suma puntos al marcador individual.</li>
+                                <li>¡Gana el jugador con más puntos al finalizar la partida!</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
 
         <!-- Modal de Configuración -->
         <div class="modal fade" id="configuracionModal" tabindex="-1" aria-labelledby="configuracionModalLabel"

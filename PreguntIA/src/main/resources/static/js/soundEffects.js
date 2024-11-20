@@ -20,6 +20,24 @@ hoverElements.forEach(element => {
     element.addEventListener('mouseover', playHoverSound);
 });
 
+// Ruta del archivo de sonido
+const modalSound = new Audio('/audio/aparicionModal.mp3'); // Cambia la ruta según tu estructura
+
+// Función para reproducir el sonido
+function playModalSound() {
+    modalSound.currentTime = 0; // Reinicia el sonido
+    modalSound.play().catch(error => {
+        console.error("Error al reproducir el sonido del modal:", error);
+    });
+}
+
+// Evento para los botones que abren modales
+document.addEventListener('DOMContentLoaded', () => {
+    const modalTriggers = document.querySelectorAll('[data-bs-toggle="modal"]');
+    modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', playModalSound);
+    });
+});
 
 // soundEffects.js
 

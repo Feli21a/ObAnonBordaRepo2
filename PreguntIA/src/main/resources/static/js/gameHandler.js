@@ -80,6 +80,38 @@ async function fetchQuestion(category = 'Science') {
     }
 }
 
+//SONIDO MODAL
+// Definición global del sonido para los modales
+const modalOpenSound = new Audio('/audio/movimiento.mp3');
+
+// Función para reproducir el sonido al abrir un modal
+function playModalOpenSound() {
+    modalOpenSound.currentTime = 0; // Reinicia el sonido
+    modalOpenSound.play().catch(error => {
+        console.error("Error al reproducir el sonido del modal:", error);
+    });
+}
+
+// Asociar el sonido al modal de categoría y preguntas
+document.addEventListener('DOMContentLoaded', () => {
+    const categoryModal = document.getElementById('categoryModal');
+    const questionModal = document.getElementById('questionModal');
+
+    // Asociar eventos al modal de categoría
+    if (categoryModal) {
+        categoryModal.addEventListener('shown.bs.modal', playModalOpenSound);
+    } else {
+        console.error("No se encontró el modal con ID 'categoryModal'.");
+    }
+
+    // Asociar eventos al modal de preguntas
+    if (questionModal) {
+        questionModal.addEventListener('shown.bs.modal', playModalOpenSound);
+    } else {
+        console.error("No se encontró el modal con ID 'questionModal'.");
+    }
+});
+
 function showCategoryModal(category) {
     const selectedCategory = data.find(item => item.label === category);
     if (!selectedCategory) return;
@@ -96,6 +128,7 @@ function showCategoryModal(category) {
     const categoryModal = document.getElementById("categoryModal");
     categoryModal.style.display = "flex";
     categoryZoomContainer.classList.add("zoom");
+    playModalOpenSound(); // Reproduce el sonido al abrir el modal
 
     // Después de 2 segundos, cambia la animación a "alejamiento" y oculta el modal luego de 1 segundo
     setTimeout(() => {
@@ -162,6 +195,8 @@ function showQuestionModal(questionText, options, correctAnswer) {
             button.style.backgroundColor = ""; // Restablecer color de fondo
             button.style.color = ""; // Restablecer color del texto
             button.disabled = false; // Habilitar el botón
+
+            playModalOpenSound(); // Reproduce el sonido al abrir el modal
 
             button.onclick = () => {
                 clearTimeout(timer); // Detener el temporizador al seleccionar una respuesta
