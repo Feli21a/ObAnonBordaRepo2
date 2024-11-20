@@ -27,9 +27,7 @@ body.modal-open .container {
 
 .modal-content:hover {
     transform: scale(1.02);
-
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-
 }
 
 .modal-title {
@@ -39,6 +37,14 @@ body.modal-open .container {
     text-align: center;
     margin-bottom: 1rem;
     text-shadow: 1px 1px #d2691e;
+}
+
+.modal-buttons-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: center;
+    width: 100%;
 }
 
 /* Botones en el Modal de Logout */
