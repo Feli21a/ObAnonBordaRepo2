@@ -47,7 +47,7 @@ public class ChatGPTAPIClient {
         List<Map<String, String>> messages = List.of(
                 Map.of("role", "user", "content", prompt));
         requestBody.put("messages", messages);
-        requestBody.put("max_tokens", 100);
+        requestBody.put("max_tokens", 150);
         requestBody.put("temperature", 0.7);
 
         // Configurar los encabezados
