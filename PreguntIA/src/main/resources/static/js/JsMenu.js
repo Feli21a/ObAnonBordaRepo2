@@ -8,12 +8,16 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(data => {
-            const { username, avatar, maxScoreSP } = data;
+            console.log("Datos recibidos del backend:", data);
+            const { username, avatar, maxScoreSP, totalCorrectQuestions } = data;
 
             // Configurar el perfil en la interfaz
             document.getElementById("usernameDisplay").textContent = username || "Sin Nombre";
             document.getElementById("currentAvatar").src = avatar || "/img/Avatar1.png";
             document.getElementById("maxScoreSPDisplay").textContent = maxScoreSP || "0";
+
+            // Mostrar las preguntas correctas totales
+            document.getElementById("totalCorrectQuestions").textContent = totalCorrectQuestions || "0";
         })
         .catch(error => console.error("Error al cargar el perfil del usuario:", error));
 });

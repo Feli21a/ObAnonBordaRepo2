@@ -11,6 +11,7 @@ import ObligatorioDDA_IS.DTO.UserRegistrationDTO;
 import ObligatorioDDA_IS.Models.User;
 import ObligatorioDDA_IS.Repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -48,37 +49,79 @@ public class UserService {
     }
 
     public Map<String, Object> getUserProfile(HttpSession session) {
+        // Obtener al usuario autenticado desde la sesión
         User loggedInUser = (User) session.getAttribute("user");
         if (loggedInUser == null) {
             throw new RuntimeException("Usuario no autenticado");
         }
 
+        // Construir el perfil del usuario
         Map<String, Object> profileData = new HashMap<>();
         profileData.put("username", loggedInUser.getUsername());
+        profileData.put("avatar", loggedInUser.getAvatar() != null ? loggedInUser.getAvatar() : "/img/Avatar1.png");
         profileData.put("maxScoreSP", loggedInUser.getMaxScoreSP());
-        profileData.put("avatar", loggedInUser.getAvatar() != null ? loggedInUser.getAvatar() : "/img/MundiTriste.png");
+        profileData.put("totalCorrectQuestions", loggedInUser.getTotalScore());
 
         return profileData;
     }
 
+    @Transactional
     public void updateAvatar(String avatar, HttpSession session) {
+        // Validar que el usuario esté autenticado
         User loggedInUser = (User) session.getAttribute("user");
         if (loggedInUser == null) {
             throw new RuntimeException("Usuario no autenticado");
         }
+
+        // Actualizar el avatar del usuario
         loggedInUser.setAvatar(avatar);
+
+        // Guardar los cambios en la base de datos
         userRepository.save(loggedInUser);
+
+        // Actualizar la sesión con los datos actualizados del usuario
+        session.setAttribute("user", loggedInUser);
+
+        System.out.println("Avatar actualizado correctamente para el usuario: " + loggedInUser.getUsername());
     }
 
-    public void updateMaxScoreSP(int newScore, HttpSession session) {
+    @Transactional
+    public void updateUserScore(Map<String, Integer> scoreData, HttpSession session) {
+        // Obtener al usuario autenticado desde la sesión
         User loggedInUser = (User) session.getAttribute("user");
         if (loggedInUser == null) {
             throw new RuntimeException("Usuario no autenticado");
         }
-        if (newScore > loggedInUser.getMaxScoreSP()) {
-            loggedInUser.setMaxScoreSP(newScore);
-            userRepository.save(loggedInUser);
+
+        // Validar que el mapa contiene el puntaje
+        if (!scoreData.containsKey("newCorrectAnswers")) {
+            throw new IllegalArgumentException("Faltan las respuestas correctas en la solicitud");
         }
+
+        int newCorrectAnswers = scoreData.get("newCorrectAnswers");
+
+        // Recuperar al usuario actualizado desde la base de datos
+        User userFromDb = userRepository.findById(loggedInUser.getId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Imprimir puntajes para verificar
+        System.out.println("TotalScore antes de la actualización: " + userFromDb.getTotalScore());
+        System.out.println("Puntaje de la partida: " + newCorrectAnswers);
+
+        // Actualizar el puntaje total y el puntaje máximo
+        userFromDb.setTotalScore(userFromDb.getTotalScore() + newCorrectAnswers);
+        if (newCorrectAnswers > userFromDb.getMaxScoreSP()) {
+            userFromDb.setMaxScoreSP(newCorrectAnswers);
+        }
+
+        // Guardar los cambios en la base de datos
+        userRepository.save(userFromDb);
+
+        // Actualizar el usuario en la sesión
+        session.setAttribute("user", userFromDb);
+
+        // Verificar el puntaje final
+        System.out.println("TotalScore después de la actualización: " + userFromDb.getTotalScore());
     }
 
     public void updateUsername(String newUsername, HttpSession session) {

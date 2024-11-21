@@ -36,6 +36,8 @@ public class User {
 
     private String avatar;
 
+    private int totalScore = 0;
+
     // Getters y Setters
     public String getUsername() {
         return username;
@@ -53,10 +55,6 @@ public class User {
         this.email = email;
     }
 
-    public void setMaxScoreSP(int score) {
-        this.maxScoreSP = score;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -65,8 +63,20 @@ public class User {
         this.password = password;
     }
 
+    public void setMaxScoreSP(int score) {
+        this.maxScoreSP = score;
+    }
+
     public int getMaxScoreSP() {
         return maxScoreSP;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
     }
 
 }

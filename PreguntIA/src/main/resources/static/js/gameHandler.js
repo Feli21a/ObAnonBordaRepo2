@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (avatar) {
                 avatarElement.src = avatar; // Usa la URL desde la base de datos
             } else {
-                avatarElement.src = "/img/default-avatar.png"; // Fallback
+                avatarElement.src = "/img/Avatar1.png"; // Fallback
             }
         })
         .catch(error => console.error("Error al cargar el perfil del jugador:", error));
@@ -235,7 +235,7 @@ function showQuestionModal(questionText, options, correctAnswer) {
                         }
                     });
 
-                    // Esperar 3 segundos antes de finalizar el juego
+                    // Esperar 3     segundos antes de finalizar el juego
                     setTimeout(() => {
                         const finalScore = document.getElementById("correctAnswers").textContent;
                         endGame(finalScore, "incorrect"); // Mostrar el modal de fin de partida con el puntaje final
@@ -301,93 +301,55 @@ async function submitAnswer(selectedAnswer, buttonElement) {
 }
 
 // Actualizar el puntaje en la interfaz y sincronizar con el backend
-async function updateScore() {
+function updateScore() {
     const correctAnswersElement = document.getElementById("correctAnswers");
 
-    let currentCount = parseInt(correctAnswersElement.textContent, 10) || 0;
-    currentCount += 1;
+    let currentCount = parseInt(correctAnswersElement.textContent, 10) || 0; // Aciertos en la partida actual
+    currentCount += 1; // Incrementar al responder correctamente
     correctAnswersElement.textContent = currentCount;
 
-    console.log("Incrementado el contador de respuestas correctas. Nuevo valor:", currentCount);
-
-    const gameId = sessionStorage.getItem('gameId');
-    if (!gameId) {
-        console.error("No se encontró un ID de juego en la sesión.");
-        return;
-    }
-
-    try {
-        const response = await fetch(`/spgame/${gameId}/update-score`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ score: currentCount })
-        });
-
-        if (response.ok) {
-            console.log("Puntaje actualizado en el backend correctamente.");
-
-            // Actualizar maxScoreSP del usuario si es necesario
-            const userResponse = await fetch("/api/users/update-score", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ maxScoreSP: currentCount })
-            });
-
-            if (userResponse.ok) {
-                console.log("MaxScoreSP actualizado correctamente en el backend.");
-            } else {
-                console.error("Error al actualizar MaxScoreSP en el backend.");
-            }
-        } else {
-            console.error("Error al actualizar el puntaje en el backend.");
-        }
-    } catch (error) {
-        console.error("Error al intentar actualizar el puntaje en el backend:", error);
-    }
+    console.log("Incrementado el contador de respuestas correctas localmente. Nuevo valor:", currentCount);
 }
 
-
 // Finalizar el juego y mostrar resultados
-async function endGame(score, status) {
+async function endGame(finalScore, status) {
     const gameId = sessionStorage.getItem('gameId');
-    const finalScoreElement = document.getElementById("finalScore");
     const endGameModal = document.getElementById("endGameModal");
 
-    // Verifica que el elemento exista antes de modificarlo
+    // Mostrar el puntaje final en el modal
+    const finalScoreElement = document.getElementById("finalScore");
     if (finalScoreElement) {
-        finalScoreElement.textContent = score;
-    } else {
-        console.error("Elemento 'finalScore' no encontrado en el DOM.");
+        finalScoreElement.textContent = finalScore;
     }
 
-    // Asegúrate de que el modal exista antes de mostrarlo
+    // Mostrar el modal de fin de juego
     if (endGameModal) {
         endGameModal.style.display = "flex";
-    } else {
-        console.error("Modal 'endGameModal' no encontrado en el DOM.");
     }
 
-    // Reproduce el sonido correspondiente
+    // Reproduce el sonido dependiendo del estado del juego
     if (status === "incorrect") {
         playIncorrectAnswerSound();
     } else {
         playCorrectAnswerSound();
     }
 
+    // Enviar puntaje final al backend
     try {
         const response = await fetch(`/spgame/${gameId}/end`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ finalScore }) // Enviar solo el puntaje acumulado
         });
 
         if (response.ok) {
-            console.log("Juego finalizado en el backend. Actualizando perfil.");
+            console.log("Juego finalizado y puntaje actualizado en el backend.");
             await refreshUserProfile(); // Refresca el perfil después de finalizar el juego
         } else {
             console.error("Error al finalizar el juego en el backend.");
         }
     } catch (error) {
-        console.error("Error al finalizar el juego:", error);
+        console.error("Error al intentar finalizar el juego:", error);
     }
 }
 
@@ -398,7 +360,7 @@ async function refreshUserProfile() {
 
         const data = await response.json();
         document.getElementById("usernameDisplay").textContent = data.username || "Sin Nombre";
-        document.getElementById("currentAvatar").src = data.avatar || "/img/default-avatar.png";
+        document.getElementById("currentAvatar").src = data.avatar || "/img/Avatar1.png";
         document.getElementById("maxScoreSPDisplay").textContent = data.maxScoreSP || "0";
     } catch (error) {
         console.error("Error al actualizar el perfil del usuario:", error);

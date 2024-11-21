@@ -1,5 +1,6 @@
 package ObligatorioDDA_IS.Services;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import ObligatorioDDA_IS.Models.SinglePlayerGame;
 import ObligatorioDDA_IS.Models.User;
 import ObligatorioDDA_IS.Repository.SPGameRepository;
 import ObligatorioDDA_IS.Repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Service
 public class SPGameService {
@@ -50,15 +53,39 @@ public class SPGameService {
         gameRepository.save(game);
     }
 
-    public SinglePlayerGame endGame(int gameId) {
-        SinglePlayerGame game = gameRepository.findById(gameId)
-                .orElseThrow(() -> new RuntimeException("Juego no encontrado"));
+    @Transactional
+    public void endGame(Long gameId, Map<String, Integer> scoreData, HttpSession session) {
+        // Validar usuario autenticado
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser == null) {
+            throw new RuntimeException("Usuario no autenticado");
+        }
 
-        game.endGame();
+        // Validar que el mapa contiene el puntaje final
+        if (!scoreData.containsKey("finalScore")) {
+            throw new IllegalArgumentException("Faltan datos en la solicitud: finalScore es requerido.");
+        }
 
-        gameRepository.save(game);
+        int finalScore = scoreData.get("finalScore");
 
-        return game;
+        // Recuperar al usuario desde la base de datos
+        User userFromDb = userRepository.findById(loggedInUser.getId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Actualizar el puntaje total y el máximo
+        System.out.println("Puntaje antes de la actualización: " + userFromDb.getTotalScore());
+        userFromDb.setTotalScore(userFromDb.getTotalScore() + finalScore);
+        if (finalScore > userFromDb.getMaxScoreSP()) {
+            userFromDb.setMaxScoreSP(finalScore);
+        }
+
+        // Guardar los cambios en la base de datos
+        userRepository.save(userFromDb);
+
+        // Actualizar la sesión
+        session.setAttribute("user", userFromDb);
+
+        System.out.println("Puntaje después de la actualización: " + userFromDb.getTotalScore());
     }
 
     public Question getCurrentQuestion(int gameId) {
