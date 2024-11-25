@@ -60,6 +60,27 @@ public class UserController {
         }
     }
 
+    @PostMapping("/update-username")
+    public ResponseEntity<String> updateUsername(@RequestBody Map<String, String> payload, HttpSession session) {
+        try {
+            userService.updateUsername(payload.get("username"), session);
+            return ResponseEntity.ok("Nombre de usuario actualizado");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> payload, HttpSession session) {
+        try {
+            String newPassword = payload.get("password");
+            userService.updatePassword(newPassword, session);
+            return ResponseEntity.ok("Contraseña actualizada, cierre de sesión requerido.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/update-score")
     public ResponseEntity<String> updateScore(@RequestBody Map<String, Integer> scoreData, HttpSession session) {
         try {
