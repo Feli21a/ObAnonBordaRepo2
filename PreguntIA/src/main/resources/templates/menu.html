@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" type="text/css" href="/css/styleMenu.css">
     <link rel="stylesheet" type="text/css" href="/css/styleModalMenu.css">
+    <link rel="stylesheet" type="text/css" href="/css/styleRanking.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="/js/soundEffects.js" type="module"></script>
@@ -36,6 +37,11 @@
             <button class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#perfilModal">
                 <i class="fas fa-user-circle"></i> Perfil
             </button>
+            <!-- Botón de Ranking en el Menú Principal -->
+            <button class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#rankingModal">
+                <i class="bi bi-trophy"></i> Ranking
+            </button>
+
         </div>
 
         <!-- Botones Inferiores -->
@@ -100,7 +106,8 @@
                         <div class="perfil-statistics">
                             <h6>Estadísticas</h6>
                             <p><strong>Máximo Puntaje (UJ):</strong> <span id="maxScoreSPDisplay">0</span></p>
-                            <p><strong>Preguntas Correctas Totales:</strong> <span id="totalCorrectQuestions">0</span></p>
+                            <p><strong>Preguntas Correctas Totales:</strong> <span id="totalCorrectQuestions">0</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -151,6 +158,38 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal de Ranking -->
+        <div class="modal fade" id="rankingModal" tabindex="-1" aria-labelledby="rankingModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ranking-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rankingModalLabel">Ranking de Jugadores</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ranking-container">
+                            <div class="ranking-scroll">
+                                <table class="ranking-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Usuario</th>
+                                            <th>Puntaje Máximo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Las filas se cargarán dinámicamente aquí -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
         <!-- Modal de Información (Ayuda) -->
         <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">

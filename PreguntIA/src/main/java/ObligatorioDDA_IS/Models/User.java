@@ -1,5 +1,6 @@
 package ObligatorioDDA_IS.Models;
 
+import ObligatorioDDA_IS.Interfaces.Observer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +16,7 @@ import lombok.Data;
 @Entity
 @Table(name = "users")
 @Data
-public class User {
+public class User implements Observer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,6 +78,11 @@ public class User {
 
     public void setTotalScore(int totalScore) {
         this.totalScore = totalScore;
+    }
+
+    @Override
+    public void update(String username, int newPosition) {
+        System.out.println("Notificación para " + username + ": Ahora estás en la posición #" + newPosition);
     }
 
 }

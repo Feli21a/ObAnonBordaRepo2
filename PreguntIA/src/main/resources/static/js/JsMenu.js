@@ -206,3 +206,40 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
+async function loadRanking() {
+    const rankingTableBody = document.querySelector('.ranking-table tbody');
+
+    try {
+        // Realiza una solicitud al backend para obtener el ranking
+        const response = await fetch('/api/ranking/list');
+        if (!response.ok) throw new Error("Error al obtener los datos del ranking");
+
+        const rankingData = await response.json();
+
+        // Limpia la tabla antes de insertar nuevos datos
+        rankingTableBody.innerHTML = '';
+
+        // Recorre los usuarios y genera las filas dinámicamente
+        rankingData.forEach((user, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1} ${index === 0 ? '<i class="bi bi-trophy-fill text-warning"></i>' : ''}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="${user.avatar || '/img/Avatar1.png'}" alt="Avatar" class="ranking-avatar me-2">
+                            ${user.username}
+                        </div>
+                    </td>
+                    <td>${user.maxScoreSP}</td>
+                </tr>
+            `;
+            rankingTableBody.insertAdjacentHTML('beforeend', row);
+        });
+    } catch (error) {
+        console.error("Error al cargar el ranking:", error);
+        rankingTableBody.innerHTML = '<tr><td colspan="3">Error al cargar el ranking</td></tr>';
+    }
+}
+
+// Llamar a la función `loadRanking` cada vez que se abra el modal de ranking
+document.getElementById('rankingModal').addEventListener('show.bs.modal', loadRanking);

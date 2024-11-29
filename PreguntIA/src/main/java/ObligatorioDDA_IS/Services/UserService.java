@@ -1,6 +1,7 @@
 package ObligatorioDDA_IS.Services;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,4 +157,14 @@ public class UserService {
     public void logout(HttpSession session) {
         session.invalidate();
     }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
 }
