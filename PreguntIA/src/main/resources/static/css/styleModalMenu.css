@@ -185,3 +185,134 @@ body.modal-open .container {
     text-align: center;
     overflow: hidden;
 }
+
+/* Contenedor de la tabla de ranking */
+.ranking-container {
+    width: fit-content;
+    /* Ajusta el ancho al contenido de la tabla */
+    margin: 0 auto;
+    /* Centra el contenedor */
+    border: 2px solid #8b4513;
+    /* Borde alrededor de la tabla */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    background-color: #fdf6e3;
+    /* Fondo beige */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    /* Sombra más prominente */
+    overflow: hidden;
+    /* Oculta contenido que sobresale */
+}
+
+/* Tabla */
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.1rem;
+    /* Tamaño de letra más grande */
+    font-family: 'Special Elite', sans-serif;
+    /* Fuente coherente con el diseño */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra directa en la tabla */
+}
+
+/* Celdas */
+.ranking-table th,
+.ranking-table td {
+    padding: 1rem;
+    /* Espaciado entre contenido */
+    text-align: center;
+    border: none;
+    /* Elimina las líneas entre las celdas */
+}
+
+/* Encabezados */
+.ranking-table th {
+    background-color: #d3a87d;
+    color: #8b4513;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    /* Se queda fija al hacer scroll */
+    z-index: 1;
+    /* Asegura que esté sobre las celdas */
+}
+
+/* Filas */
+.ranking-table tr:nth-child(even) {
+    background-color: #f8e7d6;
+    /* Color de fondo para filas pares */
+}
+
+.ranking-table tr:nth-child(odd) {
+    background-color: #fff;
+    /* Color de fondo para filas impares */
+}
+
+/* Estilo del contenedor scroll */
+.ranking-scroll {
+    max-height: 400px;
+    /* Altura máxima con scroll */
+    overflow-y: auto;
+    /* Scroll vertical */
+}
+
+/* Scrollbar personalizado */
+.ranking-scroll::-webkit-scrollbar {
+    width: 8px;
+    background-color: #fdf6e3;
+}
+
+.ranking-scroll::-webkit-scrollbar-thumb {
+    background-color: #8b4513;
+    border-radius: 4px;
+    border: 2px solid #fdf6e3;
+}
+
+
+/* Sombra adicional a la tabla */
+.ranking-table {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra directa en la tabla */
+}
+
+/* Estilos del Modal de Logros */
+.logros-modal {
+    font-family: 'Special Elite', sans-serif;
+    background-color: #fdf6e3;
+    border: 3px solid #8b4513;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logros-modal .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    /* Ajusta la altura del modal según necesidad */
+    text-align: center;
+}
+
+.logros-modal .proximamente-text {
+    font-family: 'Amatic SC', cursive;
+    font-size: 3rem;
+    color: #dc3545;
+    /* Rojo destacado */
+    text-shadow: 2px 2px #b02a37;
+    margin-bottom: 0.5rem;
+    /* Espacio entre el título y el texto */
+}
+
+.logros-modal .subtext {
+    font-family: 'Special Elite', sans-serif;
+    font-size: 1.2rem;
+    color: #8b4513;
+    margin-top: 0.5rem;
+}

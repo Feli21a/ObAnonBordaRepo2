@@ -36,6 +36,7 @@
             <button class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#perfilModal">
                 <i class="fas fa-user-circle"></i> Perfil
             </button>
+
         </div>
 
         <!-- Botones Inferiores -->
@@ -60,6 +61,16 @@
             </button>
 
         </footer>
+    </div>
+
+    <div class="ranking-container-fixed" data-bs-toggle="modal" data-bs-target="#rankingModal">
+        <button class="btn btn-danger">
+            <i class="bi bi-trophy"></i>
+        </button>
+        <!-- Botón de Logros -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#logrosModal">
+            <i class="bi bi-award"></i>
+        </button>
     </div>
 
     <!-- Modales -->
@@ -100,7 +111,8 @@
                         <div class="perfil-statistics">
                             <h6>Estadísticas</h6>
                             <p><strong>Máximo Puntaje (UJ):</strong> <span id="maxScoreSPDisplay">0</span></p>
-                            <p><strong>Preguntas Correctas Totales:</strong> <span id="totalCorrectQuestions">0</span></p>
+                            <p><strong>Preguntas Correctas Totales:</strong> <span id="totalCorrectQuestions">0</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -151,6 +163,51 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal de Ranking -->
+        <div class="modal fade" id="rankingModal" tabindex="-1" aria-labelledby="rankingModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rankingModalLabel">Ranking de Mejores Jugadores</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ranking-container">
+                            <div class="ranking-scroll">
+                                <table class="ranking-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nº</th>
+                                            <th>Usuario</th>
+                                            <th>Puntaje</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rankingTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Logros -->
+        <div class="modal fade" id="logrosModal" tabindex="-1" aria-labelledby="logrosModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content logros-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logrosModalLabel">Logros</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex flex-column align-items-center justify-content-center">
+                        <h1 class="proximamente-text">¡Próximamente!</h1>
+                        <p class="subtext mt-3">Esta funcionalidad estará disponible en la próxima versión.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Modal de Información (Ayuda) -->
         <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">

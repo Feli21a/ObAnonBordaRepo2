@@ -1,8 +1,12 @@
 package ObligatorioDDA_IS.Controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,6 +62,23 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
+    }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<Map<String, Object>>> getRanking() {
+        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.DESC, "maxScoreSP"));
+        List<Map<String, Object>> ranking = new ArrayList<>();
+
+        int rank = 1;
+        for (User user : users) {
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("rank", rank++);
+            userData.put("username", user.getUsername());
+            userData.put("maxScoreSP", user.getMaxScoreSP());
+            ranking.add(userData);
+        }
+
+        return ResponseEntity.ok(ranking);
     }
 
     @PostMapping("/update-username")

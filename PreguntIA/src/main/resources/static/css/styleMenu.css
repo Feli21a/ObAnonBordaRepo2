@@ -78,6 +78,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, transform 0.2s;
 }
@@ -96,6 +97,91 @@ h2 {
     justify-content: center;
     align-items: center;
     font-size: 1.8rem;
+}
+
+/* Contenedor del botón de ranking y logros */
+.ranking-container-fixed {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 140px;
+    /* Ajusta el ancho */
+    height: 70px;
+    /* Ajusta la altura */
+    display: flex;
+    justify-content: space-between;
+    /* Espaciado entre botones */
+    align-items: center;
+    /* Centrado vertical */
+    background-color: #fdf6e3;
+    border: 3px solid #8b4513;
+    border-radius: 5px;
+    /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    padding: 0 10px;
+    /* Espaciado interno */
+}
+
+/* Botones dentro del contenedor */
+.ranking-container-fixed .btn {
+    background-color: #17a2b8;
+    /* Color celeste por defecto */
+    border: none;
+    color: white;
+    font-size: 1.4rem;
+    /* Tamaño del ícono */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    /* Forma circular */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+/* Botón de Ranking */
+.ranking-container-fixed .btn-info {
+    background-color: #138496;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Color celeste */
+}
+
+.ranking-container-fixed .btn-danger:hover {
+    background-color: #127686;
+    transform: scale(1.05);
+    /* Más oscuro */
+}
+
+/* Botón de Logros */
+.ranking-container-fixed .btn-success {
+    background-color: #a70e0e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ranking-container-fixed .btn-success:hover {
+    background-color: #b51212;
+    transform: scale(1.05);
+}
+
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .ranking-container-fixed {
+        width: 100px;
+        height: 60px;
+        bottom: 15px;
+        left: 15px;
+    }
+
+    .ranking-container-fixed .btn {
+        width: 40px;
+        /* Botón más pequeño */
+        height: 40px;
+        font-size: 1rem;
+    }
 }
 
 /* Botón verde */

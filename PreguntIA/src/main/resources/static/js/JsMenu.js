@@ -206,3 +206,39 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const rankingModal = document.getElementById("rankingModal");
+
+    // Cargar los datos del ranking cuando se abre el modal
+    rankingModal.addEventListener("show.bs.modal", async function () {
+        const tableBody = document.getElementById("rankingTableBody");
+        tableBody.innerHTML = ""; // Limpia cualquier contenido anterior
+
+        try {
+            const response = await fetch("/api/users/ranking");
+            if (!response.ok) throw new Error("Error al obtener el ranking");
+
+            const ranking = await response.json();
+
+            // Generar las filas de la tabla
+            ranking.forEach(player => {
+                const crownIcon = player.rank === 1 ? '<i class="bi bi-trophy-fill text-warning"></i>' : player.rank;
+                const row = `
+                    <tr>
+                        <td>${crownIcon}</td>
+                        <td>${player.username}</td>
+                        <td>${player.maxScoreSP}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        } catch (error) {
+            console.error("Error al cargar el ranking:", error);
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="3" class="text-center text-danger">Error al cargar el ranking</td>
+                </tr>
+            `;
+        }
+    });
+});
