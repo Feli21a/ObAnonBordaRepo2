@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ObligatorioDDA_IS.Models.RankingSystem;
 import ObligatorioDDA_IS.Models.User;
+import ObligatorioDDA_IS.Services.RankingSystem;
 import ObligatorioDDA_IS.Services.UserService;
 import jakarta.annotation.PostConstruct;
 
@@ -51,9 +51,12 @@ public class RankingController {
         }
     }
 
-    // Obtener el ranking completo
     @GetMapping("/list")
     public ResponseEntity<List<User>> getRanking() {
-        return ResponseEntity.ok(rankingSystem.getRanking());
+        List<User> ranking = rankingSystem.getRanking();
+        System.out.println("Datos del ranking enviados al cliente:");
+        ranking.forEach(user -> System.out.println(user.getUsername() + " - " + user.getMaxScoreSP()));
+        return ResponseEntity.ok(ranking);
     }
+
 }

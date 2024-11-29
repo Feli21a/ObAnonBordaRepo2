@@ -460,3 +460,100 @@ h2 {
     margin-bottom: 0.5rem;
     line-height: 1.5;
 }
+
+/* Contenedor Extra */
+.extra-container {
+    position: fixed;
+    bottom: 20px;
+    height: 70px;
+    width: 140px;
+    /* Dimensiones especificadas */
+    left: 20px;
+    background-color: #f5f5dc;
+    /* Beige */
+    border: 3px solid #8b4513;
+    /* Marrón */
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra */
+    z-index: 1000;
+    /* Asegura que esté sobre otros elementos */
+    display: flex;
+    justify-content: space-between;
+    /* Asegura que los botones tengan espacio */
+    align-items: center;
+    gap: 5px;
+    /* Espacio entre botones */
+}
+
+/* Botones dentro del Contenedor Extra */
+.extra-container .btn {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.4rem;
+    /* Ajuste para tamaños pequeños */
+    border-radius: 5px;
+    height: 45px;
+    width: 45px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Los botones se ajustan al alto del contenedor */
+    flex: 1;
+    /* Divide equitativamente el espacio entre los botones */
+    padding: 0;
+    /* Quita padding interno para que ajusten mejor */
+    margin: 0;
+    /* Evita márgenes adicionales */
+}
+
+/* Estilo del Botón de Ranking */
+.extra-container .btn-info {
+    background-color: #8b4513;
+    color: #fff;
+    border: none;
+}
+
+.extra-container .btn-info:hover {
+    background-color: #a0522d;
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo del Botón de Bandeja */
+.extra-container .btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+}
+
+.extra-container .btn-secondary:hover {
+    background-color: #565e64;
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Ajustes de Responsividad */
+@media (max-width: 768px) {
+    .extra-container {
+        bottom: 10px;
+        left: 10px;
+        width: 120px;
+        /* Reduce el ancho */
+        height: 60px;
+        /* Reduce el alto */
+        gap: 5px;
+        /* Reduce espacio entre botones */
+    }
+
+    .extra-container .btn {
+        font-size: 0.9rem;
+        /* Reduce el tamaño del texto */
+        padding: 0;
+        height: 100%;
+        /* Los botones siguen ajustándose al alto */
+    }
+}

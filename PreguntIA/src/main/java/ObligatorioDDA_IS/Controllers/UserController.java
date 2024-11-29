@@ -1,5 +1,6 @@
 package ObligatorioDDA_IS.Controllers;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ObligatorioDDA_IS.DTO.UserRegistrationDTO;
@@ -39,21 +41,44 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@ModelAttribute UserRegistrationDTO user, HttpSession session) {
+    public ResponseEntity<Map<String, String>> authenticateUser(
+            @RequestParam String email,
+            @RequestParam String password,
+            HttpSession session) {
         try {
-            User loggedInUser = userService.authenticateUser(user.getEmail(), user.getPassword());
-            session.setAttribute("user", loggedInUser); // Agrega el usuario a la sesión
-            return ResponseEntity.ok().body("/menu"); // Redirige a la página de menú
+            // Autenticar al usuario y agregarlo a la sesión
+            User loggedInUser = userService.authenticateUser(email, password, session);
+
+            // Construir la respuesta JSON
+            Map<String, String> response = new HashMap<>();
+            response.put("userId", String.valueOf(loggedInUser.getId())); // Devolver el userId
+            response.put("location", "/menu"); // Indicar la redirección
+
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body(e.getMessage());
+            // Enviar un error en formato JSON
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(401).body(errorResponse);
         }
     }
 
     @GetMapping("/perfil")
     public ResponseEntity<Map<String, Object>> getUserProfile(HttpSession session) {
         try {
-            // Delegar la lógica al servicio
-            Map<String, Object> profileData = userService.getUserProfile(session);
+            User loggedInUser = (User) session.getAttribute("user");
+            if (loggedInUser == null) {
+                throw new RuntimeException("Usuario no autenticado");
+            }
+
+            // Construir el perfil del usuario
+            Map<String, Object> profileData = new HashMap<>();
+            profileData.put("id", loggedInUser.getId()); // Asegúrate de devolver el userId
+            profileData.put("username", loggedInUser.getUsername());
+            profileData.put("avatar", loggedInUser.getAvatar() != null ? loggedInUser.getAvatar() : "/img/Avatar1.png");
+            profileData.put("maxScoreSP", loggedInUser.getMaxScoreSP());
+            profileData.put("totalCorrectQuestions", loggedInUser.getTotalScore());
+
             return ResponseEntity.ok(profileData);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -117,4 +142,5 @@ public class UserController {
         session.invalidate(); // Invalida la sesión actual
         return ResponseEntity.ok("Sesión cerrada con éxito");
     }
+
 }

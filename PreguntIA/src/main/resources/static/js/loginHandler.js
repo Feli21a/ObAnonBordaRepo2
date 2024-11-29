@@ -13,23 +13,27 @@ document.addEventListener("DOMContentLoaded", () => {
             body: new URLSearchParams({ email, password })
         })
             .then(response => {
-                if (response.ok) {
-                    return response.text();
-                } else {
+                if (!response.ok) {
                     throw response;
                 }
+                return response.json(); // Parsear la respuesta JSON
             })
-            .then(location => {
-                window.location.href = location; // Redirige a Menu.html
+            .then(data => {
+                // Guardar el userId en sessionStorage
+                sessionStorage.setItem("userId", data.userId);
+
+                // Redirigir al menú
+                window.location.href = data.location;
             })
             .catch(error => {
-                error.text().then(errorMessage => {
+                error.json().then(errorData => {
                     const alertMessage = document.getElementById("alertMessage");
                     alertMessage.className = "alert alert-danger";
-                    alertMessage.textContent = errorMessage || "Error en el inicio de sesión";
+                    alertMessage.textContent =
+                        errorData.error || "Error en el inicio de sesión";
                     alertMessage.classList.remove("d-none");
 
-                    // Oculta el mensaje de error después de 3 segundos
+                    // Ocultar el mensaje después de 3 segundos
                     setTimeout(() => {
                         alertMessage.classList.add("d-none");
                     }, 3000);
@@ -37,6 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     });
 });
+
+
 
 function togglePasswordVisibility(inputId) {
     const input = document.getElementById(inputId);

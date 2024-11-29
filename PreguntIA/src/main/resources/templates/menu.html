@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <script src="/js/soundEffects.js" type="module"></script>
+    <script src="/js/notification.js"></script>
 
 </head>
 
@@ -36,10 +37,6 @@
             </button>
             <button class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#perfilModal">
                 <i class="fas fa-user-circle"></i> Perfil
-            </button>
-            <!-- Botón de Ranking en el Menú Principal -->
-            <button class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#rankingModal">
-                <i class="bi bi-trophy"></i> Ranking
             </button>
 
         </div>
@@ -66,6 +63,16 @@
             </button>
 
         </footer>
+    </div>
+
+    <!-- Contenedor Extra -->
+    <div class="extra-container">
+        <button class="btn btn-info me-2" data-bs-toggle="modal" data-bs-target="#rankingModal">
+            <i class="bi bi-trophy"></i>
+        </button>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#inboxModal">
+            <i class="bi bi-mailbox-flag"></i>
+        </button>
     </div>
 
     <!-- Modales -->
@@ -125,6 +132,8 @@
                     </div>
                     <div class="modal-body">
                         <div class="avatar-gallery d-flex flex-wrap justify-content-center gap-3">
+                            <img src="/img/AvatarDefault.png" alt="Avatar 1" class="avatar-option rounded-circle"
+                                data-avatar="/img/AvatarDefault.png">
                             <img src="/img/Avatar1.png" alt="Avatar 1" class="avatar-option rounded-circle"
                                 data-avatar="/img/Avatar1.png">
                             <img src="/img/Avatar2.png" alt="Avatar 2" class="avatar-option rounded-circle"
@@ -184,6 +193,24 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Bandeja de Entrada -->
+        <div class="modal fade" id="inboxModal" tabindex="-1" aria-labelledby="bandejaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content inbox-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bandejaModalLabel">Bandeja de Entrada</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body inbox-body">
+                        <ul class="inbox-list">
+
+                            <li class="inbox-item">No hay notificaciones por el momento.</li>
+                        </ul>
                     </div>
                 </div>
             </div>

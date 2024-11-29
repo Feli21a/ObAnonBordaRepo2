@@ -162,7 +162,7 @@ document.getElementById("savePasswordButton").addEventListener("click", async fu
 document.getElementById("confirmLogoutButton").addEventListener("click", async function () {
     try {
         // Realiza una solicitud al endpoint de logout
-        const response = await fetch("api/users/logout", {
+        const response = await fetch("/api/users/logout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -170,8 +170,13 @@ document.getElementById("confirmLogoutButton").addEventListener("click", async f
         });
 
         if (response.ok) {
+            // Limpia los datos del cliente
+            sessionStorage.clear();
+            localStorage.clear();
+
             // Cierre de sesión exitoso
             console.log("Sesión cerrada con éxito");
+
             // Redirige al usuario a la página de inicio de sesión
             window.location.href = "/login";
         } else {
@@ -184,6 +189,7 @@ document.getElementById("confirmLogoutButton").addEventListener("click", async f
     }
 });
 
+
 document.addEventListener("DOMContentLoaded", function () {
     // Verificar si el usuario está autenticado
     fetch("/api/users/perfil")
@@ -194,6 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("loginButton").classList.add("d-none");
             } else {
                 // Usuario no autenticado: mostrar el botón de ingresar
+                sessionStorage.clear(); // Asegúrate de limpiar la sesión local
                 document.getElementById("loginButton").classList.remove("d-none");
                 document.getElementById("logoutButton").classList.add("d-none");
             }
@@ -201,16 +208,18 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => {
             console.error("Error al verificar el estado del usuario:", error);
             // En caso de error, asumimos que no hay usuario autenticado
+            sessionStorage.clear();
             document.getElementById("loginButton").classList.remove("d-none");
             document.getElementById("logoutButton").classList.add("d-none");
         });
 });
 
+
 async function loadRanking() {
     const rankingTableBody = document.querySelector('.ranking-table tbody');
 
     try {
-        // Realiza una solicitud al backend para obtener el ranking
+        // Realiza una solicitud al backend para obtener el ranking actualizado
         const response = await fetch('/api/ranking/list');
         if (!response.ok) throw new Error("Error al obtener los datos del ranking");
 
@@ -235,11 +244,14 @@ async function loadRanking() {
             `;
             rankingTableBody.insertAdjacentHTML('beforeend', row);
         });
+
+        console.log("Ranking actualizado en el frontend");
     } catch (error) {
         console.error("Error al cargar el ranking:", error);
         rankingTableBody.innerHTML = '<tr><td colspan="3">Error al cargar el ranking</td></tr>';
     }
 }
+
 
 // Llamar a la función `loadRanking` cada vez que se abra el modal de ranking
 document.getElementById('rankingModal').addEventListener('show.bs.modal', loadRanking);

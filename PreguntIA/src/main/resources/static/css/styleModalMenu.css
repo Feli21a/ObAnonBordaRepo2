@@ -185,3 +185,143 @@ body.modal-open .container {
     text-align: center;
     overflow: hidden;
 }
+
+/* Modal de Bandeja de Entrada */
+.inbox-modal {
+    font-family: 'Special Elite', sans-serif;
+    background: #fdf6e3;
+    border-radius: 5px;
+    border: 3px solid #8b4513;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Header del Modal */
+.inbox-modal .modal-header {
+    border-bottom: 2px solid #8b4513;
+    background: none;
+}
+
+.inbox-modal .modal-header h5 {
+    font-family: 'Amatic SC', cursive;
+    font-size: 2rem;
+    color: #8b4513;
+    margin: 0;
+}
+
+/* Botón de Eliminar dentro de la notificación */
+.inbox-item .btn {
+    font-size: 1.3rem;
+    /* Reduce el tamaño del texto */
+    padding: 5px;
+    /* Ajusta el padding interno */
+    width: 35px;
+    /* Ancho fijo para un botón más pequeño */
+    height: 35px;
+    /* Alto fijo para un botón más pequeño */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    /* Hace que el botón sea circular */
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.inbox-item .btn-outline-danger {
+    color: #dc3545;
+    /* Color del texto */
+    border-color: #dc3545;
+    /* Color del borde */
+}
+
+.inbox-item .btn-outline-danger:hover {
+    background-color: #dc3545;
+    /* Fondo rojo al hacer hover */
+    color: #fff;
+    /* Texto blanco */
+    transform: scale(1.1);
+    /* Efecto de aumento */
+}
+
+
+/* Cuerpo del Modal */
+.inbox-body {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Scrollbar Personalizado */
+.inbox-body::-webkit-scrollbar {
+    width: 8px;
+    background-color: #fdf6e3;
+    border-radius: 10px;
+}
+
+.inbox-body::-webkit-scrollbar-thumb {
+    background-color: #8b4513;
+    border-radius: 10px;
+    border: 2px solid #fdf6e3;
+}
+
+/* Cards de Notificaciones */
+.inbox-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    width: 600px;
+    background-color: #f5f5dc;
+    border: 3px solid #8b4513;
+    border-radius: 5px;
+    padding: 1rem;
+    color: #333;
+    font-family: 'Special Elite', sans-serif;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover en las Cards */
+.inbox-item:hover {
+    background-color: #f0e68c;
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de Eliminar */
+.inbox-item .delete-btn {
+    background-color: transparent;
+    border: none;
+    color: #dc3545;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.inbox-item .delete-btn:hover {
+    transform: scale(1.2);
+    color: #a71d2a;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .inbox-body {
+        max-height: 300px;
+    }
+
+    .inbox-modal .modal-header h5 {
+        font-size: 1.8rem;
+    }
+
+    .inbox-item {
+        width: 100%;
+    }
+
+    .inbox-item .delete-btn {
+        font-size: 1.2rem;
+    }
+}

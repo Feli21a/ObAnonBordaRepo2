@@ -4,7 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import ObligatorioDDA_IS.Models.RankingSystem;
+import ObligatorioDDA_IS.Repository.NotificationRepository;
+import ObligatorioDDA_IS.Services.RankingSystem;
 
 @Configuration
 public class AppConfig {
@@ -15,7 +16,7 @@ public class AppConfig {
     }
 
     @Bean
-    public RankingSystem rankingSystem() {
-        return new RankingSystem();
+    public RankingSystem rankingSystem(NotificationRepository notificationRepository) {
+        return new RankingSystem(notificationRepository);
     }
 }

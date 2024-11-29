@@ -35,7 +35,7 @@ public class User implements Observer {
 
     private int maxScoreSP = 0;
 
-    private String avatar;
+    private String avatar = "img/AvatarDefault.png";
 
     private int totalScore = 0;
 

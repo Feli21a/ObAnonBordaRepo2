@@ -19,6 +19,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RankingSystem rankingSystem; // Inyectar RankingSystem
+
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User registerUser(UserRegistrationDTO registrationDTO) {
@@ -38,14 +41,24 @@ public class UserService {
         user.setEmail(registrationDTO.getEmail());
         user.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 
+        // Agregar el usuario al ranking
+        rankingSystem.updateRanking(user);
+
         return userRepository.save(user);
     }
 
-    public User authenticateUser(String email, String pass) {
+    public User authenticateUser(String email, String pass, HttpSession session) {
         User user = userRepository.findByEmail(email);
         if (user == null || !passwordEncoder.matches(pass, user.getPassword())) {
             throw new RuntimeException("Correo o contraseña incorrectos");
         }
+
+        // Asegúrate de que el usuario esté en el ranking
+        rankingSystem.updateRanking(user);
+
+        // Establecer el usuario autenticado en la sesión
+        session.setAttribute("user", user);
+
         return user;
     }
 
@@ -94,20 +107,11 @@ public class UserService {
             throw new RuntimeException("Usuario no autenticado");
         }
 
-        // Validar que el mapa contiene el puntaje
-        if (!scoreData.containsKey("newCorrectAnswers")) {
-            throw new IllegalArgumentException("Faltan las respuestas correctas en la solicitud");
-        }
-
         int newCorrectAnswers = scoreData.get("newCorrectAnswers");
 
         // Recuperar al usuario actualizado desde la base de datos
         User userFromDb = userRepository.findById(loggedInUser.getId())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        // Imprimir puntajes para verificar
-        System.out.println("TotalScore antes de la actualización: " + userFromDb.getTotalScore());
-        System.out.println("Puntaje de la partida: " + newCorrectAnswers);
 
         // Actualizar el puntaje total y el puntaje máximo
         userFromDb.setTotalScore(userFromDb.getTotalScore() + newCorrectAnswers);
@@ -118,11 +122,11 @@ public class UserService {
         // Guardar los cambios en la base de datos
         userRepository.save(userFromDb);
 
-        // Actualizar el usuario en la sesión
-        session.setAttribute("user", userFromDb);
+        // Actualizar el ranking
+        rankingSystem.updateRanking(userFromDb); // Llamada con datos actualizados
 
-        // Verificar el puntaje final
-        System.out.println("TotalScore después de la actualización: " + userFromDb.getTotalScore());
+        // Actualizar la sesión
+        session.setAttribute("user", userFromDb);
     }
 
     public void updateUsername(String newUsername, HttpSession session) {
