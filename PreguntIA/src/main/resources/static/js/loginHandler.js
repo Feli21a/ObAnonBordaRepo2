@@ -19,11 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json(); // Parsear la respuesta JSON
             })
             .then(data => {
+                // Mostrar mensaje de éxito
+                const alertMessage = document.getElementById("alertMessage");
+                alertMessage.className = "alert alert-success"; // Cambiar a clase de éxito
+                alertMessage.textContent = "Iniciando sesión";
+                alertMessage.classList.remove("d-none");
+
                 // Guardar el userId en sessionStorage
                 sessionStorage.setItem("userId", data.userId);
 
-                // Redirigir al menú
-                window.location.href = data.location;
+                // Redirigir al menú después de 2 segundos
+                setTimeout(() => {
+                    window.location.href = data.location;
+                }, 1500); // 2 segundos
             })
             .catch(error => {
                 error.json().then(errorData => {
@@ -41,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     });
 });
+
 
 
 

@@ -1,6 +1,5 @@
 package ObligatorioDDA_IS.Models;
 
-import ObligatorioDDA_IS.Interfaces.Observer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +15,7 @@ import lombok.Data;
 @Entity
 @Table(name = "users")
 @Data
-public class User implements Observer {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +39,14 @@ public class User implements Observer {
     private int totalScore = 0;
 
     // Getters y Setters
+    public String getUserId() {
+        return username;
+    }
+
+    public void setUserId(Long id) {
+        this.id = id;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -80,9 +87,8 @@ public class User implements Observer {
         this.totalScore = totalScore;
     }
 
-    @Override
-    public void update(String username, int newPosition) {
-        System.out.println("Notificación para " + username + ": Ahora estás en la posición #" + newPosition);
+    public String getAvatar() {
+        return this.avatar;
     }
 
 }

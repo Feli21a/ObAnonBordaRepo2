@@ -252,6 +252,8 @@ async function loadRanking() {
     }
 }
 
+// Cargar ranking cada 1 minuto
+setInterval(loadRanking, 60000);
 
-// Llamar a la función `loadRanking` cada vez que se abra el modal de ranking
+// Llamar a la función `loadRanking` al abrir el modal de ranking
 document.getElementById('rankingModal').addEventListener('show.bs.modal', loadRanking);

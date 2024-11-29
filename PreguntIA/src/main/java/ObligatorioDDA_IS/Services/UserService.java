@@ -71,8 +71,9 @@ public class UserService {
 
         // Construir el perfil del usuario
         Map<String, Object> profileData = new HashMap<>();
+        profileData.put("id", loggedInUser.getUserId());
         profileData.put("username", loggedInUser.getUsername());
-        profileData.put("avatar", loggedInUser.getAvatar() != null ? loggedInUser.getAvatar() : "/img/Avatar1.png");
+        profileData.put("avatar", loggedInUser.getAvatar() != null ? loggedInUser.getAvatar() : "/img/AvatarDefault.png");
         profileData.put("maxScoreSP", loggedInUser.getMaxScoreSP());
         profileData.put("totalCorrectQuestions", loggedInUser.getTotalScore());
 

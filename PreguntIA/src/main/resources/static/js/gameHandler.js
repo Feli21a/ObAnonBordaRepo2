@@ -345,6 +345,7 @@ async function endGame(finalScore, status) {
         if (response.ok) {
             console.log("Juego finalizado y puntaje actualizado en el backend.");
             await refreshUserProfile(); // Refresca el perfil después de finalizar el juego
+            await refreshRanking(); // **Nuevo: Refrescar el ranking**
         } else {
             console.error("Error al finalizar el juego en el backend.");
         }
@@ -352,6 +353,7 @@ async function endGame(finalScore, status) {
         console.error("Error al intentar finalizar el juego:", error);
     }
 }
+
 
 async function refreshUserProfile() {
     try {
@@ -366,6 +368,43 @@ async function refreshUserProfile() {
         console.error("Error al actualizar el perfil del usuario:", error);
     }
 }
+
+async function refreshRanking() {
+    const rankingTableBody = document.querySelector('.ranking-table tbody');
+
+    try {
+        const response = await fetch('/api/ranking/list');
+        if (!response.ok) throw new Error("Error al obtener los datos del ranking");
+
+        const rankingData = await response.json();
+
+        // Limpiar la tabla antes de insertar nuevos datos
+        rankingTableBody.innerHTML = '';
+
+        // Recorre los usuarios y genera las filas dinámicamente
+        rankingData.forEach((user, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1} ${index === 0 ? '<i class="bi bi-trophy-fill text-warning"></i>' : ''}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="${user.avatar || '/img/Avatar1.png'}" alt="Avatar" class="ranking-avatar me-2">
+                            ${user.username}
+                        </div>
+                    </td>
+                    <td>${user.maxScoreSP}</td>
+                </tr>
+            `;
+            rankingTableBody.insertAdjacentHTML('beforeend', row);
+        });
+
+        console.log("Ranking actualizado en el frontend.");
+    } catch (error) {
+        console.error("Error al actualizar el ranking:", error);
+        rankingTableBody.innerHTML = '<tr><td colspan="3">Error al cargar el ranking</td></tr>';
+    }
+}
+
 
 async function replayGame() {
     try {
@@ -408,6 +447,7 @@ async function replayGame() {
     }
 }
 
+document.getElementById('rankingModal').addEventListener('show.bs.modal', refreshRanking);
 
 function goToMenu() {
     window.location.href = "/menu"; // Replace with the actual URL of your menu

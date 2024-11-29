@@ -20,6 +20,9 @@ public class SPGameService {
     private final SPGameRepository gameRepository;
 
     @Autowired
+    private RankingSystem rankingSystem;
+
+    @Autowired
     public SPGameService(SPGameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
@@ -81,6 +84,9 @@ public class SPGameService {
 
         // Guardar los cambios en la base de datos
         userRepository.save(userFromDb);
+
+        // **Actualizar el ranking**
+        rankingSystem.updateRanking(userFromDb);
 
         // Actualizar la sesión
         session.setAttribute("user", userFromDb);

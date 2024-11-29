@@ -51,7 +51,7 @@ public class UserController {
 
             // Construir la respuesta JSON
             Map<String, String> response = new HashMap<>();
-            response.put("userId", String.valueOf(loggedInUser.getId())); // Devolver el userId
+            response.put("userId", String.valueOf(loggedInUser.getUserId())); // Devolver el userId
             response.put("location", "/menu"); // Indicar la redirección
 
             return ResponseEntity.ok(response);
@@ -66,19 +66,8 @@ public class UserController {
     @GetMapping("/perfil")
     public ResponseEntity<Map<String, Object>> getUserProfile(HttpSession session) {
         try {
-            User loggedInUser = (User) session.getAttribute("user");
-            if (loggedInUser == null) {
-                throw new RuntimeException("Usuario no autenticado");
-            }
-
-            // Construir el perfil del usuario
-            Map<String, Object> profileData = new HashMap<>();
-            profileData.put("id", loggedInUser.getId()); // Asegúrate de devolver el userId
-            profileData.put("username", loggedInUser.getUsername());
-            profileData.put("avatar", loggedInUser.getAvatar() != null ? loggedInUser.getAvatar() : "/img/Avatar1.png");
-            profileData.put("maxScoreSP", loggedInUser.getMaxScoreSP());
-            profileData.put("totalCorrectQuestions", loggedInUser.getTotalScore());
-
+            // Delegar la lógica al servicio
+            Map<String, Object> profileData = userService.getUserProfile(session);
             return ResponseEntity.ok(profileData);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);

@@ -272,7 +272,6 @@ body.modal-open .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
     width: 600px;
     background-color: #f5f5dc;
     border: 3px solid #8b4513;

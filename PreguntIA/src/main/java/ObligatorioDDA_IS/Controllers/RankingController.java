@@ -58,5 +58,4 @@ public class RankingController {
         ranking.forEach(user -> System.out.println(user.getUsername() + " - " + user.getMaxScoreSP()));
         return ResponseEntity.ok(ranking);
     }
-
 }
