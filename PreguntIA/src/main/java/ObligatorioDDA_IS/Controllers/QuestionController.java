@@ -30,7 +30,7 @@ public class QuestionController {
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<Map<String, Object>> fetchQuestion(@RequestParam int gameId, @RequestParam String category) {
+    public ResponseEntity<Map<String, Object>> fetchQuestion(@RequestParam Long gameId, @RequestParam String category) {
         try {
             SinglePlayerGame game = gameService.findGameById(gameId);
 

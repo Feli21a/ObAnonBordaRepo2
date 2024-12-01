@@ -15,6 +15,5 @@ public interface Game {
     String getStatus();
 
     LocalDateTime getStartDateTime();
-
-    int getIdGame();
+    
 }

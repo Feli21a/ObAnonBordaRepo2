@@ -15,7 +15,7 @@ public class SinglePlayerGame implements Game {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idGame;
+    private Long idGame;
 
     private String gameType = "Un Jugador";
     private LocalDateTime startDateTime;
@@ -78,8 +78,7 @@ public class SinglePlayerGame implements Game {
 
     // Getters and Setters
 
-    @Override
-    public int getIdGame() {
+    public Long getIdGame() {
         return idGame;
     }
 

@@ -80,7 +80,7 @@ public class SPGameController { // Nombre actualizado de la clase
     }
 
     @PostMapping("/{gameId}/update-score")
-    public ResponseEntity<Void> updateScore(@PathVariable int gameId, @RequestBody Map<String, Integer> payload) {
+    public ResponseEntity<Void> updateScore(@PathVariable Long gameId, @RequestBody Map<String, Integer> payload) {
         try {
             int score = payload.get("score");
 

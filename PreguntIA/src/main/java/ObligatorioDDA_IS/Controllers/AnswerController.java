@@ -27,7 +27,7 @@ public class AnswerController {
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<Map<String, Object>> submitAnswer(@RequestParam int gameId, @RequestParam String answer) {
+    public ResponseEntity<Map<String, Object>> submitAnswer(@RequestParam Long gameId, @RequestParam String answer) {
         try {
             SinglePlayerGame game = gameService.findGameById(gameId);
 

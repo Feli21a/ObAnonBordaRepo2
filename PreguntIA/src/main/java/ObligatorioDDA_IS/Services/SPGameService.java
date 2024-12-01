@@ -41,12 +41,12 @@ public class SPGameService {
         return game;
     }
 
-    public SinglePlayerGame findGameById(int gameId) {
+    public SinglePlayerGame findGameById(Long gameId) {
         Optional<SinglePlayerGame> game = gameRepository.findById(gameId);
         return game.orElseThrow(() -> new IllegalArgumentException("Game not found"));
     }
 
-    public void startSinglePlayerGame(int gameId) {
+    public void startSinglePlayerGame(Long gameId) {
         SinglePlayerGame game = findGameById(gameId);
         game.startGame();
         gameRepository.save(game);
@@ -75,32 +75,43 @@ public class SPGameService {
         User userFromDb = userRepository.findById(loggedInUser.getId())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Actualizar el puntaje total y el máximo
+        // Recuperar la partida desde la base de datos
+        SinglePlayerGame game = (SinglePlayerGame) gameRepository.findById(gameId)
+                .orElseThrow(() -> new RuntimeException("Game not found"));
+
+        // Finalizar el juego: actualizar estado y puntaje
+        game.endGame(); // Esto establece `gameEnded` en true y `status` en "Finalizado"
+        game.setScore(finalScore); // Establece el puntaje final del juego
+
+        // Guardar los cambios en la base de datos para el juego
+        gameRepository.save(game);
+
+        // Actualizar el puntaje total y el máximo del usuario
         System.out.println("Puntaje antes de la actualización: " + userFromDb.getTotalScore());
         userFromDb.setTotalScore(userFromDb.getTotalScore() + finalScore);
         if (finalScore > userFromDb.getMaxScoreSP()) {
             userFromDb.setMaxScoreSP(finalScore);
         }
 
-        // Guardar los cambios en la base de datos
+        // Guardar los cambios en la base de datos para el usuario
         userRepository.save(userFromDb);
 
-        // **Actualizar el ranking**
+        // Actualizar el ranking
         rankingSystem.updateRanking(userFromDb);
 
-        // Actualizar la sesión
+        // Actualizar la sesión con los datos del usuario actualizados
         session.setAttribute("user", userFromDb);
 
         System.out.println("Puntaje después de la actualización: " + userFromDb.getTotalScore());
     }
 
-    public Question getCurrentQuestion(int gameId) {
+    public Question getCurrentQuestion(Long gameId) {
         SinglePlayerGame game = findGameById(gameId);
         return game.getCurrentQuestion();
     }
 
-    public void updateScore(int gameId, int score) {
-        SinglePlayerGame game = gameRepository.findById(gameId)
+    public void updateScore(Long gameId, int score) {
+        SinglePlayerGame game = (SinglePlayerGame) gameRepository.findById(gameId)
                 .orElseThrow(() -> new RuntimeException("Game not found"));
 
         if (!game.getGameEnded()) {

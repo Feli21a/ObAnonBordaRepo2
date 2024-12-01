@@ -68,7 +68,7 @@ class SPGameServiceTest {
 
     @Test
     void testStartSinglePlayerGame_Success() {
-        int gameId = 1;
+        Long gameId = (long) 1;
 
         SinglePlayerGame mockGame = new SinglePlayerGame("Medio");
         when(gameRepository.findById(gameId)).thenReturn(Optional.of(mockGame));
@@ -101,7 +101,7 @@ class SPGameServiceTest {
 
     @Test
     void testGetCurrentQuestion_Success() {
-        int gameId = 1;
+        Long gameId = (long) 1;
 
         SinglePlayerGame mockGame = new SinglePlayerGame("Facil");
         Question mockQuestion = new Question();
@@ -117,7 +117,7 @@ class SPGameServiceTest {
 
     @Test
     void testUpdateScore_Success() {
-        int gameId = 1;
+        Long gameId = (long) 1;
         int score = 200;
 
         SinglePlayerGame mockGame = new SinglePlayerGame("Dificil");
