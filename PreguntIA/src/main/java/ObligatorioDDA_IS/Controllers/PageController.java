@@ -10,4 +10,9 @@ public class PageController {
     public String showRegisterPage() {
         return "register"; // Spring buscará el archivo `register.html` en el directorio `templates`
     }
+
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login"; // Spring buscará el archivo `register.html` en el directorio `templates`
+    }
 }
