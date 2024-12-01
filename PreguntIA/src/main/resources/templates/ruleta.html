@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/LogoPreguntiaSF.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Special+Elite&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/styleRuleta.css">
+    <script src="/js/soundEffects.js" type="module"></script>
+    <script src="/js/gameHandler.js"></script>
+
+    <title>Ruleta de Preguntas con Respuestas</title>
+</head>
+
+<body>
+    <!-- Información del jugador -->
+    <div id="player-info" class="player-info">
+        <!-- Contenedor del Avatar -->
+        <div class="avatar-container">
+            <img id="playerAvatar" alt="Avatar del Jugador">
+        </div>
+        <!-- Nombre del Jugador -->
+        <h3 id="playerName" class="player-name">Cargando...</h3>
+        <!-- Contador de Respuestas Correctas -->
+        <h3 class="correct-answers">Correctas: <span id="correctAnswers">0</span></h3>
+    </div>
+
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <div id="chart">
+            <div id="marker">
+                <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="30,0 60,60 0,60" fill="#f0e6d2" stroke="#8b4513" stroke-width="2" />
+                </svg>
+            </div>
+            <button class="spin-button" id="spinButton" onclick="spin()">Girar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Categoría -->
+    <div id="categoryModal" class="category-modal">
+        <div class="category-modal-content">
+            <div id="categoryZoomContainer" class="zoom-container">
+                <img id="categoryImage" class="zoom-image" src="" alt="Imagen de la categoría">
+                <div id="categoryName">Nombre de la Categoría</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Pregunta y Respuestas -->
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-question-text">Pregunta</h2>
+            <div id="timer">10 segundos</div>
+            <div id="modal-options">
+                <button class="answer-button" onclick="selectAnswer(this)">Opción 1</button>
+                <button class="answer-button" onclick="selectAnswer(this)">Opción 2</button>
+                <button class="answer-button" onclick="selectAnswer(this)">Opción 3</button>
+                <button class="answer-button" onclick="selectAnswer(this)">Opción 4</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Partida Finalizada -->
+    <div id="endGameModal" class="modal">
+        <div class="modal-content">
+            <h2>Partida Finalizada</h2>
+            <p>Tu racha fue de <span id="finalScore"></span> respuestas correctas.</p>
+            <div class="modal-buttons">
+                <!-- Botón de Volver a Jugar con icono -->
+                <button class="replay-button" onclick="replayGame()">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <!-- Botón de Volver al Menú -->
+                <button class="menu-button" onclick="goToMenu()">Volver al Menú</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script>
+        // Configuración para la ruleta
+        var w = 500, h = 500, r = Math.min(w, h) / 2, rotation = 0, oldrotation = 0, picked = 100000, oldpick = [],
+            color = d3.scale.category20();
+
+        var data = [
+            { "label": "Geografia", "image": "img/MundiGeografo.png" },
+            { "label": "Entretenimiento", "image": "img/MundiEntretenimiento.png" },
+            { "label": "Historia", "image": "img/MundiHistoriador.png" },
+            { "label": "Ciencia", "image": "img/MundiCientifico.png" },
+            { "label": "Tecnologia", "image": "img/MundiTecnologico.png" },
+            { "label": "Deportes", "image": "img/MundiDeportista.png" }
+        ];
+
+        // Configuración del gráfico D3
+        var svg = d3.select('#chart').append("svg").data([data]).attr("width", w).attr("height", h);
+        var container = svg.append("g").attr("class", "chartholder").attr("transform", "translate(" + (w / 2) + "," + (h / 2) + ")");
+        var vis = container.append("g");
+
+        var pie = d3.layout.pie().sort(null).value(function () { return 1; });
+        var arc = d3.svg.arc().outerRadius(r);
+
+        var arcs = vis.selectAll("g.slice").data(pie).enter().append("g").attr("class", "slice");
+
+        arcs.append("path")
+            .attr("fill", function (d, i) { return d3.scale.category20()(i); })
+            .attr("d", arc);
+
+        // Añadir imágenes de categorías en la ruleta
+        arcs.append("image")
+            .attr("xlink:href", function (d, i) { return data[i].image; })
+            .attr("width", 70)
+            .attr("height", 70)
+            .attr("transform", function (d) {
+                const angle = (d.startAngle + d.endAngle) / 2 * 180 / Math.PI - 90;
+                return `rotate(${angle})translate(${r - 102}, -45)`;
+            })
+            .style("filter", "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2))");
+
+        // Añadir etiquetas de categorías en la ruleta
+        arcs.append("text")
+            .attr("transform", function (d) {
+                const angle = (d.startAngle + d.endAngle) / 2 * 180 / Math.PI - 90;
+                return `rotate(${angle})translate(${r - 65}, 40)`;
+            })
+            .attr("text-anchor", "middle")
+            .text(function (d, i) { return data[i].label; });
+
+        // Cargar el sonido del giro de la ruleta
+        const spinSound = new Audio('/audio/sonidoRuleta.mp3');
+
+        // Función para reproducir el sonido del giro
+        function playSpinSound() {
+            spinSound.currentTime = 0; // Reinicia el sonido
+            spinSound.play().catch(error => {
+                console.error("Error al reproducir el sonido del giro: ", error);
+            });
+        }
+
+        let isSpinning = false;
+
+        function spin() {
+            if (isSpinning) {
+                console.log("El giro ya está en progreso. Espera a que termine.");
+                return;
+            }
+
+            isSpinning = true; // Marca que el giro está en progreso
+            document.getElementById("spinButton").disabled = true; // Desactiva el botón mientras gira
+
+            // Reproducir sonido del giro
+            playSpinSound();
+
+            const ps = 360 / data.length; // Grados por sector
+            const rng = Math.floor((Math.random() * 1440) + 360); // Generar rotación aleatoria
+            rotation = (Math.round(rng / ps) * ps); // Ajustar al sector más cercano
+            picked = Math.round(data.length - (rotation % 360) / ps);
+            picked = picked >= data.length ? (picked % data.length) : picked;
+
+            // Aquí se elimina la verificación de si ya fue seleccionado
+            rotation += 90 - Math.round(ps / 2);
+
+            vis.transition()
+                .duration(3000)
+                .ease("cubic-out")
+                .attrTween("transform", rotTween)
+                .each("end", function () {
+                    const selectedCategory = data[picked].label;
+                    showCategoryModal(selectedCategory); // Muestra el modal de categoría
+                    oldrotation = rotation;
+
+                    isSpinning = false; // Restablece la bandera
+                    document.getElementById("spinButton").disabled = false; // Habilita el botón
+                    console.log("El giro ha terminado. Categoría seleccionada:", selectedCategory);
+                });
+        }
+
+
+        function rotTween(to) {
+            var i = d3.interpolate(oldrotation % 360, rotation);
+            return function (t) {
+                return "rotate(" + i(t) + ")";
+            };
+        }
+
+    </script>
+
+</body>
+
+</html>

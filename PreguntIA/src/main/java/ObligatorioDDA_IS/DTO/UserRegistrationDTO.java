@@ -16,7 +16,6 @@ public class UserRegistrationDTO {
     private String email;
 
     @NotNull(message = "La contraseña no puede estar vacía")
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     private String password;
 
     @NotNull(message = "Debe confirmar la contraseña")

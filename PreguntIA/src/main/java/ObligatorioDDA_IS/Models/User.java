@@ -13,7 +13,7 @@ import lombok.Data;
 //Entidad que representa al usuario en la base de datos.
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "users")
 @Data
 public class User {
 
@@ -30,10 +30,23 @@ public class User {
     private String email;
 
     @NotNull(message = "La contraseña no puede estar vacía")
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     private String password;
 
+    private int maxScoreSP = 0;
+
+    private String avatar = "img/AvatarDefault.png";
+
+    private int totalScore = 0;
+
     // Getters y Setters
+    public String getUserId() {
+        return username;
+    }
+
+    public void setUserId(Long id) {
+        this.id = id;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -56,6 +69,26 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setMaxScoreSP(int score) {
+        this.maxScoreSP = score;
+    }
+
+    public int getMaxScoreSP() {
+        return maxScoreSP;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public String getAvatar() {
+        return this.avatar;
     }
 
 }

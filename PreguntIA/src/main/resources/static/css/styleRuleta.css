@@ -1,0 +1,554 @@
+/* === Configuración General === */
+body {
+    font-family: 'Amatic SC', 'Special Elite', Helvetica, Arial, sans-serif;
+    background: url('/img/RuletaBG.png') no-repeat center center fixed;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* === Contenedor Principal === */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+/* === Ruleta === */
+#chart {
+    width: 500px;
+    height: 500px;
+    border: 8px solid #ffffff88;
+    border-radius: 50%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    position: relative;
+    background: url('img/RuletaBG.png') center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ruleta - Alternancia de colores de las secciones */
+#chart .slice path {
+    fill: #f0e6d2;
+}
+
+#chart .slice:nth-child(odd) path {
+    fill: #8b4513;
+}
+
+#chart .slice:nth-child(odd) text {
+    fill: #f0e6d2;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#chart .slice:nth-child(even) text {
+    fill: #8b4513;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#marker {
+    position: absolute;
+    top: 50%;
+    right: -30px;
+    transform: translateY(-50%) rotate(-90deg);
+    /* Gira el marcador -90 grados */
+    width: 60px;
+    height: 60px;
+    background-color: #f0e6d2;
+    /* Color beige */
+    border: 2px solid #8b4513;
+    /* Borde marrón */
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    /* Triángulo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    /* Sombra más visible */
+}
+
+
+/* === Botón de Girar === */
+.spin-button {
+    background: #ffffff;
+    border: 3px solid #8b4513;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Amatic SC', cursive;
+    font-size: 30px;
+    color: #8b4513;
+    box-shadow: 0px 2px 10px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    position: absolute;
+    z-index: 10;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.spin-button:hover {
+    background-color: #8b4513;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* === Información del Jugador === */
+.player-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fdf6e3;
+    border: 3px solid #8b4513;
+    border-radius: 15px;
+    padding: 1rem;
+    width: 150px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+/* Contenedor del Avatar */
+.avatar-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #8b4513;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Estilo para el Nombre del Jugador */
+.player-name {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.8rem;
+    color: #8b4513;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+/* Estilo para el Contador */
+.correct-answers {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.4rem;
+    color: #333;
+    margin: 0;
+    text-align: center;
+}
+
+/* === Modal de Pregunta y Respuestas === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(10px);
+    /* Efecto de desenfoque */
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+    /* Animación de entrada */
+}
+
+.modal-content {
+    background-color: #f0e6d2;
+    border-radius: 15px;
+    width: 500px;
+    /* Ancho ajustado */
+    padding: 40px;
+    /* Padding ajustado */
+    text-align: center;
+    color: #333;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8);
+    animation: modalZoomIn 0.6s ease forwards;
+    position: relative;
+    /* Para posicionar la imagen decorativa */
+}
+
+@keyframes modalZoomIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Título del Modal */
+.modal-content h2 {
+    font-size: 30px;
+    margin-bottom: 25px;
+    font-family: 'Amatic SC', cursive;
+    color: #8b4513;
+}
+
+/* Imagen decorativa dentro del modal */
+.modal-content::before {
+    content: '';
+    background: url('/img/MundiPensando.png') no-repeat center center;
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: -35px;
+    /* Ajustar para que quede encima del modal */
+    left: calc(50% - 50px);
+    /* Centrar horizontalmente */
+}
+
+/* Estilo de los Botones de Respuesta */
+.answer-button {
+    width: 100%;
+    padding: 16px;
+    margin: 15px 0;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #8b4513;
+    color: #f0e6d2;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    font-family: 'Amatic SC', cursive;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Sombra suave */
+}
+
+/* Estilo del texto de la pregunta */
+#modal-question-text {
+    font-size: 24px;
+    color: #8b4513;
+    font-family: 'Amatic SC', cursive;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+    /* Sombra al texto */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.answer-button:hover {
+    background-color: #a0522d;
+    color: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    /* Sombra más fuerte en hover */
+}
+
+/* === Modal de Categoría === */
+.category-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    /* Efecto de desenfoque */
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.category-modal-content {
+    text-align: center;
+    color: #fff;
+    transition: transform 0.8s ease;
+}
+
+.zoom-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 1.5s ease;
+}
+
+.zoom-container.zoom {
+    transform: scale(2.5);
+}
+
+.zoom-container.shrink {
+    transform: scale(0.0);
+}
+
+.zoom-image {
+    width: 100px;
+    transition: width 0.5s ease;
+}
+
+#categoryName {
+    font-size: 28px;
+    margin-top: 15px;
+    font-family: 'Amatic SC', cursive;
+    color: #f0e6d2;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Animación de Entrada para el Modal de Categoría */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* === Media Queries - Diseño Responsivo === */
+@media (max-width: 768px) {
+    #player-info {
+        width: 180px;
+        padding: 15px;
+        font-size: 18px;
+    }
+
+    #chart {
+        width: 350px;
+        height: 350px;
+    }
+
+    .spin-button {
+        width: 100px;
+        height: 100px;
+        font-size: 25px;
+    }
+
+    .modal-content {
+        width: 80%;
+    }
+
+    .modal-content h2 {
+        font-size: 24px;
+    }
+
+    .answer-button {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    #player-info {
+        width: 150px;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    #chart {
+        width: 300px;
+        height: 300px;
+    }
+
+    .spin-button {
+        width: 80px;
+        height: 80px;
+        font-size: 20px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+
+    .answer-button {
+        font-size: 16px;
+    }
+
+    /* Efecto de respuesta correcta */
+    .correct-answer {
+        animation: correctGlow 0.5s ease-in-out forwards;
+        /* Añade un efecto suave */
+    }
+
+    @keyframes correctGlow {
+        0% {
+            box-shadow: 0 0 5px green;
+            transform: scale(1);
+        }
+
+        50% {
+            box-shadow: 0 0 15px green;
+            transform: scale(1.05);
+        }
+
+        100% {
+            box-shadow: 0 0 5px green;
+            transform: scale(1);
+        }
+    }
+
+    /* Transiciones suaves en botones */
+    .answer-button {
+        transition: all 0.3s ease;
+    }
+
+    .answer-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+}
+
+/* Modal de Partida Finalizada */
+#endGameModal .modal-content {
+    background-color: #f0e6d2;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    color: #333;
+    width: 400px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    font-family: 'Amatic SC', 'Special Elite', Helvetica, Arial, sans-serif;
+}
+
+/* Agregar imagen decorativa al modal */
+#endGameModal .modal-content::before {
+    content: '';
+    background: url('/img/MundiTriste.png') no-repeat center center;
+    background-size: contain;
+    width: 100px;
+    /* Ajusta el tamaño según sea necesario */
+    height: 100px;
+    position: absolute;
+    top: -50px;
+    /* Posición encima del modal */
+    left: calc(50% - 50px);
+}
+
+/* Estilo del título y texto en el modal */
+#endGameModal h2 {
+    font-size: 26px;
+    color: #8b4513;
+}
+
+#endGameModal p {
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+/* Contenedor de botones en el modal */
+#endGameModal .modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* Estilo del botón de Volver a Jugar */
+.replay-button {
+    background-color: #3C9BFF;
+    /* Celeste */
+    color: #ffffff;
+    border: none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border-radius: 5px;
+    /* Cuadrado con bordes ligeramente redondeados */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.replay-button:hover {
+    background-color: #3393e0;
+    /* Color de hover más oscuro */
+    transform: scale(1.1);
+    /* Aumenta un poco el tamaño al hacer hover */
+}
+
+/* Estilo del botón de Volver al Menú */
+.menu-button {
+    background-color: #8b4513;
+    color: #f0e6d2;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    font-family: 'Amatic SC', 'Special Elite', Helvetica, Arial, sans-serif;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.menu-button:hover {
+    background-color: #a0522d;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+/* Estilo para el temporizador */
+#timer {
+    font-size: 20px;
+    /* Tamaño de fuente */
+    color: #8b4513;
+    /* Marrón oscuro, acorde a tu diseño */
+    font-family: 'Amatic SC', cursive;
+    /* Fuente consistente */
+    background-color: #f0e6d2;
+    /* Fondo beige para destacar */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    border-radius: 15px;
+    /* Bordes redondeados */
+    border: 2px solid #8b4513;
+    /* Borde marrón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    display: inline-block;
+    /* Ajuste de tamaño */
+    text-align: center;
+    /* Centrar texto */
+    margin-bottom: 20px;
+    /* Espaciado inferior */
+    animation: pulse 1s infinite;
+    /* Efecto de pulso */
+}
+
+/* Animación de pulso */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}
