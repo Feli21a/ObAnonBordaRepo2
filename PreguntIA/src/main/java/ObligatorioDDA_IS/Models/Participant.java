@@ -24,6 +24,10 @@ public class Participant {
     @JoinColumn(name = "game_id", nullable = false) // Relación con la partida
     private SinglePlayerGame game;
 
+    // Constructor vacío requerido por Hibernate
+    public Participant() {
+    }
+
     // Constructor, Getters y Setters
     public Participant(User user, SinglePlayerGame game) {
         this.user = user;
