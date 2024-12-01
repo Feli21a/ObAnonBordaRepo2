@@ -8,13 +8,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 
 //Entidad que representa al usuario en la base de datos.
 
 @Entity
 @Table(name = "users")
-@Data
 public class User {
 
     @Id
@@ -39,11 +37,11 @@ public class User {
     private int totalScore = 0;
 
     // Getters y Setters
-    public String getUserId() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -89,6 +87,10 @@ public class User {
 
     public String getAvatar() {
         return this.avatar;
+    }
+
+    public void setAvatar(String avatarURL) {
+        this.avatar = avatarURL;
     }
 
 }

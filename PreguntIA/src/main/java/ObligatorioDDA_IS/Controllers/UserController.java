@@ -51,7 +51,7 @@ public class UserController {
 
             // Construir la respuesta JSON
             Map<String, String> response = new HashMap<>();
-            response.put("userId", String.valueOf(loggedInUser.getUserId())); // Devolver el userId
+            response.put("userId", String.valueOf(loggedInUser.getId())); // Devolver el userId
             response.put("location", "/menu"); // Indicar la redirección
 
             return ResponseEntity.ok(response);

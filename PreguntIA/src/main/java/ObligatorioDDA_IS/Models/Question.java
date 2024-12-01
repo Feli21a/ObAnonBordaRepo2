@@ -13,6 +13,10 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
+    public Question() {
+
+    }
+
     public String getQuestionText() {
         return questionText;
     }
